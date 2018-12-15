@@ -1,0 +1,510 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+ /* body {
+    background-image:url("./images/mainpic.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+html {
+    height: 100%
+} */
+body {
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif,'Roboto';
+  font-size: 14px;
+}
+
+/* Main Page Css */
+
+
+.main-image {
+  background-image: url("https://images.pexels.com/photos/459469/pexels-photo-459469.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+  height: 600px;
+  width: 100%;
+  min-width: 600px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  width: 69.77%;
+  min-width: 600px;
+  margin: 0 auto;
+}
+.nav-links a, .signup-links a, .signup-links button, .main-logo a {
+  box-sizing: border-box;
+  height: 36px;
+  text-decoration: none;
+  padding: 7px 10px;
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 36px;
+  margin-left: 15px;
+}
+.signup-links a:last-of-type {
+  border: 2px solid white;
+  border-radius: 4px;
+}
+
+.signup-links button {
+  color: black;
+}
+.signup-links a:hover, .nav-links a:hover {
+  border-bottom: 2px solid white;
+  padding-bottom: 3px;
+}
+.main-image a:active {
+  color: grey;
+}
+
+// .signup-links a:last-child {
+//   text-decoration: none;
+//   color: white;
+//   border: 2px solid #fff;
+//   border-radius: 4px;
+//   padding: 7px 24px 8px;
+// }
+
+.signup-links > a:last-child:hover {
+  color: #666;
+  background-color: #fff;
+
+}
+.nav-links{
+  display: flex;
+  justify-content: flex-start;
+  color: white;
+}
+
+.signup-links {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0;
+  margin: 0;
+}
+
+.profile {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+
+.user-icon, .profile-icon {
+  width: 38px;
+  height: 38px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border-radius: 4px 0 0 4px;
+  margin: 0;
+  margin-top: 30px;
+  background-image: url("https://s3-media3.fl.yelpcdn.com/assets/srv0/yelp_styleguide/bf5ff8a79310/assets/img/default_avatars/user_medium_square.png");
+}
+
+.profile-icon {
+  margin-top: 0;
+  width: 60px;
+  padding: 5px;
+  margin: 8px;
+}
+
+.dropdown, .hide-dropdown {
+  box-sizing: border-box;
+  margin-top: 30px;
+  padding: 5px;
+  width: 20px;
+  height: 38px;
+  background: rgba(0,0,0,.25);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.dropdown:hover, .hide-dropdown:hover{
+  background: rgba(0,0,0,0.35);
+}
+
+.dropdown:active, .hide-dropdown:hover{
+  background: rgba(0,0,0,0.45);
+}
+
+
+.dropdown::before, .hide-dropdown::after {
+  content: "\f0d7";
+  font-family: FontAwesome;
+  color: white;
+  font-size: 10px;
+  padding-right: 2px;
+}
+
+.dropdown ul {
+  min-width: 220px;
+  min-height: 135px;
+  z-index: 1;
+  background: white;
+  margin-top: 27px;
+  border-radius: 5px;
+  box-shadow: -1px 4px 6px 2px rgba(0,0,0,0.09);
+}
+
+.dropdown-triangle {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 7px solid white;
+  margin-top: -7px;
+  margin-left: 190px;
+}
+
+.about-me {
+  border-top: 1px solid rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  padding: 5px 0;
+  font-weight: bold;
+}
+
+.about-me::before {
+  content: "\f007";
+  font-family: FontAwesome;
+  font-size: inherit;
+  color: darkgrey;
+  margin-right: 5px;
+}
+
+.lists > li {
+  display: block;
+  position: relative;
+  text-transform: capitalize;
+  color: #0073bb;
+  margin: 5px 10px;
+}
+
+
+
+.signup-links li a {
+  color: #0073bb;
+  margin: 0;
+  padding: 0;
+}
+
+.lists > li:hover {
+  position: relative;
+  cursor: pointer;
+}
+
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  font-size: 10px;
+}
+
+
+.user-details li, .user-details li a {
+  color: #0073bb;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 5px 4px 0 0;
+  text-transform:capitalize;
+}
+
+
+.user-details li:last-of-type {
+  color: black;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 0 4px 0 0;
+}
+
+.user-details li:first-child:hover {
+  text-decoration: underline;
+}
+/*
+.dropdown ul li {
+  margin: 5px auto;
+} */
+
+.signup-links button:hover {
+  color: grey;
+}
+.signup-links button:active {
+  color: grey;
+}
+
+.main-logo {
+
+}
+
+.main-logo {
+  width: 160px;
+  margin: auto;
+}
+
+.main-logo a {
+  /* margin: 88px auto; */
+  margin-top: 88px;
+  font-family: 'Concert One';
+  font-size: 42px;
+  text-shadow:
+   -2px -2px 0 white,
+    2px -2px 0 white,
+    -2px 2px 0 white,
+    2px 2px 0 white;
+  text-decoration: none;
+  color: black;
+}
+
+.main-logo h1::after {
+  content: "\f1e9";
+  font-family: FontAwesome;
+  font-size: 47px;
+  color: red;
+  padding-left: 2px;
+}
+
+
+
+
+
+/* SignUp Form & Login Form` CSS */
+.header {
+  box-sizing: border-box;
+  background-color: #d32323;
+  color: #000;
+  font-family: 'Concert One';
+  font-size: 28px;
+  text-align: center;
+  text-shadow:
+  -1.4px -1.4px 0 white,
+   1.4px -1.4px 0 white,
+   -1.4px 1.4px 0 white,
+   1.4px 1.4px 0 white;
+  height: 64px;
+}
+
+.header a {
+  color: black;
+  text-decoration: none;
+}
+
+.header a::after {
+  content: "\f1e9";
+  font-family: FontAwesome;
+  font-size: 36px;
+  color: red;
+  padding-left: 2px;
+}
+
+.error {
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.form-img{
+  display: flex;
+  justify-content: center;
+}
+
+
+.login-form {
+  width: 467px;
+  height: 677px;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 40px;
+  margin-right: 50px;
+}
+
+.form-edit {
+  margin-top: 150px;
+}
+
+.login-form > * {
+  box-sizing: border-box;
+  width: 300px;
+  margin-bottom: 1px;
+  margin-bottom: 9px;
+}
+
+.errors input, .login-form input, .errors button, .login-form button {
+  font-size: 15px;
+  border-radius: 4px;
+  border: 1px solid grey;
+}
+
+.login-form input, button, select {
+  height: 30px;
+}
+.login-form .signin-input-1-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.login-form .signin-input-1-2 input {
+  box-sizing: border-box;
+  width: 49%;
+}
+
+.input-main {
+  width: 960px;
+  min-width: 700px;
+  margin: 0 auto;
+}
+.birthday {
+  text-align: left;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+/*
+.birthday {
+  height: 70px;
+} */
+
+.birthday p span {
+  font-weight: 400;
+  color: #999;
+  font-size: 12px;
+}
+.input-1-3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.login-form .input-1-3 select {
+  box-sizing: border-box;
+  width: 32%;
+  height: 28px;
+  font-size: inherit;
+  background-color: white;
+}
+
+form h3 {
+  color: #d32323;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.login-form h3 {
+  height: 10px;
+}
+.login-form p {
+  font-weight: bold;
+  /* height: 1px; */
+}
+
+.login-form p a {
+  font-weight: bold;
+  padding-left: 3px;
+  text-decoration: none;
+}
+
+
+input[type=submit]  {
+  box-sizing: border-box;
+  background-image: linear-gradient(#c90007, #a91400);
+  border: 1px solid #8d0005;
+  height: 48px;
+  color: white;
+  font-weight: bold;
+}
+
+
+.login-form button {
+  box-sizing: border-box;
+  background-image: linear-gradient(#0900c7, #0014a9);
+  border: 1px solid #0000dd;
+  height: 48px;
+  color: white;
+  font-weight: bold;
+}
+
+input[type=submit]:hover {
+  background-image: linear-gradient(#d90007, #c91400);
+}
+
+.login-form button:hover{
+  background-image: linear-gradient(#0900d7, #0014c9);
+  cursor: pointer;
+}
+
+img {
+  box-sizing: border-box;
+  width: 382px;
+  height: 342px;
+  // border-radius: 50%;
+  margin-top: 140px;
+  margin-right: 50px;
+}
+
+
+.login-form .swap-signup {
+  text-align: right;
+  font-weight: 400;
+  color: grey;
+  font-size: 12px;
+}
+
+
+.login-form p a {
+  color: #0073bb;
+  text-decoration: none;
+  margin-left: 1px;
+}
+
+.login-form p a:hover {
+  text-decoration: underline;
+}
+
+.no-error  {
+  height: 0px;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+}
+
+.error li {
+  margin-bottom: 3px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.error li::before {
+  content:"\f06a";
+  font-family: FontAwesome;
+  color: red;
+  font-size: 13px;
+  padding-right: 5px;
+}
+
+.hide-dropdown > * {
+  display: none;
+}

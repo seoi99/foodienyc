@@ -1,0 +1,375 @@
+.header-all {
+  display: flex;
+  flex-direction: row;
+  /* box-sizing: border-box; */
+  justify-content: center;
+  background-color: #d32323;
+  color: #000;
+  height: 64px;
+}
+a {
+  text-decoration: none;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: black;
+}
+.header-all > * {
+  padding: 5px 10px;
+  margin:auto 0;
+}
+
+.hide-el {
+  display: none;
+}
+.header-all > a {
+  font-family: 'Concert One';
+  font-size: 25px;
+  text-align: center;
+  text-shadow:
+  -1.4px -1.4px 0 white,
+   1.4px -1.4px 0 white,
+   -1.4px 1.4px 0 white,
+   1.4px 1.4px 0 white;
+  text-decoration: none;
+  color: black;
+}
+
+.header-all > a::after {
+  content: "\f1e9";
+  font-family: FontAwesome;
+  font-size: 30px;
+  color: red;
+  padding-left: 2px;
+}
+
+.input-box form{
+  display: flex;
+  justify-content: center;
+}
+
+.headerfix {
+  height: 33px;
+}
+
+.input-main .input-box, .input-main .input-box button{
+  height: 47px;
+  font-size: 20px;
+}
+
+.input-box label{
+  width: 48%;
+  box-sizing: border-box;
+  background-color: white;
+  padding: 8px 12px;
+  font-weight: bold;
+  color: #333;
+  height: 45px;
+}
+
+.headerfix  label{
+  height: 33px;
+}
+
+.input-main .input-box label{
+}
+
+.input-box label:first-of-type {
+  border-radius: 3px 0 0 3px;
+}
+
+.input-box label > input {
+  border: none;
+  width: 79%;
+  border-radius: none;
+  background-color: inherit;
+  box-sizing: border-box;
+  font-size: inherit;
+  margin-left: 5px;
+  outline: none;
+}
+
+.input-box {
+  min-width: 700px;
+}
+.input-main .input-box label > input {
+  width: 88%;
+}
+
+.input-box p {
+  display: inline-block;
+  margin: 0;
+}
+
+.input-box label:last-of-type p {
+    border-left: 1px solid grey;
+    padding-left: 10px;
+    margin-left: -15px;
+}
+
+.input-box label:active {
+  border: none;
+}
+
+
+.input-box button {
+  width: 50px;
+  height: 35px;
+  border: none;
+  background-color: #bd1f1f;
+}
+
+.input-main .input-box button {
+  width: 67px;
+}
+
+.input-box button::after {
+  content:"\f002";
+  font-family: FontAwesome;
+  color: white;
+  font-size: 20px;
+}
+
+.linktopage {
+  width: 150px;
+  display: flex;
+  justify-content: space-around;
+
+}
+
+.linktopage a {
+  padding: inherit;
+  border-radius: 4px;
+  border: solid 1px #c41314;
+  background:#d41314;
+  color: white;
+
+}
+
+.linktopage a:last-child {
+  color: black;
+  background-color: white;
+}
+.bg {
+  background-color: rgb(250, 250, 250);
+  height: 40px;
+}
+.cat-review {
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 972px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cat-review .cat {
+  display: flex;
+  flex-direction: row;
+}
+
+.cat-review .cat li {
+  padding: 10px;
+  color: black;
+  font-weight: 500;
+  border-right: 1px solid #e6e6e6;
+}
+.cat-review .cat li:first-of-type {
+  border-left: 1px solid #e6e6e6;
+}
+
+
+
+
+.cat-review a {
+  padding: 10px;
+  color: black;
+  font-weight: 500;
+  border-left: 1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+}
+
+
+.cat-review a::before {
+  content: "\f040";
+  font-family: FontAwesome;
+  padding-right: 5px;
+}
+
+
+.user-icons, .profile-icon {
+  width: 38px;
+  height: 38px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border-radius: 4px 0 0 4px;
+  margin: 0;
+  margin-top: 14px;
+}
+
+
+.profile-icon {
+  width: 60px;
+  padding: 5px;
+  margin: 8px;
+}
+
+.dropdowns, .hide-dropdowns {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  box-sizing: border-box;
+  margin-top: 14px;
+  padding: 5px;
+  width: 20px;
+  height: 38px;
+  background: rgba(0,0,0,.25);
+}
+
+.dropdowns:hover, .hide-dropdowns:hover{
+  background: rgba(0,0,0,0.35);
+}
+
+.dropdowns:active, .hide-dropdowns:hover{
+  background: rgba(0,0,0,0.45);
+}
+
+.dropdowns-triangle {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 7px solid white;
+  margin-top: -7px;
+  margin-left: 190px;
+}
+
+.dropdowns::before, .hide-dropdowns::after {
+  content: "\f0d7";
+  font-family: FontAwesome;
+  color: white;
+  font-size: 10px;
+  padding-right: 2px;
+}
+
+.dropdowns ul {
+  margin-top: 27px;
+  width: 220px;
+  height: 135px;
+  z-index: 1;
+  background: white;
+  border-radius: 5px;
+  box-shadow: -1px 4px 6px 2px rgba(0,0,0,0.09);
+}
+
+.about-me {
+  border-top: 1px solid rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  padding: 5px 0;
+  font-weight: bold;
+}
+
+.about-me::before {
+  content: "\f007";
+  font-family: FontAwesome;
+  font-size: inherit;
+  color: darkgrey;
+  margin-right: 5px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  font-size: 10px;
+}
+
+
+.user-details li {
+  color: #0073bb;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 5px 4px 0 0;
+  text-transform:capitalize;
+}
+
+
+.user-details li:last-of-type {
+  color: black;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 0 4px 0 0;
+}
+
+.user-details li:first-child:hover {
+  text-decoration: underline;
+}
+
+.hide-dropdowns > * {
+  display: none;
+}
+
+.cat {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.cat input {
+  cursor: pointer;
+  border: none;
+  width: 100px;
+  height: 100%;
+  font-size: 15px;
+  background-color: inherit;
+  border-right: 1px solid #e6e6e6;
+}
+
+.cat input:first-of-type {
+  border-left: 1px solid #e6e6e6;
+}
+
+.cat input:hover{
+  text-decoration: underline;
+}
+.goto-cat input {
+  background-color: inherit;
+  border: none;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+
+}
+.goto-cat input:hover {
+  text-decoration: underline;
+}
+
+.goto-cat .fa-spoon {
+  color: white;
+}
+button {
+  cursor: pointer;
+}
+
+.fa {
+  margin: auto 0;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+.show {
+  margin: 4px -12px;
+  border-top: 1px solid #e6e6e6;
+  position: relative;
+  z-index: 1;
+  background-color: white;
+  border-radius: 0px 0px 5px 5px;
+  font-family: inherit;
+  font-weight: 400;
+}
+.biz-dropdown {
+  padding: 5px;
+}
+.biz-dropdown:hover {
+  border-radius: 0px 0px 5px 5px;
+  background-color: #0073bb;
+}

@@ -1,0 +1,71 @@
+.but-nobut {
+  display: flex;
+  width: 629px;
+}
+
+.review-list {
+}
+.rev-list-item {
+  min-width: 629px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-top: 1px solid #e6e6e6;
+  padding-top: 20px;
+}
+
+.user-icon-item {
+  width: 60px;
+  height: 60px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border-radius: 4px 0 0 4px;
+  margin: 0;
+  margin-right:10px;
+  margin-bottom: 20px;
+
+}
+.star-revss {
+  width: 17px;
+}
+.rev-user {
+  display: flex;
+  margin-right: 10px;
+}
+
+.rev-content{
+  display: flex;
+}
+.rev-content li {
+  word-wrap: break-word;
+  width: 350px;
+}
+.rev-content div {
+  display: flex;
+}
+
+.rev-user li {
+  width: 30px;
+}
+
+.but-nobut button {
+  display: block;
+  color: #f15c4e;
+  border: none;
+  // width: 0;
+  height: inherit;
+  align-self: flex-end;
+}
+
+.but-nobut button::after {
+  content:"\f1f8";
+  font-family: FontAwesome;
+  font-size: 20px;
+  align-self: baseline;
+  margin-left: -25px;
+}
+
+.rev-col {
+  display: flex;
+  flex-direction: column;
+}

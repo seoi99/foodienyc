@@ -1,0 +1,36 @@
+.footers {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-image {
+    background-image: url("https://s3-media4.fl.yelpcdn.com/assets/srv0/yelp_styleguide/ce4d102c522c/assets/img/structural/footer_cityscape@2x.png");
+    height: 140px;
+    width: 660px;
+background-size: 660px 140px;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+}
+
+.flex-col {
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin: 36px 50px;
+}
+
+.flex-col h1{
+  color: #d32323;
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.flex-col a {
+  color: #0073bb;
+  font-weight: 400;
+}
+.flex-col a:hover {
+  text-decoration: underline;
+}

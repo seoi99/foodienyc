@@ -1,0 +1,28 @@
+div .goto-cat {
+  display: flex;
+  justify-content: center;
+}
+
+.goto-cat {
+  text-decoration: none;
+}
+.goto-cat li {
+  margin: 3px 5px;
+  color: white;
+  background-color: inherit;
+  border:none;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px;
+}
+
+// .goto-cat li::before {
+//   content: "\f14d";
+//   font-family: FontAwesome;
+//   color: white;
+//   padding: inherit;
+// }
+
+// .goto-cat li:hover {
+//   color: orange;
+// }

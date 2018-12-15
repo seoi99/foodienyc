@@ -1,0 +1,98 @@
+.main-reviews h1, .main-business h1 {
+  margin: 20px auto;
+  text-align: center;
+  color:#d32323;
+  font-weight: 700;
+}
+.main-reviews h1 {
+  border-top: 1px solid #e6e6e6;
+  padding-top: 10px;
+}
+
+.review-index-container, .biz-index-container {
+  width: 990px;
+  margin: 10px auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+ .review-index-component, .biz-main-content {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 310px;
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+}
+
+.biz-main-content {
+  padding: 0;
+}
+
+.first-image{
+  width: 100%;
+  height: 189px;
+  border-radius: 5px;
+  margin: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url("http://bailieproperty.com/54441513092018/shared/module/style/no-image.png")
+}
+
+.first-image li img{
+  width: 100%;
+  height: 189px;
+  border-radius: 5px;
+  margin: 0;
+}
+
+.avg-revnum {
+  display: flex;
+  flex-direction: row;
+}
+
+ .review-index-component li {
+   text-transform: capitalize;
+ }
+
+
+.review-index, {
+  padding-top: 10px;
+  padding-bottom: 20px;
+  display: flex;
+}
+.business-index {
+  padding: 10px;
+}
+
+a {
+  cursor: pointer;
+}
+.biz-border a, .business-index p a {
+  color: #0073bb;
+}
+
+.biz-border a:hover, .business-index p a:hover {
+  text-decoration: underline;
+}
+.fa-user {
+  color:red;
+  font-size: 15px;
+}
+
+.green {
+  color:green;
+}
+
+.biz-border {
+  padding-bottom: 3px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.biz-content-t {
+  padding: 10px;
+}
