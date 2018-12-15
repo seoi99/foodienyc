@@ -453,7 +453,6 @@ var receiveAllPhotos = function receiveAllPhotos(photos) {
   };
 };
 var removePhoto = function removePhoto(photo) {
-  debugger;
   return {
     type: REMOVE_PHOTO,
     photo: photo.message

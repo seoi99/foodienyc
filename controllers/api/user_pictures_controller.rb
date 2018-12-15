@@ -15,7 +15,7 @@ class Api::UserPicturesController < ApplicationController
   end
 
   def create
-    debugger
+    
     @userPicture = UserPicture.new(post_params)
     @userPicture.user_id = current_user.id
     if @userPicture.save
