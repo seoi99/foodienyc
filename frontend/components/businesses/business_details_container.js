@@ -8,13 +8,13 @@ import { requestAllPhotos } from '../../actions/user_pic_action';
 
 
 const mapStateToProps = (state, ownProps) => {
-  
   const business = state.entities.businesses[ownProps.match.params.businessId];
   const currentUserId = state.session.currentUserId;
   const businessId  = ownProps.match.params.businessId;
   const user = state.entities.users[currentUserId];
   const errors = state.errors;
   const photos = state.entities.photos;
+  
 
   return {
   businessId,

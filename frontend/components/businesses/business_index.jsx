@@ -8,16 +8,34 @@ import Footer  from '../footer/footer';
 class BusinessIndex extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      receivetxt: null,
+      location: null,
+    }
+    this.receiveSearch = this.receiveSearch.bind(this);
+  }
+
+  componentDidUpdate() {
+    debugger
+  }
+  receiveSearch(txt, loc) {
+    this.setState({receivetxt: txt, location: loc})
   }
 
   render() {
     let businesses = this.props.businesses.map((business, idx) => {
-      return <BusinessIndexItem business={business} key={idx} num={idx}/>
+      if ((Math.abs(this.props.latlng.lat - business.latitude) >= 0.4) &&
+        (Math.abs(this.props.latlng.lng - business.longitude) >= 0.4)) {
+          return null
+        }
+        else {
+          return <BusinessIndexItem business={business} key={idx} num={idx} fetchLocation={this.props.fetchLocation}/>
+          }
     });
 
       return(
       <div>
-        <HeaderContainer/>
+        <HeaderContainer receiveSearch={this.receiveSearch}/>
         <div className="bg-two">
           <div className="biz-shelf">
             <h1>Welcome to Foodie </h1>
@@ -28,7 +46,7 @@ class BusinessIndex extends React.Component {
             {businesses}
           </ul>
           <div className="all-map">
-            <GoogleMap requestAllBusiness={this.props.requestAllBusinesses} businesses={this.props.businesses} singleBusiness={false}/>
+            <GoogleMap businesses={this.props.businesses} singleBusiness={false}/>
           </div>
         </div>
         <Footer/>

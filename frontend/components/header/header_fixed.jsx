@@ -1,11 +1,11 @@
-  import React from 'react';
+import React from 'react';
 import Dropdown from './dropdown';
 import {Link, withRouter} from 'react-router-dom';
 
 class Header extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {active: false, searchtxt: "", dropdown: "hidden", bkey: false, len: 0};
+    this.state = {active: false, searchtxt: "", location: "", dropdown: "hidden", bkey: false, len: 0};
     this.toggleClass = this.toggleClass.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
@@ -13,6 +13,9 @@ class Header extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.navigateToIndex = this.navigateToIndex.bind(this);
     this.clicked = this.clicked.bind(this);
+    this.handleLocation = this.handleLocation.bind(this);
+    this.getLocation = this.getLocation.bind(this);
+    this.showPosition = this.showPosition.bind(this);
   }
 
   handleClick(e) {
@@ -23,8 +26,20 @@ class Header extends React.Component {
     if (this.props.currentUser) {
       this.props.requestPhoto(this.props.currentUser.id)
       }
-
   }
+
+  showPosition(position) {
+    return position.coords.latitude;
+   }
+
+  getLocation(e) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.showPosition);
+    } else {
+      console.log("Geolocation is not supported by this browser.")
+    }
+  }
+
 
   toggleClass() {
     const currentState = this.state.active;
@@ -34,6 +49,10 @@ class Header extends React.Component {
   handleChange(e) {
     this.setState({searchtxt: e.currentTarget.value});
     this.setState({dropdown:"show"});
+    this.props.receiveSearch(this.state.searchtxt, "")
+  }
+  handleLocation(e) {
+    this.setState({location: e.currentTarget.value});
   }
 
   navigateToIndex() {
@@ -51,10 +70,20 @@ class Header extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.setState({dropdown: "hidden"});
+    if (this.props.receiveSearch) {
+    this.props.receiveSearch(this.state.searchtxt, this.state.location)
+    }
     this.props.getSearchResult(this.state.searchtxt)
     this.props.loadBusinesses();
-    this.navigateToIndex();
+    if (this.state.location.length > 0) {
+      this.props.fetchLocation(this.state.location)
+    }
+    else {
+      if (Object.keys(this.props.businesses).length !== 0) {
 
+      }
+    }
+    this.navigateToIndex();
   }
 
   clicked(e) {
@@ -134,7 +163,8 @@ class Header extends React.Component {
               </label>
               <label>
                 <p>Near</p>
-                <input type="text" placeholder="location..."/>
+                <input onChange={this.handleLocation} type="text" placeholder="location..."
+                  value={this.state.location}/>
               </label>
               <button type="submit" value="" className="magify"/>
             </form>

@@ -1,17 +1,23 @@
 
 export default class MarkerManager {
-  constructor(map, handleClick, single) {
+  constructor(map, handleClick, single, latlng) {
     this.map = map;
     this.handleClick = handleClick;
     this.markers = {};
     this.single = single;
     this.label = 1;
+    this.latlng = latlng
   }
 
   updateMarkers(businesses) {
-
     let businessesObj = {};
-    businesses.forEach(business => businessesObj[business.id] = business);
+    businesses.forEach((business) => {
+      if((Math.abs(this.latlng.lat - business.latitude) <= 0.4) &&
+       (Math.abs(this.latlng.lng - business.longitude) <= 0.4)) {
+         return businessesObj[business.id] = business
+       }
+     }
+      );
 
     businesses.filter(business => !this.markers[business.id])
     .forEach(newBusiness => this.createMarkerFromBusiness(newBusiness));
@@ -26,7 +32,6 @@ export default class MarkerManager {
       this.label = 1;
     }
     const position = new google.maps.LatLng(business.latitude, business.longitude);
-
     const marker = new google.maps.Marker({
       position,
       map: this.map,

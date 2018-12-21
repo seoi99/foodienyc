@@ -17,7 +17,7 @@ const BusinessMainIndexItem = ({business, num}) => {
     });
     const priceConversion = (output) => {
       let symb = ""
-      for (let i = 10; i <= 40; i += 10) {
+      for (let i = 10; i <= 50; i += 10) {
       if (i <= output) {
         symb += "$";
       } else {

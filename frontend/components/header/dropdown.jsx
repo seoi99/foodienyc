@@ -7,16 +7,17 @@ class Dropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchStr: ""
+      searchStr: "",
+      location: "",
     }
     this.handleButtonClick = this.handleButtonClick.bind(this)
-    
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.searchtxt !== this.state.searchStr) {
-      this.setState({searchStr: nextProps.searchtxt})
-      this.props.getDropdownResult(this.state.searchStr)
+    if (nextProps.searchtxt !== this.state.searchStr &&
+        nextProps.searchtxt.length === 1) {
+        this.setState({searchStr: nextProps.searchtxt})
+        this.props.getDropdownResult(nextProps.searchtxt)
     }
   }
 
@@ -50,6 +51,7 @@ class Dropdown extends React.Component {
       )
     })
   }
+
 
     return(
       <ul>

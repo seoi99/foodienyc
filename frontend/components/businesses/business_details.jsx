@@ -16,6 +16,7 @@ class BusinessDetails extends React.Component {
 
   componentDidMount() {
     this.props.requestBusiness(this.props.businessId);
+
   }
 
   componentDidUpdate() {
@@ -28,9 +29,8 @@ class BusinessDetails extends React.Component {
   }
 
   render() {
-
       const currentDate = new Date();
-      const currentDay = Date().slice(0,3);
+      const currentDay = Date().slice(0,3).toUpperCase();
       const currentHours = currentDate.getHours();
       const currentMin = currentDate.getMinutes() < 10 ? "0" + currentDate.getMinutes() : currentDate.getMinutes();
       const currentTime = currentHours.toString() + currentMin.toString();
@@ -62,24 +62,34 @@ class BusinessDetails extends React.Component {
 
 
       const getCurrentDay = business.hours.map(hour => {
+        let close = hour.close
+        let open = hour.open
+        let ot = "am"
+        let ct = "am"
+
+        if (hour.close.slice(0,2) > 12) {
+          close = (hour.close.slice(0,2) - 12) + hour.close.slice(2)
+          ct = "pm"
+        }
+        if (hour.open.slice(0,2) > 12) {
+          open = (hour.open.slice(0,2) - 12) + hour.open.slice(2)
+          ot = "pm"
+        }
 
         if (currentDay === hour.day) {
-          if (parseInt(currentTime) > hour.open.replace(":","") && parseInt(currentTime) < hour.close.replace(":","")) {
-
-            if (hour.close.slice(0,2) > 12) {
-              hour.close = (hour.close.slice(0,2) - 12) + hour.close.slice(2)
-            }
+          let copied = hour.close.replace(":","")
+          if (hour.close < hour.open) {
+            copied = hour.close + 2400
+          }
+          if (parseInt(currentTime) > hour.open.replace(":","") && parseInt(currentTime) < copied) {
             return (
-              <div  className="open-div" key={hour.id}>Today <b>{hour.open} am - {hour.close} pm </b>
+              <div  className="open-div" key={hour.id}>Today <b>{open} {ot} - {close} {ct} </b>
                 <span className="open-status">Open Now</span>
               </div>
             )
           } else {
-            if (hour.close.slice(0,2) > 12) {
-              hour.close = (hour.close.slice(0,2) - 12) + hour.close.slice(2)
-            }
             return (
-              <div className="close-div" key={hour.id}> <b>Today {hour.open} am  - {hour.close} pm </b>
+              <div  className="close-div" key={hour.id}>Today <b>{open} {ot} - {close} {ct} </b>
                 <span className="closed-status"> Closed </span>
               </div>
           )
@@ -88,12 +98,23 @@ class BusinessDetails extends React.Component {
       })
 
       const hours = business.hours.map(hour => {
+        let close = hour.close
+        let open = hour.open
+        let ot = "am"
+        let ct = "am"
+
         if (hour.close.slice(0,2) > 12) {
-          hour.close = (hour.close.slice(0,2) - 12) + hour.close.slice(2)
+          close = (hour.close.slice(0,2) - 12) + hour.close.slice(2)
+          ct = "pm"
         }
+        if (hour.open.slice(0,2) > 12) {
+          open = (hour.open.slice(0,2) - 12) + hour.open.slice(2)
+          ot = "pm"
+        }
+
           return (<div className="day-hours" key={hour.id}>
           <li >{hour.day}: </li>
-          <li>{hour.open} am - {hour.close} pm </li>
+          <li> {open} {ot} - {close} {ct} </li>
         </div>)
       });
 
@@ -101,7 +122,7 @@ class BusinessDetails extends React.Component {
 
         const priceConversion = (output) => {
           let symb = ""
-          for (let i = 10; i <= 40; i += 10) {
+          for (let i = 10; i <= 50; i += 10) {
           if (i <= output) {
             symb += "$";
           } else {
