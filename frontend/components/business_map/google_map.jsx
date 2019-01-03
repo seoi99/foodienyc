@@ -26,7 +26,7 @@ class GoogleMap extends React.Component {
     this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
     if (this.props.singleBusiness) {
       this.props.fetchLocation(this.props.business.full_address);
-      this.MarkerManager.createMarkerFromBusiness(this.props.business);
+      this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
     } else {
       this.MarkerManager.updateMarkers(this.props.businesses);
     }
@@ -36,27 +36,17 @@ class GoogleMap extends React.Component {
 
   componentDidUpdate(e) {
     if (this.props.singleBusiness) {
-      const latlng = new google.maps.LatLng(this.props.latlng.lat,this.props.latlng.lng);
-      const mapOptions = {
-        center: latlng,
-        zoom: 15
-      };
-      const map = this.refs.map;
-      this.map = new google.maps.Map(this.mapNode, mapOptions);
       this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
       this.map.zoom = 15
-      this.MarkerManager.createMarkerFromBusiness(this.props.business);
-      // const targetBusinessKey = Object.keys(this.props.business);
-      // const targetBusiness = this.props.business;
-      // this.MarkerManager.updateMarkers([targetBusiness]);
-      // this.MarkerManager.createMarkerFromBusiness(this.props.business);
-    } else if (this.map.center.lat !== this.props.latlng.lat && this.state.len !== this.props.businesses.length){
-      this.map.zoom = 17
-      this.setState({len: this.props.businesses.length})
+      this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
+    } else if (this.map.getCenter.lat !== this.props.latlng.lat){
+      this.map.setCenter(this.props.latlng);
       this.MarkerManager.updateMarkers(this.props.businesses);
+      this.map.zoom = 16;
     } else {
-      this.map.zoom = 17;
+      this.map.zoom = 16;
     }
+
   }
 
   handleMarkerClick(business) {
