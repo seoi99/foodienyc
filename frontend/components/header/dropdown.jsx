@@ -13,11 +13,10 @@ class Dropdown extends React.Component {
     this.handleButtonClick = this.handleButtonClick.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.searchtxt !== this.state.searchStr &&
-        nextProps.searchtxt.length === 1) {
-        this.setState({searchStr: nextProps.searchtxt})
-        this.props.getDropdownResult(nextProps.searchtxt)
+  componentDidUpdate() {
+    if (this.props.searchtxt !== this.state.searchStr) {
+        this.setState({searchStr: this.props.searchtxt})
+        this.props.getDropdownResult(this.props.searchtxt)
     }
   }
 
@@ -52,6 +51,9 @@ class Dropdown extends React.Component {
     })
   }
 
+  if (bizArr.length > 6) {
+    bizArr = bizArr.slice(0,6)
+  }
 
     return(
       <ul>

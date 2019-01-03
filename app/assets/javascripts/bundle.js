@@ -825,9 +825,15 @@ function (_React$Component) {
   _inherits(GoogleMap, _React$Component);
 
   function GoogleMap(props) {
+    var _this;
+
     _classCallCheck(this, GoogleMap);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(GoogleMap).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(GoogleMap).call(this, props));
+    _this.state = {
+      len: 0
+    };
+    return _this;
   }
 
   _createClass(GoogleMap, [{
@@ -852,26 +858,28 @@ function (_React$Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(e) {
-      if (e.latlng !== this.state || this.props.singleBusiness) {
+      if (this.props.singleBusiness) {
         var latlng = new google.maps.LatLng(this.props.latlng.lat, this.props.latlng.lng);
         var mapOptions = {
           center: latlng,
-          zoom: 13
+          zoom: 15
         };
         var map = this.refs.map;
         this.map = new google.maps.Map(this.mapNode, mapOptions);
         this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_5__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
-
-        if (this.props.singleBusiness) {
-          this.map.zoom = 15;
-          this.MarkerManager.createMarkerFromBusiness(this.props.business);
-          var targetBusinessKey = Object.keys(this.props.business);
-          var targetBusiness = this.props.business;
-          this.MarkerManager.updateMarkers([targetBusiness]);
-          this.MarkerManager.createMarkerFromBusiness(this.props.business);
-        } else {
-          this.MarkerManager.updateMarkers(this.props.businesses);
-        }
+        this.map.zoom = 15;
+        this.MarkerManager.createMarkerFromBusiness(this.props.business); // const targetBusinessKey = Object.keys(this.props.business);
+        // const targetBusiness = this.props.business;
+        // this.MarkerManager.updateMarkers([targetBusiness]);
+        // this.MarkerManager.createMarkerFromBusiness(this.props.business);
+      } else if (this.map.center.lat !== this.props.latlng.lat && this.state.len !== this.props.businesses.length) {
+        this.map.zoom = 17;
+        this.setState({
+          len: this.props.businesses.length
+        });
+        this.MarkerManager.updateMarkers(this.props.businesses);
+      } else {
+        this.map.zoom = 17;
       }
     }
   }, {
@@ -883,12 +891,12 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this = this;
+      var _this2 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "map",
         ref: function ref(map) {
-          return _this.mapNode = map;
+          return _this2.mapNode = map;
         }
       });
     }
@@ -1315,9 +1323,7 @@ function (_React$Component) {
 
   _createClass(BusinessIndex, [{
     key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      debugger;
-    }
+    value: function componentDidUpdate() {}
   }, {
     key: "receiveSearch",
     value: function receiveSearch(txt, loc) {
@@ -1637,13 +1643,13 @@ function (_React$Component) {
   }
 
   _createClass(Dropdown, [{
-    key: "componentWillReceiveProps",
-    value: function componentWillReceiveProps(nextProps) {
-      if (nextProps.searchtxt !== this.state.searchStr && nextProps.searchtxt.length === 1) {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      if (this.props.searchtxt !== this.state.searchStr) {
         this.setState({
-          searchStr: nextProps.searchtxt
+          searchStr: this.props.searchtxt
         });
-        this.props.getDropdownResult(nextProps.searchtxt);
+        this.props.getDropdownResult(this.props.searchtxt);
       }
     }
   }, {
@@ -1683,6 +1689,10 @@ function (_React$Component) {
             to: "/businesses"
           }, biz)));
         });
+      }
+
+      if (bizArr.length > 6) {
+        bizArr = bizArr.slice(0, 6);
       }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, bizArr);
@@ -1767,7 +1777,7 @@ function (_React$Component) {
       searchtxt: "",
       location: "",
       dropdown: "hidden",
-      bkey: false,
+      submitted: false,
       len: 0
     };
     _this.toggleClass = _this.toggleClass.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -1825,8 +1835,7 @@ function (_React$Component) {
       });
       this.setState({
         dropdown: "show"
-      });
-      this.props.receiveSearch(this.state.searchtxt, "");
+      }); // this.props.receiveSearch(this.state.searchtxt, "")
     }
   }, {
     key: "handleLocation",
@@ -1853,7 +1862,8 @@ function (_React$Component) {
     value: function handleSubmit(e) {
       e.preventDefault();
       this.setState({
-        dropdown: "hidden"
+        dropdown: "hidden",
+        submitted: true
       });
 
       if (this.props.receiveSearch) {

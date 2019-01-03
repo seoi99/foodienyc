@@ -5,7 +5,7 @@ import {Link, withRouter} from 'react-router-dom';
 class Header extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {active: false, searchtxt: "", location: "", dropdown: "hidden", bkey: false, len: 0};
+    this.state = {active: false, searchtxt: "", location: "", dropdown: "hidden", submitted: false, len: 0};
     this.toggleClass = this.toggleClass.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
@@ -49,7 +49,7 @@ class Header extends React.Component {
   handleChange(e) {
     this.setState({searchtxt: e.currentTarget.value});
     this.setState({dropdown:"show"});
-    this.props.receiveSearch(this.state.searchtxt, "")
+    // this.props.receiveSearch(this.state.searchtxt, "")
   }
   handleLocation(e) {
     this.setState({location: e.currentTarget.value});
@@ -69,7 +69,7 @@ class Header extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.setState({dropdown: "hidden"});
+    this.setState({dropdown: "hidden", submitted: true});
     if (this.props.receiveSearch) {
     this.props.receiveSearch(this.state.searchtxt, this.state.location)
     }
@@ -80,7 +80,6 @@ class Header extends React.Component {
     }
     else {
       if (Object.keys(this.props.businesses).length !== 0) {
-
       }
     }
     this.navigateToIndex();

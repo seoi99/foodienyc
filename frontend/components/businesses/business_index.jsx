@@ -16,7 +16,7 @@ class BusinessIndex extends React.Component {
   }
 
   componentDidUpdate() {
-    debugger
+    
   }
   receiveSearch(txt, loc) {
     this.setState({receivetxt: txt, location: loc})

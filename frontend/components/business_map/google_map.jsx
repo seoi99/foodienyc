@@ -10,6 +10,7 @@ import MarkerManager from '../../util/marker_manager';
 class GoogleMap extends React.Component {
   constructor(props){
     super(props);
+    this.state = {len : 0}
   }
 
 
@@ -34,27 +35,27 @@ class GoogleMap extends React.Component {
 
 
   componentDidUpdate(e) {
-    if (e.latlng !== this.state || this.props.singleBusiness) {
+    if (this.props.singleBusiness) {
       const latlng = new google.maps.LatLng(this.props.latlng.lat,this.props.latlng.lng);
       const mapOptions = {
         center: latlng,
-        zoom: 13
+        zoom: 15
       };
       const map = this.refs.map;
       this.map = new google.maps.Map(this.mapNode, mapOptions);
-        this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
-
-
-    if (this.props.singleBusiness) {
+      this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
       this.map.zoom = 15
       this.MarkerManager.createMarkerFromBusiness(this.props.business);
-      const targetBusinessKey = Object.keys(this.props.business);
-      const targetBusiness = this.props.business;
-      this.MarkerManager.updateMarkers([targetBusiness]);
-      this.MarkerManager.createMarkerFromBusiness(this.props.business);
-    } else {
+      // const targetBusinessKey = Object.keys(this.props.business);
+      // const targetBusiness = this.props.business;
+      // this.MarkerManager.updateMarkers([targetBusiness]);
+      // this.MarkerManager.createMarkerFromBusiness(this.props.business);
+    } else if (this.map.center.lat !== this.props.latlng.lat && this.state.len !== this.props.businesses.length){
+      this.map.zoom = 17
+      this.setState({len: this.props.businesses.length})
       this.MarkerManager.updateMarkers(this.props.businesses);
-    }
+    } else {
+      this.map.zoom = 17;
     }
   }
 

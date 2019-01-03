@@ -10,7 +10,7 @@ class Api::BusinessesController < ApplicationController
 
   def search
     if params[:result] != "undefined"
-      @businesses = Business.where("business_name ILIKE :result OR category ILIKE :result ", result: "%#{params[:result]}%")
+      @businesses = Business.where("business_name ILIKE :result OR category ILIKE :result ", result: "%#{params[:result]}%").limit(30)
     else
       @businesses = Business.all
     end
