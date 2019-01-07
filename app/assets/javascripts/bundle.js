@@ -90,7 +90,7 @@
 /*!**********************************************!*\
   !*** ./frontend/actions/business_actions.js ***!
   \**********************************************/
-/*! exports provided: RECEIVE_ALL_BUSINESSES, RECEIVE_BUSINESS, RECEIVE_REVIEW, RECEIVE_SEARCH_RESULT, RECEIVE_ALL_REVIEW, REMOVE_REVIEW, RECEIVE_REVIEW_ERROR, START_LOADING_REVIEW_INDEX, LOAD_BUSINESSES, LOAD_NO_BUSINSSES, DROP_DOWN_RESULT, loadBusinesses, loadNoBusinesses, receiveAllBusinesses, receiveReviewErrors, receiveSearchResult, getSearchResult, dropdownResult, getDropdownResult, receiveBusiness, requestAllBusinesses, requestBusiness, receiveReview, receivewAllReviews, startLoadingReviewIndex, requestAllReviews, removeReview, createReview, updateReview, deleteReview */
+/*! exports provided: RECEIVE_ALL_BUSINESSES, RECEIVE_BUSINESS, RECEIVE_REVIEW, RECEIVE_SEARCH_RESULT, RECEIVE_ALL_REVIEW, REMOVE_REVIEW, RECEIVE_REVIEW_ERROR, START_LOADING_REVIEW_INDEX, LOAD_BUSINESSES, LOAD_NO_BUSINSSES, DROP_DOWN_RESULT, NO_RESULT_FOUND, loadBusinesses, loadNoBusinesses, receiveAllBusinesses, receiveReviewErrors, receiveSearchResult, getSearchResult, dropdownResult, noResultFound, getDropdownResult, receiveBusiness, requestAllBusinesses, requestBusiness, receiveReview, receivewAllReviews, startLoadingReviewIndex, requestAllReviews, removeReview, createReview, updateReview, deleteReview */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106,6 +106,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BUSINESSES", function() { return LOAD_BUSINESSES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_NO_BUSINSSES", function() { return LOAD_NO_BUSINSSES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DROP_DOWN_RESULT", function() { return DROP_DOWN_RESULT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NO_RESULT_FOUND", function() { return NO_RESULT_FOUND; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadBusinesses", function() { return loadBusinesses; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadNoBusinesses", function() { return loadNoBusinesses; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveAllBusinesses", function() { return receiveAllBusinesses; });
@@ -113,6 +114,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveSearchResult", function() { return receiveSearchResult; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSearchResult", function() { return getSearchResult; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dropdownResult", function() { return dropdownResult; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "noResultFound", function() { return noResultFound; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDropdownResult", function() { return getDropdownResult; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveBusiness", function() { return receiveBusiness; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "requestAllBusinesses", function() { return requestAllBusinesses; });
@@ -138,6 +140,7 @@ var START_LOADING_REVIEW_INDEX = 'START_LOADING_REVIEW_INDEX';
 var LOAD_BUSINESSES = 'LOAD_BUSINESSES';
 var LOAD_NO_BUSINSSES = 'LOAD_NO_BUSINSSES';
 var DROP_DOWN_RESULT = 'DROP_DOWN_RESULT';
+var NO_RESULT_FOUND = 'NO_RESULT_FOUND';
 var loadBusinesses = function loadBusinesses() {
   return {
     type: LOAD_BUSINESSES
@@ -177,6 +180,12 @@ var dropdownResult = function dropdownResult(result) {
   return {
     type: DROP_DOWN_RESULT,
     result: result
+  };
+};
+var noResultFound = function noResultFound(result) {
+  return {
+    type: NO_RESULT_FOUND,
+    result: "No query result found by ".concat(result)
   };
 };
 var getDropdownResult = function getDropdownResult(query) {
@@ -1656,15 +1665,16 @@ function (_React$Component) {
       var bizArr;
 
       if (this.props.searchtxt !== "") {
-        bizArr = searched_bussinesses.map(function (biz, idx) {
-          if (biz.business_name.toLowerCase().includes(_this2.props.searchtxt.toLowerCase())) {
-            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-              key: idx,
-              className: "biz-dropdown"
-            }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-              to: "/businesses/".concat(biz.id)
-            }, biz.business_name)));
-          }
+        bizArr = searched_bussinesses.filter(function (biz, idx) {
+          return biz.business_name.toLowerCase().includes(_this2.props.searchtxt.toLowerCase());
+        });
+        bizArr = bizArr.map(function (biz, idx) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            key: idx,
+            className: "biz-dropdown"
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+            to: "/businesses/".concat(biz.id)
+          }, biz.business_name)));
         });
       } else if (this.props.searchtxt === "") {
         bizArr = bizCat.map(function (biz, idx) {
@@ -4630,7 +4640,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var configureStore = function configureStore() {
   var preloadedState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_reducers_root_reducer__WEBPACK_IMPORTED_MODULE_3__["default"], preloadedState, Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__["default"], redux_logger__WEBPACK_IMPORTED_MODULE_2___default.a));
+  return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_reducers_root_reducer__WEBPACK_IMPORTED_MODULE_3__["default"], preloadedState, Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__["default"]));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (configureStore);

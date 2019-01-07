@@ -30,14 +30,13 @@ class Dropdown extends React.Component {
     const bizCat = ["Japanese", "Korean", "Delivery","Fast Food", "Salad"]
       let bizArr;
       if (this.props.searchtxt !== "") {
-         bizArr = searched_bussinesses.map((biz, idx) => {
-           if (biz.business_name.toLowerCase().includes(this.props.searchtxt.toLowerCase())) {
-            return (
+        bizArr = searched_bussinesses.filter((biz, idx) => biz.business_name.toLowerCase().includes(this.props.searchtxt.toLowerCase()));
+         bizArr = bizArr.map((biz, idx) => {
+             return (
               <div key={idx} className="biz-dropdown">
                 <li><Link to={`/businesses/${biz.id}`}>{biz.business_name}</Link></li>
               </div>
             )
-          }
         })
       }
 

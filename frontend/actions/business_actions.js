@@ -11,6 +11,7 @@ export const START_LOADING_REVIEW_INDEX = 'START_LOADING_REVIEW_INDEX';
 export const LOAD_BUSINESSES = 'LOAD_BUSINESSES';
 export const LOAD_NO_BUSINSSES = 'LOAD_NO_BUSINSSES';
 export const DROP_DOWN_RESULT = 'DROP_DOWN_RESULT';
+export const NO_RESULT_FOUND = 'NO_RESULT_FOUND';
 
 export const loadBusinesses = () => {
   return {
@@ -56,6 +57,14 @@ export const dropdownResult = (result) => {
   result
   }
 }
+
+export const noResultFound = (result) => {
+  return {
+  type: NO_RESULT_FOUND,
+  result: `No query result found by ${result}`
+  }
+}
+
 export const getDropdownResult = (query) => {
   return (dispatch) => {
     BusinessApiUtil.fetchSearchResult(query).then((businesses) => {
@@ -63,7 +72,6 @@ export const getDropdownResult = (query) => {
     })
   }
 }
-
 
 
 

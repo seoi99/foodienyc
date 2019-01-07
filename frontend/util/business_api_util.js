@@ -47,7 +47,6 @@ export const fetchAllReviews = () => {
 }
 
 export const fetchSearchResult = (query) => {
-  
   return $.ajax({
     method: "GET",
     url: `api/businesses/search/?result=${query}`
