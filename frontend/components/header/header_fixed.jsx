@@ -178,9 +178,9 @@ class Header extends React.Component {
       <div className={h5}>
         <div className={h6}>
           <ul className={c4}>
-            <i className="fa fa-spoon"></i><input type="button" value="Delivery" onClick={this.handleButtonClick}/>
+            <i className="fa fa-spoon"></i><input type="button" value="Burger" onClick={this.handleButtonClick}/>
             <i className="fa fa-spoon"></i><input type="button" value="Salad" onClick={this.handleButtonClick} />
-            <i className="fa fa-spoon"></i><input type="button" value="Fast Food" onClick={this.handleButtonClick} />
+            <i className="fa fa-spoon"></i><input type="button" value="Italian" onClick={this.handleButtonClick} />
             <i className="fa fa-spoon"></i><input type="button" value="Japanese" onClick={this.handleButtonClick} />
             <i className="fa fa-spoon"></i><input type="button" value="Korean" onClick={this.handleButtonClick} />
           </ul>

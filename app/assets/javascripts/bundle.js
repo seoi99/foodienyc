@@ -1661,7 +1661,7 @@ function (_React$Component) {
       var _this2 = this;
 
       var searched_bussinesses = this.props.searched_bussinesses;
-      var bizCat = ["Japanese", "Korean", "Delivery", "Fast Food", "Salad"];
+      var bizCat = ["Japanese", "Korean", "Delivery", "Burger", "Salad"];
       var bizArr;
 
       if (this.props.searchtxt !== "") {
@@ -2000,7 +2000,7 @@ function (_React$Component) {
         className: "fa fa-spoon"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "button",
-        value: "Delivery",
+        value: "Burger",
         onClick: this.handleButtonClick
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-spoon"
@@ -2012,7 +2012,7 @@ function (_React$Component) {
         className: "fa fa-spoon"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "button",
-        value: "Fast Food",
+        value: "Italian",
         onClick: this.handleButtonClick
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-spoon"

@@ -1,7 +1,7 @@
 class Api::BusinessesController < ApplicationController
 
   def index
-    @businesses = Business.all
+    @businesses = Business.all.limit(30)
   end
 
   def show

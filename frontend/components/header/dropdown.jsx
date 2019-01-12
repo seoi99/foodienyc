@@ -27,7 +27,7 @@ class Dropdown extends React.Component {
 
   render() {
     const searched_bussinesses = this.props.searched_bussinesses;
-    const bizCat = ["Japanese", "Korean", "Delivery","Fast Food", "Salad"]
+    const bizCat = ["Japanese", "Korean", "Delivery","Burger", "Salad"]
       let bizArr;
       if (this.props.searchtxt !== "") {
         bizArr = searched_bussinesses.filter((biz, idx) => biz.business_name.toLowerCase().includes(this.props.searchtxt.toLowerCase()));
