@@ -870,6 +870,7 @@ function (_React$Component) {
       if (this.props.singleBusiness) {
         this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_5__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
         this.map.zoom = 15;
+        this.map.setCenter(this.props.latlng);
         this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
       } else if (this.map.getCenter.lat !== this.props.latlng.lat) {
         this.map.setCenter(this.props.latlng);
