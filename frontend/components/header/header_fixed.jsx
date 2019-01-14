@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from './dropdown';
-import {Link, withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 class Header extends React.Component {
   constructor(props) {
@@ -11,11 +11,9 @@ class Header extends React.Component {
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleLocation = this.handleLocation.bind(this);
     this.navigateToIndex = this.navigateToIndex.bind(this);
     this.clicked = this.clicked.bind(this);
-    this.handleLocation = this.handleLocation.bind(this);
-    this.getLocation = this.getLocation.bind(this);
-    this.showPosition = this.showPosition.bind(this);
   }
 
   handleClick(e) {
@@ -28,19 +26,6 @@ class Header extends React.Component {
       }
   }
 
-  showPosition(position) {
-    return position.coords.latitude;
-   }
-
-  getLocation(e) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.showPosition);
-    } else {
-      console.log("Geolocation is not supported by this browser.")
-    }
-  }
-
-
   toggleClass() {
     const currentState = this.state.active;
     this.setState({active: !currentState});
@@ -49,8 +34,8 @@ class Header extends React.Component {
   handleChange(e) {
     this.setState({searchtxt: e.currentTarget.value});
     this.setState({dropdown:"show"});
-    // this.props.receiveSearch(this.state.searchtxt, "")
   }
+
   handleLocation(e) {
     this.setState({location: e.currentTarget.value});
   }
@@ -82,7 +67,6 @@ class Header extends React.Component {
       if (Object.keys(this.props.businesses).length !== 0) {
       }
     }
-    this.navigateToIndex();
   }
 
   clicked(e) {
@@ -195,4 +179,4 @@ class Header extends React.Component {
   }
 }
 
-export default withRouter(Header);
+export default Header;

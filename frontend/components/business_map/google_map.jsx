@@ -11,16 +11,33 @@ class GoogleMap extends React.Component {
   constructor(props){
     super(props);
     this.state = {len : 0}
+    this.getLocation = this.getLocation.bind(this);
+    this.showPosition = this.showPosition.bind(this);
   }
 
+  showPosition(position) {
+    this.map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
+   }
+
+  getLocation() {
+    if (this.props.location === "current location") {
+    if (navigator.geolocation ) {
+      navigator.geolocation.getCurrentPosition(this.showPosition);
+    } else {
+      console.log("Geolocation is not supported by this browser.")
+    }
+    }
+  }
 
   componentDidMount() {
     const latlng = new google.maps.LatLng(this.props.latlng.lat,this.props.latlng.lng);
     const mapOptions = {
       center: latlng,
-      zoom: 10
+      zoom: 15
     };
     const map = this.refs.map;
+
+
     this.map = new google.maps.Map(this.mapNode, mapOptions);
 
     this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
@@ -35,19 +52,16 @@ class GoogleMap extends React.Component {
 
 
   componentDidUpdate(e) {
+    this.getLocation();
     if (this.props.singleBusiness) {
       this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
-      this.map.zoom = 15
       this.map.setCenter(this.props.latlng);
       this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
     } else if (this.map.getCenter.lat !== this.props.latlng.lat){
       this.map.setCenter(this.props.latlng);
       this.MarkerManager.updateMarkers(this.props.businesses);
-      this.map.zoom = 16;
     } else {
-      this.map.zoom = 16;
     }
-
   }
 
   handleMarkerClick(business) {
@@ -58,7 +72,6 @@ class GoogleMap extends React.Component {
 
 
   render() {
-
     return (
       <div id="map" ref={ map => this.mapNode = map }>
       </div>

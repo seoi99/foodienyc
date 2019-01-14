@@ -813,13 +813,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 
 
@@ -842,16 +842,37 @@ function (_React$Component) {
     _this.state = {
       len: 0
     };
+    _this.getLocation = _this.getLocation.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.showPosition = _this.showPosition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(GoogleMap, [{
+    key: "showPosition",
+    value: function showPosition(position) {
+      this.map.setCenter({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      });
+    }
+  }, {
+    key: "getLocation",
+    value: function getLocation() {
+      if (this.props.location === "current location") {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(this.showPosition);
+        } else {
+          console.log("Geolocation is not supported by this browser.");
+        }
+      }
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var latlng = new google.maps.LatLng(this.props.latlng.lat, this.props.latlng.lng);
       var mapOptions = {
         center: latlng,
-        zoom: 10
+        zoom: 15
       };
       var map = this.refs.map;
       this.map = new google.maps.Map(this.mapNode, mapOptions);
@@ -867,18 +888,16 @@ function (_React$Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(e) {
+      this.getLocation();
+
       if (this.props.singleBusiness) {
         this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_5__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
-        this.map.zoom = 15;
         this.map.setCenter(this.props.latlng);
         this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
       } else if (this.map.getCenter.lat !== this.props.latlng.lat) {
         this.map.setCenter(this.props.latlng);
         this.MarkerManager.updateMarkers(this.props.businesses);
-        this.map.zoom = 16;
-      } else {
-        this.map.zoom = 16;
-      }
+      } else {}
     }
   }, {
     key: "handleMarkerClick",
@@ -1320,9 +1339,6 @@ function (_React$Component) {
   }
 
   _createClass(BusinessIndex, [{
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {}
-  }, {
     key: "receiveSearch",
     value: function receiveSearch(txt, loc) {
       this.setState({
@@ -1359,7 +1375,8 @@ function (_React$Component) {
         className: "all-map"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_business_map_google_map__WEBPACK_IMPORTED_MODULE_3__["default"], {
         businesses: this.props.businesses,
-        singleBusiness: false
+        singleBusiness: false,
+        location: this.state.location
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_footer_footer__WEBPACK_IMPORTED_MODULE_5__["default"], null));
     }
   }]);
@@ -1662,7 +1679,7 @@ function (_React$Component) {
       var _this2 = this;
 
       var searched_bussinesses = this.props.searched_bussinesses;
-      var bizCat = ["Japanese", "Korean", "Delivery", "Burger", "Salad"];
+      var bizCat = ["Japanese", "Korean", "Italian", "Burger", "Salad"];
       var bizArr;
 
       if (this.props.searchtxt !== "") {
@@ -1784,11 +1801,9 @@ function (_React$Component) {
     _this.handleButtonClick = _this.handleButtonClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleLocation = _this.handleLocation.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.navigateToIndex = _this.navigateToIndex.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.clicked = _this.clicked.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.handleLocation = _this.handleLocation.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.getLocation = _this.getLocation.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.showPosition = _this.showPosition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -1802,20 +1817,6 @@ function (_React$Component) {
     value: function componentDidMount() {
       if (this.props.currentUser) {
         this.props.requestPhoto(this.props.currentUser.id);
-      }
-    }
-  }, {
-    key: "showPosition",
-    value: function showPosition(position) {
-      return position.coords.latitude;
-    }
-  }, {
-    key: "getLocation",
-    value: function getLocation(e) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.showPosition);
-      } else {
-        console.log("Geolocation is not supported by this browser.");
       }
     }
   }, {
@@ -1834,7 +1835,7 @@ function (_React$Component) {
       });
       this.setState({
         dropdown: "show"
-      }); // this.props.receiveSearch(this.state.searchtxt, "")
+      });
     }
   }, {
     key: "handleLocation",
@@ -1877,8 +1878,6 @@ function (_React$Component) {
       } else {
         if (Object.keys(this.props.businesses).length !== 0) {}
       }
-
-      this.navigateToIndex();
     }
   }, {
     key: "clicked",
@@ -2037,7 +2036,7 @@ function (_React$Component) {
   return Header;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(Header));
+/* harmony default export */ __webpack_exports__["default"] = (Header);
 
 /***/ }),
 
