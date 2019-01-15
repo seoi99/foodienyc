@@ -21,6 +21,7 @@ class BusinessIndex extends React.Component {
   }
 
   render() {
+
     let businesses = this.props.businesses.filter(business => {
       if ((Math.abs(this.props.latlng.lat - business.latitude) < 0.03) &&
         (Math.abs(this.props.latlng.lng - business.longitude) < 0.03)) {

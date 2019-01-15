@@ -58,12 +58,16 @@ class GoogleMap extends React.Component {
     } else if (this.map.getCenter.lat !== this.props.latlng.lat){
       this.MarkerManager.updateMarkers(this.props.businesses);
     }
+    if (this.props.businesses.length !== 0) {
     var bounds = new google.maps.LatLngBounds();
     for (var i = 0; i < Object.values(this.MarkerManager.markers).length; i++) {
       bounds.extend(Object.values(this.MarkerManager.markers)[i].getPosition());
     }
     this.map.fitBounds(bounds);
     this.map.setCenter(this.props.latlng);
+  } else {
+    this.map.zoom = 15;
+  }
     this.getLocation();
   }
 

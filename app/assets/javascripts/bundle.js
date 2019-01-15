@@ -909,14 +909,19 @@ function (_React$Component) {
         this.MarkerManager.updateMarkers(this.props.businesses);
       }
 
-      var bounds = new google.maps.LatLngBounds();
+      if (this.props.businesses.length !== 0) {
+        var bounds = new google.maps.LatLngBounds();
 
-      for (var i = 0; i < Object.values(this.MarkerManager.markers).length; i++) {
-        bounds.extend(Object.values(this.MarkerManager.markers)[i].getPosition());
+        for (var i = 0; i < Object.values(this.MarkerManager.markers).length; i++) {
+          bounds.extend(Object.values(this.MarkerManager.markers)[i].getPosition());
+        }
+
+        this.map.fitBounds(bounds);
+        this.map.setCenter(this.props.latlng);
+      } else {
+        this.map.zoom = 15;
       }
 
-      this.map.fitBounds(bounds);
-      this.map.setCenter(this.props.latlng);
       this.getLocation();
     }
   }, {
@@ -1880,6 +1885,7 @@ function (_React$Component) {
       e.preventDefault();
       this.props.getSearchResult(e.target.value);
       this.props.loadBusinesses();
+      this.props.fetchLocation(this.state.location);
       this.navigateToIndex();
     }
   }, {
@@ -3915,10 +3921,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_root__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/root */ "./frontend/components/root.jsx");
 /* harmony import */ var _util_session_api_util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util/session_api_util */ "./frontend/util/session_api_util.js");
 /* harmony import */ var _util_business_api_util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util/business_api_util */ "./frontend/util/business_api_util.js");
-/* harmony import */ var _actions_filter_actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./actions/filter_actions */ "./frontend/actions/filter_actions.js");
-/* harmony import */ var _actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./actions/geolocation_actions */ "./frontend/actions/geolocation_actions.js");
-/* harmony import */ var _actions_business_actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./actions/business_actions */ "./frontend/actions/business_actions.js");
+/* harmony import */ var _util_geocode_api_util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./util/geocode_api_util */ "./frontend/util/geocode_api_util.js");
+/* harmony import */ var _actions_filter_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./actions/filter_actions */ "./frontend/actions/filter_actions.js");
+/* harmony import */ var _actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./actions/geolocation_actions */ "./frontend/actions/geolocation_actions.js");
+/* harmony import */ var _actions_business_actions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./actions/business_actions */ "./frontend/actions/business_actions.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -3954,9 +3962,10 @@ document.addEventListener('DOMContentLoaded', function () {
   window.getState = store.getState;
   window.dispatch = store.dispatch;
   window.fetchAllReviews = _util_business_api_util__WEBPACK_IMPORTED_MODULE_5__["fetchAllReviews"];
-  window.createReview = _actions_business_actions__WEBPACK_IMPORTED_MODULE_8__["createReview"];
-  window.updateFilter = _actions_filter_actions__WEBPACK_IMPORTED_MODULE_6__["updateFilter"];
-  window.fetchLocation = _actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_7__["fetchLocation"];
+  window.createReview = _actions_business_actions__WEBPACK_IMPORTED_MODULE_9__["createReview"];
+  window.updateFilter = _actions_filter_actions__WEBPACK_IMPORTED_MODULE_7__["updateFilter"];
+  window.fetchLocation = _actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_8__["fetchLocation"];
+  window.getCoordinate = _util_geocode_api_util__WEBPACK_IMPORTED_MODULE_6__["getCoordinate"];
 });
 
 /***/ }),

@@ -4,6 +4,7 @@ import configureStore from './store/store';
 import Root from './components/root';
 import * as SessionApiUtil from './util/session_api_util';
 import{fetchAllBusinesses, fetchAllReviews, fetchSearchResult} from './util/business_api_util';
+import{getCoordinate} from './util/geocode_api_util';
 import{updateFilter} from './actions/filter_actions';
 import{fetchLocation} from './actions/geolocation_actions';
 import{createReview, requestAllBusinesses} from './actions/business_actions';
@@ -31,4 +32,5 @@ document.addEventListener('DOMContentLoaded', ()=> {
   window.createReview = createReview;
   window.updateFilter = updateFilter;
   window.fetchLocation = fetchLocation;
+  window.getCoordinate = getCoordinate;
   });
