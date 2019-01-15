@@ -12,12 +12,8 @@ export default class MarkerManager {
   updateMarkers(businesses) {
     let businessesObj = {};
     businesses.forEach((business) => {
-      if((Math.abs(this.latlng.lat - business.latitude) <= 0.4) &&
-       (Math.abs(this.latlng.lng - business.longitude) <= 0.4)) {
-         return businessesObj[business.id] = business
-       }
-     }
-      );
+         businessesObj[business.id] = business
+     });
     businesses.filter(business => !this.markers[business.id])
     .forEach((newBusiness, i) => this.createMarkerFromBusiness(newBusiness, i + 1));
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from './dropdown';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 class Header extends React.Component {
   constructor(props) {
@@ -60,13 +60,9 @@ class Header extends React.Component {
     }
     this.props.getSearchResult(this.state.searchtxt)
     this.props.loadBusinesses();
-    if (this.state.location.length > 0) {
-      this.props.fetchLocation(this.state.location)
-    }
-    else {
-      if (Object.keys(this.props.businesses).length !== 0) {
-      }
-    }
+    this.props.fetchLocation(this.state.location)
+    
+    this.navigateToIndex();
   }
 
   clicked(e) {
@@ -179,4 +175,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

@@ -38,12 +38,14 @@ export const receiveReviewErrors = (errors) => ({
 });
 
 export const receiveSearchResult = (result) => {
+
   return {
   type: RECEIVE_SEARCH_RESULT,
   result
   }
 }
 export const getSearchResult = (query) => {
+
   return (dispatch) => {
     BusinessApiUtil.fetchSearchResult(query).then((businesses) => {
       dispatch(receiveSearchResult(businesses))

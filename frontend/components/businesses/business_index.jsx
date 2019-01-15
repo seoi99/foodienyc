@@ -20,17 +20,22 @@ class BusinessIndex extends React.Component {
     this.setState({receivetxt: txt, location: loc})
   }
 
-
   render() {
-    let businesses = this.props.businesses.map((business, idx) => {
-      if ((Math.abs(this.props.latlng.lat - business.latitude) >= 0.4) &&
-        (Math.abs(this.props.latlng.lng - business.longitude) >= 0.4)) {
-          return null
+    let businesses = this.props.businesses.filter(business => {
+      if ((Math.abs(this.props.latlng.lat - business.latitude) < 0.03) &&
+        (Math.abs(this.props.latlng.lng - business.longitude) < 0.03)) {
+          return business
         }
-        else {
-          return <BusinessIndexItem business={business} key={idx} num={idx} fetchLocation={this.props.fetchLocation} />
+    }).map((business, idx) => {
+           return <BusinessIndexItem business={business} key={idx} num={idx} fetchLocation={this.props.fetchLocation} />
+       });
+
+     let mapbusiness = this.props.businesses.filter((business, idx) => {
+        if ((Math.abs(this.props.latlng.lat - business.latitude) < 0.03) &&
+          (Math.abs(this.props.latlng.lng - business.longitude) < 0.03)) {
+            return business
           }
-    });
+        });
 
       return(
       <div>
@@ -45,7 +50,7 @@ class BusinessIndex extends React.Component {
             {businesses}
           </ul>
           <div className="all-map">
-            <GoogleMap businesses={this.props.businesses} singleBusiness={false} location={this.state.location}/>
+            <GoogleMap businesses={mapbusiness} singleBusiness={false} location={this.state.location}/>
           </div>
         </div>
         <Footer/>

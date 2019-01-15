@@ -1,6 +1,7 @@
 import { getCoordinate } from '../util/geocode_api_util'
 
 export const RECEIVE_LOCATION = 'RECEIVE_LOCATION';
+export const NO_LOCATION = 'NO_LOCATION';
 
 export const receiveLocation = (result) => {
   return {
@@ -9,11 +10,21 @@ export const receiveLocation = (result) => {
   }
 }
 
+export const noLocation = (result) => {
+  return {
+    type: NO_LOCATION,
+    result,
+  }
+}
+
 export const fetchLocation = (address) => {
   return (dispatch) => {
-    getCoordinate(address).then((result) => {
-      dispatch(receiveLocation(result))
-    })
+    if (address === "") {
+      return dispatch(noLocation(address))
+    } else {
+      getCoordinate(address).then((result) => {
+      return dispatch(receiveLocation(result))
+    })}
   }
 }
 
