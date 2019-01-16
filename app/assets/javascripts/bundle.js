@@ -873,7 +873,6 @@ function (_React$Component) {
     value: function getLocation() {
       if (this.props.location === "current location") {
         if (navigator.geolocation) {
-          this.map.zoom = 16;
           navigator.geolocation.getCurrentPosition(this.showPosition);
         } else {
           console.log("Geolocation is not supported by this browser.");
@@ -905,19 +904,19 @@ function (_React$Component) {
       if (this.props.singleBusiness) {
         this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_5__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
         this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
-        this.map.zoom = 15;
+        this.map.setCenter(this.props.latlng);
       } else if (this.map.getCenter.lat !== this.props.latlng.lat) {
         this.MarkerManager.updateMarkers(this.props.businesses);
+        var bounds = new google.maps.LatLngBounds();
+
+        for (var i = 0; i < Object.values(this.MarkerManager.markers).length; i++) {
+          bounds.extend(Object.values(this.MarkerManager.markers)[i].getPosition());
+        }
+
+        this.map.fitBounds(bounds);
+        this.map.setCenter(this.props.latlng);
       }
 
-      var bounds = new google.maps.LatLngBounds();
-
-      for (var i = 0; i < Object.values(this.MarkerManager.markers).length; i++) {
-        bounds.extend(Object.values(this.MarkerManager.markers)[i].getPosition());
-      }
-
-      this.map.fitBounds(bounds);
-      this.map.setCenter(this.props.latlng);
       this.getLocation();
     }
   }, {
@@ -1892,8 +1891,12 @@ function (_React$Component) {
     value: function handleButtonClick(e) {
       e.preventDefault();
       this.props.getSearchResult(e.target.value);
+
+      if (this.props.receiveSearch) {
+        this.props.receiveSearch(e.target.value, "current location");
+      }
+
       this.props.loadBusinesses();
-      this.props.fetchLocation(this.state.location);
       this.navigateToIndex();
     }
   }, {
