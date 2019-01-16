@@ -21,6 +21,7 @@ class BusinessIndex extends React.Component {
   }
 
   render() {
+    let queryResult;
 
     let businesses = this.props.businesses.filter(business => {
       if ((Math.abs(this.props.latlng.lat - business.latitude) < 0.03) &&
@@ -37,13 +38,23 @@ class BusinessIndex extends React.Component {
             return business
           }
         });
+        if (this.state.receivetxt || this.state.location) {
+            if (mapbusiness.length === 0) {
+                queryResult = <h1> No Resturant Found based on your search. Try different Keyword or Location </h1>
+            } else {
+              let s = this.state.receivetxt ? `by ${this.state.receivetxt}` : ""
+              let l = this.state.location ? `Near ${this.state.location}` : ""
+              queryResult = <h1> {mapbusiness.length} resturants found {s} {l} </h1>
+            }
+        }
 
       return(
       <div>
         <HeaderContainer receiveSearch={this.receiveSearch}/>
         <div className="bg-two">
           <div className="biz-shelf">
-            <h1>Welcome to Foodie </h1>
+            <h1>Welcome to Foodie</h1>
+            {queryResult}
           </div>
         </div>
         <div className="biz-idx-main">

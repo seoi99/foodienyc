@@ -905,23 +905,19 @@ function (_React$Component) {
       if (this.props.singleBusiness) {
         this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_5__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
         this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
+        this.map.zoom = 15;
       } else if (this.map.getCenter.lat !== this.props.latlng.lat) {
         this.MarkerManager.updateMarkers(this.props.businesses);
       }
 
-      if (this.props.businesses.length !== 0) {
-        var bounds = new google.maps.LatLngBounds();
+      var bounds = new google.maps.LatLngBounds();
 
-        for (var i = 0; i < Object.values(this.MarkerManager.markers).length; i++) {
-          bounds.extend(Object.values(this.MarkerManager.markers)[i].getPosition());
-        }
-
-        this.map.fitBounds(bounds);
-        this.map.setCenter(this.props.latlng);
-      } else {
-        this.map.zoom = 15;
+      for (var i = 0; i < Object.values(this.MarkerManager.markers).length; i++) {
+        bounds.extend(Object.values(this.MarkerManager.markers)[i].getPosition());
       }
 
+      this.map.fitBounds(bounds);
+      this.map.setCenter(this.props.latlng);
       this.getLocation();
     }
   }, {
@@ -1376,6 +1372,7 @@ function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      var queryResult;
       var businesses = this.props.businesses.filter(function (business) {
         if (Math.abs(_this2.props.latlng.lat - business.latitude) < 0.03 && Math.abs(_this2.props.latlng.lng - business.longitude) < 0.03) {
           return business;
@@ -1393,13 +1390,24 @@ function (_React$Component) {
           return business;
         }
       });
+
+      if (this.state.receivetxt || this.state.location) {
+        if (mapbusiness.length === 0) {
+          queryResult = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, " No Resturant Found based on your search. Try different Keyword or Location ");
+        } else {
+          var s = this.state.receivetxt ? "by ".concat(this.state.receivetxt) : "";
+          var l = this.state.location ? "Near ".concat(this.state.location) : "";
+          queryResult = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, " ", mapbusiness.length, " resturants found ", s, " ", l, " ");
+        }
+      }
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_header_header_fixed_container__WEBPACK_IMPORTED_MODULE_2__["default"], {
         receiveSearch: this.receiveSearch
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "bg-two"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "biz-shelf"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Welcome to Foodie "))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Welcome to Foodie"), queryResult)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "biz-idx-main"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, businesses), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "all-map"
