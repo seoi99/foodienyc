@@ -4,6 +4,7 @@ import { requestAllBusinesses , loadBusinesses, loadNoBusinesses} from '../../ac
 import { fetchLocation } from '../../actions/geolocation_actions';
 
 const mapStateToProps = (state) => {
+  
   return {
   businesses: Object.values(state.entities.businesses),
   loading: state.ui.businesses.loading,

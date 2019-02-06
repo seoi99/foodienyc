@@ -13,7 +13,7 @@ class YelpApiBusiness < ApplicationRecord
   API_HOST = "https://api.yelp.com"
   SEARCH_PATH = "/v3/businesses/search"
   BUSINESS_PATH = "/v3/businesses/"
-  SEARCH_LIMIT = 20
+  SEARCH_LIMIT = 50
   API_KEY = Rails.application.credentials.yelp_api
 
 

@@ -7,7 +7,8 @@ class ReviewListItem extends React.Component {
   }
   componentDidMount(){
     this.props.requestAllPhotos();
-    
+  }
+  componentDidUpdate() {
   }
 
   render(){

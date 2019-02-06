@@ -8,7 +8,6 @@ json.businesses do
           json.extract! image, :id, :img_url
         end
       end
-
       json.hours business.hours, :id, :open, :close, :day
       json.reviews business.reviews, :body
     end

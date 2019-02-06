@@ -1,4 +1,3 @@
-
 export const fetchAllBusinesses = () => {
   return $.ajax({
     method: 'GET',

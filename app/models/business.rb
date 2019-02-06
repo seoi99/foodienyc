@@ -21,7 +21,9 @@ class Business < ApplicationRecord
   has_many :hours
   has_many :images
   has_many :reviews
-
+  def has_review?
+    reviews.length > 0
+  end
   def average_rating
     reviews.average(:rating)
   end

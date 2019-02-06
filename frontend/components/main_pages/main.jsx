@@ -21,7 +21,6 @@ class MainPage extends React.Component {
     this.props.getSearchResult();
     this.props.requestAllReviews();
   }
-
   handleClick(e) {
   return this.props.logout();
 }

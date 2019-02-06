@@ -15,7 +15,7 @@ class BusinessIndexItem extends React.Component {
   }
 
   render () {
-      let business = this.props.business
+    let business = this.props.business
     const images = business.images.map((image, idx) => {
       return (
         <li key={image.id}> <img src={image.img_url} alt={business.business_name} /></li>

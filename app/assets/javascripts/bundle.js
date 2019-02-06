@@ -815,7 +815,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../actions/geolocation_actions */ "./frontend/actions/geolocation_actions.js");
-/* harmony import */ var _util_marker_manager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../util/marker_manager */ "./frontend/util/marker_manager.js");
+/* harmony import */ var _actions_business_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../actions/business_actions */ "./frontend/actions/business_actions.js");
+/* harmony import */ var _util_marker_manager__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../util/marker_manager */ "./frontend/util/marker_manager.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -841,6 +842,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 
 
+
 var GoogleMap =
 /*#__PURE__*/
 function (_React$Component) {
@@ -852,9 +854,6 @@ function (_React$Component) {
     _classCallCheck(this, GoogleMap);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(GoogleMap).call(this, props));
-    _this.state = {
-      len: 0
-    };
     _this.getLocation = _this.getLocation.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.showPosition = _this.showPosition.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
@@ -882,6 +881,7 @@ function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
+      this.getLocation();
       var latlng = new google.maps.LatLng(this.props.latlng.lat, this.props.latlng.lng);
       var mapOptions = {
         center: latlng,
@@ -889,35 +889,51 @@ function (_React$Component) {
       };
       var map = this.refs.map;
       this.map = new google.maps.Map(this.mapNode, mapOptions);
-      this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_5__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
+      this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_6__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
+      this.map.zoom = 11;
 
       if (this.props.singleBusiness) {
         this.props.fetchLocation(this.props.business.full_address);
-        this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
+        this.MarkerManager.createMarkerFromBusiness(this.props.business);
       } else {
         this.MarkerManager.updateMarkers(this.props.businesses);
       }
     }
   }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(e) {
-      if (this.props.singleBusiness) {
-        this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_5__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
-        this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
-        this.map.setCenter(this.props.latlng);
-      } else if (this.map.getCenter.lat !== this.props.latlng.lat) {
-        this.MarkerManager.updateMarkers(this.props.businesses);
-        var bounds = new google.maps.LatLngBounds();
+    key: "inMapBounds",
+    value: function inMapBounds(biz) {
+      var _this2 = this;
 
-        for (var i = 0; i < Object.values(this.MarkerManager.markers).length; i++) {
-          bounds.extend(Object.values(this.MarkerManager.markers)[i].getPosition());
-        }
+      var businesses = biz.filter(function (b) {
+        return _this2.map.getBounds().ma.j < b.latitude && _this2.map.getBounds().ma.l > b.latitude && _this2.map.getBounds().ga.j < b.longitude && _this2.map.getBounds().ga.l > b.longitude;
+      });
+      this.props.receiveUpdates(businesses);
+      this.MarkerManager.updateMarkers(businesses);
+    }
+  }, {
+    key: "batchUpdate",
+    value: function batchUpdate() {
+      this.map.setCenter(this.props.latlng);
 
-        this.map.fitBounds(bounds);
-        this.map.setCenter(this.props.latlng);
+      if (this.map.getBounds()) {
+        this.inMapBounds(this.props.businesses);
       }
-
-      this.getLocation();
+    }
+  }, {
+    key: "singleUpdate",
+    value: function singleUpdate() {
+      this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_6__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
+      this.MarkerManager.createMarkerFromBusiness(this.props.business);
+      this.map.setCenter(this.props.latlng);
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(next) {
+      if (this.props.singleBusiness) {
+        this.singleUpdate();
+      } else {
+        this.batchUpdate();
+      }
     }
   }, {
     key: "handleMarkerClick",
@@ -928,12 +944,12 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "map",
         ref: function ref(map) {
-          return _this2.mapNode = map;
+          return _this3.mapNode = map;
         }
       });
     }
@@ -944,7 +960,9 @@ function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    latlng: state.entities.coordinate
+    businesses: Object.values(state.entities.businesses),
+    latlng: state.entities.coordinate,
+    loading: state.ui.businesses.loading
   };
 };
 
@@ -952,6 +970,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     fetchLocation: function fetchLocation(address) {
       return dispatch(Object(_actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_4__["fetchLocation"])(address));
+    },
+    loadNoBusinesses: function loadNoBusinesses() {
+      return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_5__["loadNoBusinesses"])());
     }
   };
 };
@@ -1027,9 +1048,9 @@ function (_React$Component) {
     key: "componentDidUpdate",
     value: function componentDidUpdate() {
       if (this.props.business) {
-        if (this.props.business.reviewIds.length !== this.state.reviews) {
+        if (Object.values(this.props.business.reviews).length !== this.state.reviews) {
           this.setState({
-            reviews: this.props.business.reviewIds.length
+            reviews: Object.values(this.props.business.reviews).length
           });
           this.props.requestBusiness(this.props.businessId);
         }
@@ -1352,9 +1373,12 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(BusinessIndex).call(this, props));
     _this.state = {
       receivetxt: null,
-      location: null
+      location: null,
+      count: 0,
+      businesses: []
     };
     _this.receiveSearch = _this.receiveSearch.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.receiveUpdates = _this.receiveUpdates.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -1367,37 +1391,41 @@ function (_React$Component) {
       });
     }
   }, {
+    key: "receiveUpdates",
+    value: function receiveUpdates(businesses) {
+      this.setState({
+        businesses: businesses
+      });
+    }
+  }, {
+    key: "queryResult",
+    value: function queryResult() {
+      if (this.state.receivetxt || this.state.location) {
+        if (this.state.businesses.length === 0) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, " No Resturant Found based on your search. Try different Keyword or Location ");
+        } else {
+          var s = this.state.receivetxt ? "by ".concat(this.state.receivetxt) : "";
+          var l = this.state.location ? "Near ".concat(this.state.location) : "";
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, " ", this.state.businesses.length, " resturants found ", s, " ", l, " ");
+        }
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      var queryResult;
-      var businesses = this.props.businesses.filter(function (business) {
-        if (Math.abs(_this2.props.latlng.lat - business.latitude) < 0.03 && Math.abs(_this2.props.latlng.lng - business.longitude) < 0.03) {
-          return business;
-        }
-      }).map(function (business, idx) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_business_index_item__WEBPACK_IMPORTED_MODULE_1__["default"], {
-          business: business,
-          key: idx,
-          num: idx,
-          fetchLocation: _this2.props.fetchLocation
-        });
-      });
-      var mapbusiness = this.props.businesses.filter(function (business, idx) {
-        if (Math.abs(_this2.props.latlng.lat - business.latitude) < 0.03 && Math.abs(_this2.props.latlng.lng - business.longitude) < 0.03) {
-          return business;
-        }
-      });
+      var businesses;
 
-      if (this.state.receivetxt || this.state.location) {
-        if (mapbusiness.length === 0) {
-          queryResult = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, " No Resturant Found based on your search. Try different Keyword or Location ");
-        } else {
-          var s = this.state.receivetxt ? "by ".concat(this.state.receivetxt) : "";
-          var l = this.state.location ? "Near ".concat(this.state.location) : "";
-          queryResult = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, " ", mapbusiness.length, " resturants found ", s, " ", l, " ");
-        }
+      if (this.state.businesses) {
+        businesses = this.state.businesses.map(function (business, idx) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_business_index_item__WEBPACK_IMPORTED_MODULE_1__["default"], {
+            business: business,
+            key: idx,
+            num: idx,
+            fetchLocation: _this2.props.fetchLocation
+          });
+        });
       }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_header_header_fixed_container__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -1406,14 +1434,14 @@ function (_React$Component) {
         className: "bg-two"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "biz-shelf"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Welcome to Foodie"), queryResult)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Welcome to Foodie"), this.queryResult())), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "biz-idx-main"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, businesses), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "all-map"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_business_map_google_map__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        businesses: mapbusiness,
         singleBusiness: false,
-        location: this.state.location
+        location: this.state.location,
+        receiveUpdates: this.receiveUpdates
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_footer_footer__WEBPACK_IMPORTED_MODULE_5__["default"], null));
     }
   }]);
@@ -1890,13 +1918,13 @@ function (_React$Component) {
     key: "handleButtonClick",
     value: function handleButtonClick(e) {
       e.preventDefault();
+      this.props.fetchLocation("new york city");
       this.props.getSearchResult(e.target.value);
 
       if (this.props.receiveSearch) {
         this.props.receiveSearch(e.target.value, "current location");
       }
 
-      this.props.loadBusinesses();
       this.navigateToIndex();
     }
   }, {
@@ -1907,14 +1935,13 @@ function (_React$Component) {
         dropdown: "hidden",
         submitted: true
       });
+      this.props.fetchLocation(this.state.location);
+      this.props.getSearchResult(this.state.searchtxt);
 
       if (this.props.receiveSearch) {
         this.props.receiveSearch(this.state.searchtxt, this.state.location);
       }
 
-      this.props.getSearchResult(this.state.searchtxt);
-      this.props.loadBusinesses();
-      this.props.fetchLocation(this.state.location);
       this.navigateToIndex();
     }
   }, {
@@ -2892,6 +2919,9 @@ function (_React$Component) {
     value: function componentDidMount() {
       this.props.requestAllPhotos();
     }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {}
   }, {
     key: "render",
     value: function render() {
@@ -4686,7 +4716,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var configureStore = function configureStore() {
   var preloadedState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_reducers_root_reducer__WEBPACK_IMPORTED_MODULE_3__["default"], preloadedState, Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__["default"]));
+  return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_reducers_root_reducer__WEBPACK_IMPORTED_MODULE_3__["default"], preloadedState, Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__["default"], redux_logger__WEBPACK_IMPORTED_MODULE_2___default.a));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (configureStore);
@@ -4814,6 +4844,7 @@ function () {
     value: function updateMarkers(businesses) {
       var _this = this;
 
+      this.label = 1;
       var businessesObj = {};
       businesses.forEach(function (business) {
         businessesObj[business.id] = business;
@@ -4821,18 +4852,17 @@ function () {
       businesses.filter(function (business) {
         return !_this.markers[business.id];
       }).forEach(function (newBusiness, i) {
-        return _this.createMarkerFromBusiness(newBusiness, i + 1);
+        return _this.createMarkerFromBusiness(newBusiness);
       });
       Object.keys(this.markers).filter(function (businessId) {
         return !businessesObj[businessId];
       }).forEach(function (businessId) {
         return _this.removeMarker(_this.markers[businessId]);
       });
-      this.label = 1;
     }
   }, {
     key: "createMarkerFromBusiness",
-    value: function createMarkerFromBusiness(business, i) {
+    value: function createMarkerFromBusiness(business) {
       var _this2 = this;
 
       if (this.single) {
@@ -4844,7 +4874,7 @@ function () {
         position: position,
         map: this.map,
         businessId: business.id,
-        label: i.toString()
+        label: this.label.toString()
       });
       this.label += 1;
       marker.addListener('click', function () {
@@ -14421,7 +14451,7 @@ var debugRenderPhaseSideEffects = false;
 // This feature flag can be used to control the behavior:
 var debugRenderPhaseSideEffectsForStrictMode = true;
 
-// To preserve the "Pause on caught exceptions" behavior of the , we
+// To preserve the "Pause on caught exceptions" behavior of the debugger, we
 // replay the begin phase of a failed component inside invokeGuardedCallback.
 var replayFailedUnitOfWorkWithInvokeGuardedCallback = true;
 
@@ -34263,7 +34293,7 @@ var enableHooks = false;
 // This feature flag can be used to control the behavior:
 
 
-// To preserve the "Pause on caught exceptions" behavior of the , we
+// To preserve the "Pause on caught exceptions" behavior of the debugger, we
 // replay the begin phase of a failed component inside invokeGuardedCallback.
 
 
@@ -36877,7 +36907,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 // This feature flag can be used to control the behavior:
 
 
-// To preserve the "Pause on caught exceptions" behavior of the , we
+// To preserve the "Pause on caught exceptions" behavior of the debugger, we
 // replay the begin phase of a failed component inside invokeGuardedCallback.
 
 

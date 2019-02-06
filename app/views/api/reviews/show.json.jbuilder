@@ -5,4 +5,3 @@ end
 json.user do
   json.partial! '/api/users/user', user: @review.user
 end
-json.average_rating @review.business.average_rating

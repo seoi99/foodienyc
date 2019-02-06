@@ -20,9 +20,10 @@ class BusinessDetails extends React.Component {
   }
 
   componentDidUpdate() {
+
     if (this.props.business) {
-      if (this.props.business.reviewIds.length !== this.state.reviews) {
-        this.setState({reviews: this.props.business.reviewIds.length})
+      if (Object.values(this.props.business.reviews).length !== this.state.reviews) {
+        this.setState({reviews: Object.values(this.props.business.reviews).length})
         this.props.requestBusiness(this.props.businessId);
       }
     }
@@ -138,7 +139,7 @@ class BusinessDetails extends React.Component {
         }
       });
 
-      const avgRateConversion = Array.from(Array(5).keys()).map((val, idx) => {
+      let avgRateConversion = Array.from(Array(5).keys()).map((val, idx) => {
         if (idx + 1 <= business.average_rating) {
           return <li className="avg-rating" key={idx}></li>
         } else {

@@ -6,23 +6,22 @@ export default class MarkerManager {
     this.markers = {};
     this.single = single;
     this.label = 1;
-    this.latlng = latlng
+    this.latlng = latlng;
   }
 
   updateMarkers(businesses) {
+    this.label = 1;
     let businessesObj = {};
     businesses.forEach((business) => {
          businessesObj[business.id] = business
      });
-    businesses.filter(business => !this.markers[business.id])
-    .forEach((newBusiness, i) => this.createMarkerFromBusiness(newBusiness, i + 1));
-
+    businesses.filter(business => (!this.markers[business.id]))
+    .forEach((newBusiness, i) => this.createMarkerFromBusiness(newBusiness));
     Object.keys(this.markers).filter(businessId => !businessesObj[businessId])
     .forEach((businessId) => this.removeMarker(this.markers[businessId]));
-    this.label = 1;
   }
 
-  createMarkerFromBusiness(business, i) {
+  createMarkerFromBusiness(business) {
     if (this.single) {
       this.label = 1;
     }
@@ -31,9 +30,9 @@ export default class MarkerManager {
       position,
       map: this.map,
       businessId: business.id,
-      label: i.toString(),
+      label: this.label.toString(),
     })
-    this.label += 1
+    this.label += 1;
     marker.addListener('click', () => this.handleClick(business));
     this.markers[marker.businessId] = marker;
   }

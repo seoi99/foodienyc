@@ -46,11 +46,11 @@ class Header extends React.Component {
 
   handleButtonClick(e) {
     e.preventDefault();
-    this.props.getSearchResult(e.target.value)
+    this.props.fetchLocation("new york city");
+    this.props.getSearchResult(e.target.value);
     if (this.props.receiveSearch) {
       this.props.receiveSearch(e.target.value, "current location")
     }
-    this.props.loadBusinesses();
     this.navigateToIndex();
   }
 
@@ -58,15 +58,12 @@ class Header extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.setState({dropdown: "hidden", submitted: true});
+    this.props.fetchLocation(this.state.location);
+    this.props.getSearchResult(this.state.searchtxt);
     if (this.props.receiveSearch) {
-    this.props.receiveSearch(this.state.searchtxt, this.state.location)
+      this.props.receiveSearch(this.state.searchtxt, this.state.location);
     }
-    this.props.getSearchResult(this.state.searchtxt)
-    this.props.loadBusinesses();
-    this.props.fetchLocation(this.state.location)
-
     this.navigateToIndex();
-
   }
 
   clicked(e) {

@@ -3,14 +3,13 @@ import ReactDom from 'react-dom';
 import {withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchLocation } from '../../actions/geolocation_actions';
-
+import { requestAllBusinesses , loadBusinesses, loadNoBusinesses} from '../../actions/business_actions';
 
 import MarkerManager from '../../util/marker_manager';
 
 class GoogleMap extends React.Component {
   constructor(props){
     super(props);
-    this.state = {len : 0}
     this.getLocation = this.getLocation.bind(this);
     this.showPosition = this.showPosition.bind(this);
   }
@@ -30,41 +29,55 @@ class GoogleMap extends React.Component {
   }
 
   componentDidMount() {
+    this.getLocation();
     const latlng = new google.maps.LatLng(this.props.latlng.lat,this.props.latlng.lng);
     const mapOptions = {
       center: latlng,
       zoom: 15
     };
+
     const map = this.refs.map;
-
-
     this.map = new google.maps.Map(this.mapNode, mapOptions);
-
     this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
+    this.map.zoom = 11;
     if (this.props.singleBusiness) {
       this.props.fetchLocation(this.props.business.full_address);
-      this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
-    } else {
+      this.MarkerManager.createMarkerFromBusiness(this.props.business);
+    }
+    else {
       this.MarkerManager.updateMarkers(this.props.businesses);
     }
   }
 
-  componentDidUpdate(e) {
+  inMapBounds(biz) {
+      let businesses = biz.filter(b => {
+        return (this.map.getBounds().ma.j < b.latitude && this.map.getBounds().ma.l >  b.latitude)
+        && (this.map.getBounds().ga.j < b.longitude && this.map.getBounds().ga.l >  b.longitude)
+      })
+      this.props.receiveUpdates(businesses);
+      this.MarkerManager.updateMarkers(businesses);
+  }
 
-    if (this.props.singleBusiness) {
-      this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
-      this.MarkerManager.createMarkerFromBusiness(this.props.business, "1");
+  batchUpdate() {
       this.map.setCenter(this.props.latlng);
-    } else if (this.map.getCenter.lat !== this.props.latlng.lat){
-      this.MarkerManager.updateMarkers(this.props.businesses);
-      var bounds = new google.maps.LatLngBounds();
-      for (var i = 0; i < Object.values(this.MarkerManager.markers).length; i++) {
-        bounds.extend(Object.values(this.MarkerManager.markers)[i].getPosition());
+      if (this.map.getBounds()) {
+        this.inMapBounds(this.props.businesses);
       }
-      this.map.fitBounds(bounds);
-      this.map.setCenter(this.props.latlng);
+  }
+
+
+
+  singleUpdate() {
+    this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
+    this.MarkerManager.createMarkerFromBusiness(this.props.business);
+    this.map.setCenter(this.props.latlng);
+  }
+  componentDidUpdate(next) {
+    if (this.props.singleBusiness) {
+      this.singleUpdate();
+    } else {
+      this.batchUpdate();
     }
-    this.getLocation();
   }
 
   handleMarkerClick(business) {
@@ -75,6 +88,7 @@ class GoogleMap extends React.Component {
 
 
   render() {
+
     return (
       <div id="map" ref={ map => this.mapNode = map }>
       </div>
@@ -85,13 +99,16 @@ class GoogleMap extends React.Component {
 const mapStateToProps = (state) => {
 
   return {
+    businesses: Object.values(state.entities.businesses),
     latlng: state.entities.coordinate,
+    loading: state.ui.businesses.loading,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchLocation: (address) => dispatch(fetchLocation(address)),
+    loadNoBusinesses: () => dispatch(loadNoBusinesses()),
   }
 }
 
