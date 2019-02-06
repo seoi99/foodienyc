@@ -5,12 +5,10 @@ export default class MarkerManager {
     this.handleClick = handleClick;
     this.markers = {};
     this.single = single;
-    this.label = 1;
     this.latlng = latlng;
   }
 
   updateMarkers(businesses) {
-    this.label = 1;
     let businessesObj = {};
     businesses.forEach((business) => {
          businessesObj[business.id] = business
@@ -30,9 +28,7 @@ export default class MarkerManager {
       position,
       map: this.map,
       businessId: business.id,
-      label: this.label.toString(),
     })
-    this.label += 1;
     marker.addListener('click', () => this.handleClick(business));
     this.markers[marker.businessId] = marker;
   }

@@ -4835,7 +4835,6 @@ function () {
     this.handleClick = handleClick;
     this.markers = {};
     this.single = single;
-    this.label = 1;
     this.latlng = latlng;
   }
 
@@ -4844,7 +4843,6 @@ function () {
     value: function updateMarkers(businesses) {
       var _this = this;
 
-      this.label = 1;
       var businessesObj = {};
       businesses.forEach(function (business) {
         businessesObj[business.id] = business;
@@ -4873,10 +4871,8 @@ function () {
       var marker = new google.maps.Marker({
         position: position,
         map: this.map,
-        businessId: business.id,
-        label: this.label.toString()
+        businessId: business.id
       });
-      this.label += 1;
       marker.addListener('click', function () {
         return _this2.handleClick(business);
       });
