@@ -36,7 +36,11 @@ class Header extends React.Component {
     this.setState({dropdown:"show"});
   }
 
+  autocomplete(val) {
+
+  }
   handleLocation(e) {
+    this.props.getAutoComplete(e.currentTarget.value, this.props.latlng)
     this.setState({location: e.currentTarget.value});
   }
 

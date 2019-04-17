@@ -6,6 +6,7 @@ import search from './search_reducer';
 import reviews from './reviews_reducer';
 import photos from './photos_reducer';
 import coordinate from './geolocation_reducer';
+import autocomplete from './autocomplete_reducer';
 
 
 export default combineReducers({
@@ -15,4 +16,5 @@ export default combineReducers({
   photos,
   coordinate,
   search,
+  autocomplete,
 });

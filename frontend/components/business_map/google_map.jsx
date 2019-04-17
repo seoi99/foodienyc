@@ -51,11 +51,11 @@ class GoogleMap extends React.Component {
 
   inMapBounds(biz) {
       let businesses = biz.filter(b => {
-        return (this.map.getBounds().ma.j < b.latitude && this.map.getBounds().ma.l >  b.latitude)
-        && (this.map.getBounds().ga.j < b.longitude && this.map.getBounds().ga.l >  b.longitude)
+        return (this.map.getBounds().na.j < b.latitude && this.map.getBounds().na.l >  b.latitude)
+        && (this.map.getBounds().ia.j < b.longitude && this.map.getBounds().ia.l >  b.longitude)
       })
-      this.props.receiveUpdates(businesses);
-      this.MarkerManager.updateMarkers(businesses);
+    this.props.receiveUpdates(businesses);
+    this.MarkerManager.updateMarkers(businesses);
   }
 
   batchUpdate() {
@@ -72,13 +72,7 @@ class GoogleMap extends React.Component {
     this.MarkerManager.createMarkerFromBusiness(this.props.business);
     this.map.setCenter(this.props.latlng);
   }
-  componentDidUpdate(next) {
-    if (this.props.singleBusiness) {
-      this.singleUpdate();
-    } else {
-      this.batchUpdate();
-    }
-  }
+
 
   handleMarkerClick(business) {
     const url = `https://www.google.com/maps/place/${business.full_address}`;
@@ -88,6 +82,13 @@ class GoogleMap extends React.Component {
 
 
   render() {
+    if (this.map) {
+    if (this.props.singleBusiness) {
+      this.singleUpdate();
+    } else {
+      this.batchUpdate();
+    }
+    }
 
     return (
       <div id="map" ref={ map => this.mapNode = map }>

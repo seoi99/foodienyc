@@ -313,21 +313,25 @@ var updateFilter = function updateFilter(dispatch, getState) {
 /*!*************************************************!*\
   !*** ./frontend/actions/geolocation_actions.js ***!
   \*************************************************/
-/*! exports provided: RECEIVE_LOCATION, NO_LOCATION, receiveLocation, noLocation, fetchLocation, getDropdownResult */
+/*! exports provided: RECEIVE_LOCATION, NO_LOCATION, AUTO_COMPLETE, receiveLocation, noLocation, fetchLocation, getAutoComplete, receiveAutoComplete, getDropdownResult */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_LOCATION", function() { return RECEIVE_LOCATION; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NO_LOCATION", function() { return NO_LOCATION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTO_COMPLETE", function() { return AUTO_COMPLETE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveLocation", function() { return receiveLocation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "noLocation", function() { return noLocation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchLocation", function() { return fetchLocation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAutoComplete", function() { return getAutoComplete; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveAutoComplete", function() { return receiveAutoComplete; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDropdownResult", function() { return getDropdownResult; });
 /* harmony import */ var _util_geocode_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/geocode_api_util */ "./frontend/util/geocode_api_util.js");
 
 var RECEIVE_LOCATION = 'RECEIVE_LOCATION';
 var NO_LOCATION = 'NO_LOCATION';
+var AUTO_COMPLETE = 'AUTO_COMPLETE';
 var receiveLocation = function receiveLocation(result) {
   return {
     type: RECEIVE_LOCATION,
@@ -349,6 +353,20 @@ var fetchLocation = function fetchLocation(address) {
         return dispatch(receiveLocation(result));
       });
     }
+  };
+};
+var getAutoComplete = function getAutoComplete(address, latlng) {
+  return function (dispatch) {
+    Object(_util_geocode_api_util__WEBPACK_IMPORTED_MODULE_0__["auto"])(address, latlng).then(function (result) {
+      return receiveAutoComplete(result);
+    });
+  };
+};
+var receiveAutoComplete = function receiveAutoComplete(result) {
+  debugger;
+  return {
+    type: AUTO_COMPLETE,
+    result: result
   };
 };
 var getDropdownResult = function getDropdownResult(query) {
@@ -905,7 +923,7 @@ function (_React$Component) {
       var _this2 = this;
 
       var businesses = biz.filter(function (b) {
-        return _this2.map.getBounds().ma.j < b.latitude && _this2.map.getBounds().ma.l > b.latitude && _this2.map.getBounds().ga.j < b.longitude && _this2.map.getBounds().ga.l > b.longitude;
+        return _this2.map.getBounds().na.j < b.latitude && _this2.map.getBounds().na.l > b.latitude && _this2.map.getBounds().ia.j < b.longitude && _this2.map.getBounds().ia.l > b.longitude;
       });
       this.props.receiveUpdates(businesses);
       this.MarkerManager.updateMarkers(businesses);
@@ -927,15 +945,6 @@ function (_React$Component) {
       this.map.setCenter(this.props.latlng);
     }
   }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(next) {
-      if (this.props.singleBusiness) {
-        this.singleUpdate();
-      } else {
-        this.batchUpdate();
-      }
-    }
-  }, {
     key: "handleMarkerClick",
     value: function handleMarkerClick(business) {
       var url = "https://www.google.com/maps/place/".concat(business.full_address);
@@ -945,6 +954,14 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var _this3 = this;
+
+      if (this.map) {
+        if (this.props.singleBusiness) {
+          this.singleUpdate();
+        } else {
+          this.batchUpdate();
+        }
+      }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "map",
@@ -1903,8 +1920,12 @@ function (_React$Component) {
       });
     }
   }, {
+    key: "autocomplete",
+    value: function autocomplete(val) {}
+  }, {
     key: "handleLocation",
     value: function handleLocation(e) {
+      this.props.getAutoComplete(e.currentTarget.value, this.props.latlng);
       this.setState({
         location: e.currentTarget.value
       });
@@ -2133,6 +2154,7 @@ var mapStateToProps = function mapStateToProps(state) {
   return {
     currentUser: state.entities.users[state.session.currentUserId],
     businesses: state.entities.businesses,
+    latlng: state.entities.coordinate,
     photo: state.entities.photos[state.session.currentUserId],
     loading: state.ui.businesses
   };
@@ -2157,6 +2179,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     fetchLocation: function fetchLocation(address) {
       return dispatch(Object(_actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_6__["fetchLocation"])(address));
+    },
+    getAutoComplete: function getAutoComplete(address, latlng) {
+      return dispatch(Object(_actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_6__["getAutoComplete"])(address, latlng));
     }
   };
 };
@@ -3978,6 +4003,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 document.addEventListener('DOMContentLoaded', function () {
   var store;
 
@@ -4000,6 +4026,7 @@ document.addEventListener('DOMContentLoaded', function () {
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_root__WEBPACK_IMPORTED_MODULE_3__["default"], {
     store: store
   }), root);
+  window.signup = _util_session_api_util__WEBPACK_IMPORTED_MODULE_4__["signup"];
   window.getState = store.getState;
   window.dispatch = store.dispatch;
   window.fetchAllReviews = _util_business_api_util__WEBPACK_IMPORTED_MODULE_5__["fetchAllReviews"];
@@ -4008,6 +4035,42 @@ document.addEventListener('DOMContentLoaded', function () {
   window.fetchLocation = _actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_8__["fetchLocation"];
   window.getCoordinate = _util_geocode_api_util__WEBPACK_IMPORTED_MODULE_6__["getCoordinate"];
 });
+
+/***/ }),
+
+/***/ "./frontend/reducers/autocomplete_reducer.js":
+/*!***************************************************!*\
+  !*** ./frontend/reducers/autocomplete_reducer.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lodash_merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/merge */ "./node_modules/lodash/merge.js");
+/* harmony import */ var lodash_merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_merge__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../actions/geolocation_actions */ "./frontend/actions/geolocation_actions.js");
+/* harmony import */ var _actions_business_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../actions/business_actions */ "./frontend/actions/business_actions.js");
+
+
+
+
+var autoReducer = function autoReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_1__["AUTO_COMPLETE"]:
+      return Object.assign({}, action.result);
+      break;
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (autoReducer);
 
 /***/ }),
 
@@ -4130,6 +4193,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reviews_reducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./reviews_reducer */ "./frontend/reducers/reviews_reducer.js");
 /* harmony import */ var _photos_reducer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./photos_reducer */ "./frontend/reducers/photos_reducer.js");
 /* harmony import */ var _geolocation_reducer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./geolocation_reducer */ "./frontend/reducers/geolocation_reducer.js");
+/* harmony import */ var _autocomplete_reducer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./autocomplete_reducer */ "./frontend/reducers/autocomplete_reducer.js");
+
 
 
 
@@ -4143,7 +4208,8 @@ __webpack_require__.r(__webpack_exports__);
   reviews: _reviews_reducer__WEBPACK_IMPORTED_MODULE_4__["default"],
   photos: _photos_reducer__WEBPACK_IMPORTED_MODULE_5__["default"],
   coordinate: _geolocation_reducer__WEBPACK_IMPORTED_MODULE_6__["default"],
-  search: _search_reducer__WEBPACK_IMPORTED_MODULE_3__["default"]
+  search: _search_reducer__WEBPACK_IMPORTED_MODULE_3__["default"],
+  autocomplete: _autocomplete_reducer__WEBPACK_IMPORTED_MODULE_7__["default"]
 }));
 
 /***/ }),
@@ -4794,16 +4860,23 @@ var fetchSearchResult = function fetchSearchResult(query) {
 /*!*******************************************!*\
   !*** ./frontend/util/geocode_api_util.js ***!
   \*******************************************/
-/*! exports provided: getCoordinate */
+/*! exports provided: getCoordinate, auto */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCoordinate", function() { return getCoordinate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "auto", function() { return auto; });
 var getCoordinate = function getCoordinate(address) {
   return $.ajax({
     method: "GET",
     url: "https://maps.googleapis.com/maps/api/geocode/json?address=".concat(address, "&components=country:US&key=").concat(window.googleAPIKey)
+  });
+};
+var auto = function auto(val, latlng) {
+  return $.ajax({
+    method: "GET",
+    url: "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=".concat(val, "&&types=establishment&location=").concat(latlng.lat, ",").concat(latlng.lng, "&radius=500&key=").concat(window.googleAPIKey)
   });
 };
 

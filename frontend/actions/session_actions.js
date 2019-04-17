@@ -6,7 +6,6 @@ export const RECEIVE_SESSION_ERRORS = 'RECEIVE_SESSION_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 export const receiveCurrentUser = (currentUser) => {
-  
   return {
   type: RECEIVE_CURRENT_USER,
   currentUser
@@ -28,12 +27,12 @@ export const clearErrors = () => ({
 });
 
 export const login = (user) => {
-  
+
   return (dispatch) => {
     SessionApiUtil.login(user).then((user) => {
       dispatch(receiveCurrentUser(user))
     },(error) => {
-      
+
       dispatch(receiveErrors(error.responseJSON))
     })
   }

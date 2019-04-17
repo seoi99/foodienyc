@@ -1,7 +1,8 @@
-import { getCoordinate } from '../util/geocode_api_util'
+import { getCoordinate, auto } from '../util/geocode_api_util'
 
 export const RECEIVE_LOCATION = 'RECEIVE_LOCATION';
 export const NO_LOCATION = 'NO_LOCATION';
+export const AUTO_COMPLETE = 'AUTO_COMPLETE';
 
 export const receiveLocation = (result) => {
   return {
@@ -28,7 +29,19 @@ export const fetchLocation = (address) => {
   }
 }
 
+export const getAutoComplete = (address, latlng) => {
+  return (dispatch) => {
+    auto(address, latlng).then((result) => receiveAutoComplete(result))
+  }
+}
 
+export const receiveAutoComplete = (result) => {
+  debugger
+  return {
+    type: AUTO_COMPLETE,
+    result,
+  }
+}
 export const getDropdownResult = (query) => {
   return (dispatch) => {
     BusinessApiUtil.fetchSearchResult(query).then((businesses) => {

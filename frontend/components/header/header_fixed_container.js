@@ -4,13 +4,14 @@ import { logout } from '../../actions/session_actions';
 import { updateFilter } from '../../actions/filter_actions';
 import {requestAllBusinesses, getSearchResult, loadBusinesses} from '../../actions/business_actions'
 import { requestPhoto} from '../../actions/user_pic_action';
-import { fetchLocation } from '../../actions/geolocation_actions';
+import { fetchLocation, getAutoComplete } from '../../actions/geolocation_actions';
 
 
 const mapStateToProps = state => {
   return {
     currentUser: state.entities.users[state.session.currentUserId],
     businesses: state.entities.businesses,
+    latlng: state.entities.coordinate,
     photo: state.entities.photos[state.session.currentUserId],
     loading: state.ui.businesses,
     };
@@ -24,6 +25,7 @@ const mapDispatchToProps = dispatch => {
     requestPhoto: (id) => dispatch(requestPhoto(id)),
     loadBusinesses: () => dispatch(loadBusinesses()),
     fetchLocation: (address) => dispatch(fetchLocation(address)),
+    getAutoComplete: (address, latlng) => dispatch(getAutoComplete(address, latlng)),
 
   };
 };

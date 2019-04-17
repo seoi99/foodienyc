@@ -4,6 +4,7 @@ import configureStore from './store/store';
 import Root from './components/root';
 import * as SessionApiUtil from './util/session_api_util';
 import{fetchAllBusinesses, fetchAllReviews, fetchSearchResult} from './util/business_api_util';
+import{signup} from './util/session_api_util';
 import{getCoordinate} from './util/geocode_api_util';
 import{updateFilter} from './actions/filter_actions';
 import{fetchLocation} from './actions/geolocation_actions';
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 }
   const root = document.getElementById('root');
   ReactDOM.render(<Root store={store}/>, root);
+  window.signup = signup;
   window.getState = store.getState;
   window.dispatch = store.dispatch;
   window.fetchAllReviews = fetchAllReviews;
