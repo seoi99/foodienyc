@@ -27,7 +27,7 @@ const BusinessMainIndexItem = ({business, num}) => {
   return(
     <li className="biz-main-content">
       <ul className="first-image">
-        {images[0]}
+        <Link to={`/businesses/${business.id}`}>{images[0]}</Link>
       </ul>
       <div className="business-index">
         <p><Link to={`/businesses/${business.id}`}>{business.business_name}</Link></p>

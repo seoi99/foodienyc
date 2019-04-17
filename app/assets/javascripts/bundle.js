@@ -2246,7 +2246,9 @@ var BusinessMainIndexItem = function BusinessMainIndexItem(_ref) {
     className: "biz-main-content"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "first-image"
-  }, images[0]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+    to: "/businesses/".concat(business.id)
+  }, images[0])), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "business-index"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
     to: "/businesses/".concat(business.id)
