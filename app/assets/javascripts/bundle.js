@@ -1104,16 +1104,31 @@ function (_React$Component) {
         };
 
         var user = this.props.user;
-        var reviewsmap = Object.values(reviews).map(function (review, idx) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reviews_review_list_items__WEBPACK_IMPORTED_MODULE_4__["default"], {
-            key: idx,
-            review: review,
-            deleteReview: _this2.props.deleteReview,
-            currentUserId: _this2.props.currentUserId,
-            photos: _this2.props.photos,
-            requestAllPhotos: _this2.props.requestAllPhotos
+        var reviewsmap;
+
+        if (Object.values(reviews).length === 0) {
+          reviewsmap = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            className: "rev-list-item"
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+            className: "no-review"
+          }, "Write a First Review for", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+            to: "/businesses/".concat(business.id, "/reviews")
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+            className: "first-review"
+          }, this.props.business.business_name))));
+        } else {
+          reviewsmap = Object.values(reviews).map(function (review, idx) {
+            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reviews_review_list_items__WEBPACK_IMPORTED_MODULE_4__["default"], {
+              key: idx,
+              review: review,
+              deleteReview: _this2.props.deleteReview,
+              currentUserId: _this2.props.currentUserId,
+              photos: _this2.props.photos,
+              requestAllPhotos: _this2.props.requestAllPhotos
+            });
           });
-        });
+        }
+
         var images = business.images.map(function (image) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
             src: image.img_url,

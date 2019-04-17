@@ -52,12 +52,23 @@ class BusinessDetails extends React.Component {
         }
       }
       const user = this.props.user;
-      const reviewsmap = Object.values(reviews).map((review, idx) => {
+      let reviewsmap;
+      if (Object.values(reviews).length === 0) {
+        reviewsmap = (
+          <div className="rev-list-item">
+            <p className="no-review">
+              Write a First Review for
+               <Link to={`/businesses/${business.id}/reviews` } ><button className="first-review">{this.props.business.business_name}</button></Link>
+            </p>
+        </div>)
+      } else {
+        reviewsmap = Object.values(reviews).map((review, idx) => {
         return (
           <ReviewListItem key={idx} review={review} deleteReview={this.props.deleteReview} currentUserId = {this.props.currentUserId} photos = {this.props.photos}
             requestAllPhotos = {this.props.requestAllPhotos}/>
         )
       })
+      }
       const images = business.images.map(image => <img src={image.img_url} key={image.id} />);
 
 
