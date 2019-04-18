@@ -20,7 +20,6 @@ class BusinessDetails extends React.Component {
   }
 
   componentDidUpdate() {
-
     if (this.props.business) {
       if (Object.values(this.props.business.reviews).length !== this.state.reviews) {
         this.setState({reviews: Object.values(this.props.business.reviews).length})
@@ -28,7 +27,9 @@ class BusinessDetails extends React.Component {
       }
     }
   }
-
+  reviewClicked() {
+    this.props.reviewClicked();
+  }
   render() {
       const currentDate = new Date();
       const currentDay = Date().slice(0,3).toUpperCase();
@@ -48,7 +49,7 @@ class BusinessDetails extends React.Component {
           if (userIds.includes(currentUserId.toString())) {
           return <Link to={`/businesses/${business.id}/reviews/${currentReviewId.id}`}><button>Edit a Review</button></Link>
         } else {
-          return <Link to={`/businesses/${business.id}/reviews`}><button>Write a Review</button></Link>
+          return <Link to={`/businesses/${business.id}/reviews`}><button onClick={this.reviewClicked.bind(this)}>Write a Review</button></Link>
         }
       }
       const user = this.props.user;
@@ -58,7 +59,7 @@ class BusinessDetails extends React.Component {
           <div className="rev-list-item">
             <p className="no-review">
               Write a First Review for
-               <Link to={`/businesses/${business.id}/reviews` } ><button className="first-review">{this.props.business.business_name}</button></Link>
+               <Link to={`/businesses/${business.id}/reviews` } ><button className="first-review" onClick={this.reviewClicked.bind(this)}>{this.props.business.business_name}</button></Link>
             </p>
         </div>)
       } else {

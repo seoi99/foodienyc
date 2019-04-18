@@ -1,15 +1,19 @@
-import {RECEIVE_CURRENT_USER, LOGOUT_CURRENT_USER} from '../actions/session_actions';
+import merge from 'lodash/merge';
+import {RECEIVE_CURRENT_USER, LOGOUT_CURRENT_USER, RECEIVE_REVIEW_URI} from '../actions/session_actions';
 
 const _nullUser = Object.freeze({
-  id: null
+  id: null,
+  reviewURI: null,
 });
 
 const sessionReducer = (state=_nullUser, action) => {
   switch (action.type) {
     case RECEIVE_CURRENT_USER:
-      return {currentUserId: action.currentUser.id};
+    return merge({}, state, {currentUserId: action.currentUser.id});
     case LOGOUT_CURRENT_USER:
       return _nullUser;
+    case RECEIVE_REVIEW_URI:
+    return merge({}, state, {reviewURI: action.reviewURI});
     default:
       return state;
   }

@@ -11,6 +11,7 @@ export const START_LOADING_REVIEW_INDEX = 'START_LOADING_REVIEW_INDEX';
 export const LOAD_BUSINESSES = 'LOAD_BUSINESSES';
 export const LOAD_NO_BUSINSSES = 'LOAD_NO_BUSINSSES';
 export const DROP_DOWN_RESULT = 'DROP_DOWN_RESULT';
+export const GOTOREVIEW = 'GOTOREVIEW';
 export const NO_RESULT_FOUND = 'NO_RESULT_FOUND';
 
 export const loadBusinesses = () => {
@@ -18,6 +19,8 @@ export const loadBusinesses = () => {
     type: LOAD_BUSINESSES,
   }
 }
+
+
 
 export const loadNoBusinesses = () => {
   return {
@@ -120,7 +123,6 @@ export const startLoadingReviewIndex = () => {
   }
 }
 
-// ui testing
 export const requestAllReviews = () => dispatch => {
   return BusinessApiUtil.fetchAllReviews().then(reviews => (
     dispatch(receivewAllReviews(reviews))

@@ -1,6 +1,7 @@
 import BusinessDetails from './business_details';
 import {connect} from 'react-redux';
 import {requestBusiness, deleteReview} from '../../actions/business_actions';
+import {receiveReviewURI} from '../../actions/session_actions';
 import {withRouter} from 'react-router-dom';
 import {selectReviewsForBusiness} from '../../reducers/selector';
 import { updateFilter } from '../../actions/filter_actions';
@@ -14,7 +15,6 @@ const mapStateToProps = (state, ownProps) => {
   const user = state.entities.users[currentUserId];
   const errors = state.errors;
   const photos = state.entities.photos;
-  
 
   return {
   businessId,
@@ -26,8 +26,11 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+  reviewClicked: () => {
+    dispatch(receiveReviewURI(ownProps))
+  },
   requestBusiness: (id) => dispatch(requestBusiness(id)),
   deleteReview: (id) => dispatch(deleteReview(id)),
   requestAllPhotos: () => dispatch(requestAllPhotos()),

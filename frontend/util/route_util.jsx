@@ -2,12 +2,17 @@ import React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const Auth = ({ component: Component, path, loggedIn, exact }) => { //prevents logged in user from seeing log in / sign up
+const Auth = ({ component: Component, path, loggedIn, exact, reviewURI }) => { //prevents logged in user from seeing log in / sign up
   function toRender(props) {
 
     if (loggedIn) {
-      if (path === "/login" || path === "/signup"){
+      console.log(props.reviewURI);
+      if (path === "/login" || path === "/signup") {
+        if (reviewURI) {
+          return <Redirect to={reviewURI}/>;
+        } else {
         return <Redirect to='/'/>;
+        }
       }
       else if (path === "/businesses/login" || path === "/businesses/signup") {
         return <Redirect to='/businesses'/>;
@@ -23,19 +28,19 @@ const Auth = ({ component: Component, path, loggedIn, exact }) => { //prevents l
 };
 
 const Protected = ({ component: Component, path, loggedIn, exact }) => (
-  <Route path={path} exact={exact} render={(props) => (
-     loggedIn ? (
-      <Component {...props} />
-    ) : (
-      <Redirect to="/login" />
-    )
-  )} />
+  <Route path={path} exact={exact} render={(props) => {
+      if (loggedIn) {
+        return <Component {...props} />
+      } else {
+        return <Redirect to="/login" />
+      }
+  }} />
 );
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
     loggedIn: Boolean(state.session.currentUserId),
-
+    reviewURI: state.session.reviewURI,
   };
 };
 
