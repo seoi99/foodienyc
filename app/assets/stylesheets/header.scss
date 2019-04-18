@@ -283,7 +283,7 @@ a {
 
 
 .user-details li {
-  color: #0073bb;
+  color: black;
   font-weight: bold;
   font-size: 13px;
   padding: 5px 4px 0 0;
@@ -298,9 +298,7 @@ a {
   padding: 0 4px 0 0;
 }
 
-.user-details li:first-child:hover {
-  text-decoration: underline;
-}
+
 
 .hide-dropdowns > * {
   display: none;
