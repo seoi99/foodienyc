@@ -69,7 +69,7 @@ const mapStateToProps = (state) => {
   return {
     reviews: state.entities.reviews,
     currentUserId: state.session.currentUserId,
-    user: state.entities.users,
+    user: state.entities.users
   }
 }
 
