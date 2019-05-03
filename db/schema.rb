@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_14_213248) do
+ActiveRecord::Schema.define(version: 2019_05_02_194043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(version: 2018_12_14_213248) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price"
+    t.index ["business_name"], name: "index_businesses_on_business_name"
+    t.index ["category"], name: "index_businesses_on_category"
   end
 
   create_table "hours", force: :cascade do |t|
@@ -90,12 +92,6 @@ ActiveRecord::Schema.define(version: 2018_12_14_213248) do
     t.integer "date"
     t.string "month"
     t.integer "year"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "yelp_api_businesses", force: :cascade do |t|
-    t.json "yelp_businesses"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

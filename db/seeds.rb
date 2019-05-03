@@ -6,30 +6,76 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Business.destroy(Business.find_by(business_name: "Anytime").id)
 
 # Business.destroy_all
 # Hour.destroy_all
 # Image.destroy_all
 # Review.destroy_all
-#
-# korean = YelpApiBusiness.new()
-# korean.search("korean", "new york city")
-#
-# japanese = YelpApiBusiness.new()
-# japanese.search("japanese", "new york city")
-#
-# italian = YelpApiBusiness.new()
-# italian.search("italian", "new york city")
-#
-# fastfood = YelpApiBusiness.new()
-# fastfood.search("fast food", "new york city")
-#
-# salad = YelpApiBusiness.new()
-# salad.search("salad", "new york city")
-#
-# cafe = YelpApiBusiness.new()
-# cafe.search("cafe", "new york city")
-#
-# delivery = YelpApiBusiness.new()
-# delivery.search("delivery", "new york city")
+
+
+API_HOST = "https://api.yelp.com"
+SEARCH_PATH = "/v3/businesses/search"
+BUSINESS_PATH = "/v3/businesses/"
+SEARCH_LIMIT = 1
+API_KEY = Rails.application.credentials.yelp_api
+
+
+def business(id)
+  url = "#{API_HOST}#{BUSINESS_PATH}#{id}"
+  result = HTTP.auth("Bearer #{API_KEY}").get(url)
+  result.parse
+end
+
+def search(term, location)
+  url = "#{API_HOST}#{SEARCH_PATH}"
+  params = {
+    term: term,
+    location: location,
+    limit: SEARCH_LIMIT
+  }
+  response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
+  businesses = response.parse["businesses"]
+    businesses.each do |biz|
+      b = Business.new()
+      b.business_name = biz["name"]
+      b.full_address = biz["location"]["display_address"].join(" ")
+      b.phone_number = biz["display_phone"]
+      b.category = biz["categories"].map{ |el| el["alias"]}.join(", ")
+      b.latitude = biz["coordinates"]["latitude"]
+      b.longitude = biz["coordinates"]["longitude"]
+
+      if biz["price"]
+        b.price =  biz["price"].length * 10 + rand(9)
+      else
+        b.price = rand(20) + 10
+      end
+
+      if b.save
+        result = business(biz["id"])
+        if (result["photos"])
+          result["photos"].each do |url|
+            Image.create!(
+              business_id: b.id,
+              img_url: url
+            )
+          end
+        end
+        if (result["hours"])
+          result["hours"][0]["open"].each do |operation|
+            Hour.create!(
+              business_id: b.id,
+              day: Date::DAYNAMES[operation["day"]].upcase[0..2],
+              open: operation["start"].insert(2,":"),
+              close: operation["end"].insert(2,":")
+            )
+          end
+        end
+      else
+        puts "API connection failed"
+      end
+    end
+  end
+
+
+
+search('cafe', 'virginia')

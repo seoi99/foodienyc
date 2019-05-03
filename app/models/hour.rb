@@ -14,4 +14,6 @@
 class Hour < ApplicationRecord
   validates :business_id, :day, :open, :close, presence: true
   belongs_to :business
+
+  
 end

@@ -4,7 +4,7 @@
   "description": "",
   "main": "foodie.js",
   "scripts": {
-    "webpack": "webpack --mode=development --watch",
+    "start": "webpack --mode=development --watch",
     "postinstall": "webpack --mode=production"
   },
   "engines": {
