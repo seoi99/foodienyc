@@ -90,12 +90,13 @@
 /*!**********************************************!*\
   !*** ./frontend/actions/business_actions.js ***!
   \**********************************************/
-/*! exports provided: RECEIVE_ALL_BUSINESSES, RECEIVE_BUSINESS, RECEIVE_REVIEW, RECEIVE_SEARCH_RESULT, RECEIVE_ALL_REVIEW, REMOVE_REVIEW, RECEIVE_REVIEW_ERROR, START_LOADING_REVIEW_INDEX, LOAD_BUSINESSES, LOAD_NO_BUSINSSES, DROP_DOWN_RESULT, GOTOREVIEW, NO_RESULT_FOUND, loadBusinesses, loadNoBusinesses, receiveAllBusinesses, receiveReviewErrors, receiveSearchResult, getSearchResult, dropdownResult, noResultFound, getDropdownResult, receiveBusiness, requestAllBusinesses, requestBusiness, receiveReview, receivewAllReviews, startLoadingReviewIndex, requestAllReviews, removeReview, createReview, updateReview, deleteReview */
+/*! exports provided: RECEIVE_ALL_BUSINESSES, REMOVE_ALL_BUSINESSES, RECEIVE_BUSINESS, RECEIVE_REVIEW, RECEIVE_SEARCH_RESULT, RECEIVE_ALL_REVIEW, REMOVE_REVIEW, RECEIVE_REVIEW_ERROR, START_LOADING_REVIEW_INDEX, LOAD_BUSINESSES, LOAD_NO_BUSINSSES, DROP_DOWN_RESULT, GOTOREVIEW, NO_RESULT_FOUND, loadBusinesses, removeAllBusinesses, loadNoBusinesses, receiveAllBusinesses, receiveReviewErrors, receiveSearchResult, getSearchResult, dropdownResult, noResultFound, getDropdownResult, receiveBusiness, requestAllBusinesses, requestBusiness, receiveReview, receivewAllReviews, startLoadingReviewIndex, requestAllReviews, removeReview, createReview, updateReview, deleteReview */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_ALL_BUSINESSES", function() { return RECEIVE_ALL_BUSINESSES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_ALL_BUSINESSES", function() { return REMOVE_ALL_BUSINESSES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_BUSINESS", function() { return RECEIVE_BUSINESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_REVIEW", function() { return RECEIVE_REVIEW; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_SEARCH_RESULT", function() { return RECEIVE_SEARCH_RESULT; });
@@ -109,6 +110,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GOTOREVIEW", function() { return GOTOREVIEW; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NO_RESULT_FOUND", function() { return NO_RESULT_FOUND; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadBusinesses", function() { return loadBusinesses; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeAllBusinesses", function() { return removeAllBusinesses; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadNoBusinesses", function() { return loadNoBusinesses; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveAllBusinesses", function() { return receiveAllBusinesses; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveReviewErrors", function() { return receiveReviewErrors; });
@@ -131,6 +133,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_business_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/business_api_util */ "./frontend/util/business_api_util.js");
 
 var RECEIVE_ALL_BUSINESSES = 'RECEIVE_ALL_BUSINESSES';
+var REMOVE_ALL_BUSINESSES = 'REMOVE_ALL_BUSINESSES';
 var RECEIVE_BUSINESS = 'RECEIVE_BUSINESS';
 var RECEIVE_REVIEW = 'RECEIVE_REVIEW';
 var RECEIVE_SEARCH_RESULT = 'RECEIVE_SEARCH_RESULT';
@@ -146,6 +149,11 @@ var NO_RESULT_FOUND = 'NO_RESULT_FOUND';
 var loadBusinesses = function loadBusinesses() {
   return {
     type: LOAD_BUSINESSES
+  };
+};
+var removeAllBusinesses = function removeAllBusinesses() {
+  return {
+    type: REMOVE_ALL_BUSINESSES
   };
 };
 var loadNoBusinesses = function loadNoBusinesses() {
@@ -1074,13 +1082,11 @@ function (_React$Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate() {
-      if (this.props.business) {
-        if (Object.values(this.props.business.reviews).length !== this.state.reviews) {
-          this.setState({
-            reviews: Object.values(this.props.business.reviews).length
-          });
-          this.props.requestBusiness(this.props.businessId);
-        }
+      if (Object.values(this.props.business.reviews).length !== this.state.reviews) {
+        this.setState({
+          reviews: Object.values(this.props.business.reviews).length
+        });
+        this.props.requestBusiness(this.props.businessId);
       }
     }
   }, {
@@ -1100,7 +1106,8 @@ function (_React$Component) {
       var currentTime = currentHours.toString() + currentMin.toString();
       var business = this.props.business;
 
-      if (business !== undefined) {
+      if (business) {
+        debugger;
         var reviews = business.reviews === undefined ? {} : business.reviews;
         var userIds = Object.keys(reviews);
         var currentUserId = this.props.currentUserId || -1;
@@ -1157,15 +1164,16 @@ function (_React$Component) {
           var close = hour.close;
           var open = hour.open;
           var ot = "am";
-          var ct = "am";
+          var ct = "am"; //
 
-          if (hour.close.slice(0, 2) > 12) {
-            close = hour.close.slice(0, 2) - 12 + hour.close.slice(2);
+          if (hour.close.slice(0, 2) === "00") {
+            close = "12" + hour.close.slice(2);
             ct = "pm";
+            console.log(close);
           }
 
-          if (hour.open.slice(0, 2) > 12) {
-            open = hour.open.slice(0, 2) - 12 + hour.open.slice(2);
+          if (hour.open.slice(0, 2) === "00") {
+            open = "00" + hour.open.slice(2);
             ot = "pm";
           }
 
@@ -1337,6 +1345,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
+  debugger;
   var business = state.entities.businesses[ownProps.match.params.businessId];
   var currentUserId = state.session.currentUserId;
   var businessId = ownProps.match.params.businessId;
@@ -1360,6 +1369,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
     },
     requestBusiness: function requestBusiness(id) {
       return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_2__["requestBusiness"])(id));
+    },
+    removeAllBusinesses: function removeAllBusinesses() {
+      return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_2__["removeAllBusinesses"])());
     },
     deleteReview: function deleteReview(id) {
       return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_2__["deleteReview"])(id));
@@ -1478,7 +1490,8 @@ function (_React$Component) {
             business: business,
             key: idx,
             num: idx,
-            fetchLocation: _this2.props.fetchLocation
+            fetchLocation: _this2.props.fetchLocation,
+            requestBusiness: _this2.props.requestBusiness
           });
         });
       }
@@ -1543,8 +1556,14 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     loadBusinesses: function loadBusinesses() {
       return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_2__["loadBusinesses"])());
     },
+    removeAllBusinesses: function removeAllBusinesses() {
+      return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_2__["removeAllBusinesses"])());
+    },
     loadNoBusinesses: function loadNoBusinesses() {
       return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_2__["loadNoBusinesses"])());
+    },
+    requestBusiness: function requestBusiness(id) {
+      return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_2__["requestBusiness"])(id));
     },
     fetchLocation: function fetchLocation(address) {
       return dispatch(Object(_actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_3__["fetchLocation"])(address));
@@ -1619,15 +1638,9 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var business = this.props.business;
-      var images = business.images.map(function (image, idx) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          key: image.id
-        }, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-          src: image.img_url,
-          alt: business.business_name
-        }));
-      });
       var AvgRateConversion = Array.from(Array(5).keys()).map(function (val, idx) {
         if (idx + 1 <= business.average_rating) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -1658,14 +1671,22 @@ function (_React$Component) {
         className: "index-li"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "img-list"
-      }, images[0]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        key: business.images.id
+      }, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: business.images.img_url,
+        alt: business.business_name
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "index-info"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "business-info"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "businessId"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-        to: "/businesses/".concat(business.id)
+        to: "/businesses/".concat(business.id),
+        onClick: function onClick() {
+          _this2.props.requestBusiness(business.id);
+        }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, this.props.num + 1, ". "), business.business_name)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "all-five-rates"
       }, AvgRateConversion, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, business.reviewIds.length, " reviews")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -2246,14 +2267,12 @@ __webpack_require__.r(__webpack_exports__);
 var BusinessMainIndexItem = function BusinessMainIndexItem(_ref) {
   var business = _ref.business,
       num = _ref.num;
-  var images = business.images.map(function (image, idx) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-      key: image.id
-    }, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-      src: image.img_url,
-      alt: business.business_name
-    }));
-  });
+  var images = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    key: business.images.id
+  }, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: business.images.img_url,
+    alt: business.business_name
+  }));
   var AvgRateConversion = Array.from(Array(5).keys()).map(function (val, idx) {
     if (idx + 1 <= business.average_rating) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -2286,7 +2305,7 @@ var BusinessMainIndexItem = function BusinessMainIndexItem(_ref) {
     className: "first-image"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
     to: "/businesses/".concat(business.id)
-  }, images[0])), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, images)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "business-index"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
     to: "/businesses/".concat(business.id)
@@ -4193,6 +4212,9 @@ var businessReducer = function businessReducer() {
 
     case _actions_business_actions__WEBPACK_IMPORTED_MODULE_1__["RECEIVE_SEARCH_RESULT"]:
       return Object.assign({}, action.result.businesses);
+
+    case _actions_business_actions__WEBPACK_IMPORTED_MODULE_1__["REMOVE_ALL_BUSINESSES"]:
+      return {};
 
     case _actions_business_actions__WEBPACK_IMPORTED_MODULE_1__["RECEIVE_REVIEW"]:
       var review = action.review,

@@ -7,6 +7,7 @@ class BusinessIndexItem extends React.Component {
       name: ""
     }
   }
+
   componentDidUpdate() {
     if (this.props.num === 0 && this.state.name !== this.props.business.full_address) {
       this.props.fetchLocation(this.props.business.full_address)
@@ -16,11 +17,6 @@ class BusinessIndexItem extends React.Component {
 
   render () {
     let business = this.props.business
-    const images = business.images.map((image, idx) => {
-      return (
-        <li key={image.id}> <img src={image.img_url} alt={business.business_name} /></li>
-        );
-      });
       const AvgRateConversion = Array.from(Array(5).keys()).map((val, idx) => {
         if (idx + 1 <= business.average_rating) {
           return <div className="avg-rating" key={idx}></div>
@@ -35,17 +31,17 @@ class BusinessIndexItem extends React.Component {
           symb += "$";
         } else {
           return symb;}
-    }}
+        }}
 
     return(
       <li className="index-li">
         <ul className="img-list">
-          {images[0]}
+          <li key={business.images.id}> <img src={business.images.img_url} alt={business.business_name} /></li>
         </ul>
         <div className="index-info">
           <div className="business-info">
             <div className="businessId">
-              <p><Link to={`/businesses/${business.id}`}><span>{this.props.num + 1}. </span>{business.business_name}</Link></p>
+              <p><Link to={`/businesses/${business.id}`} onClick={() => {this.props.requestBusiness(business.id)}}><span>{this.props.num + 1}. </span>{business.business_name}</Link></p>
               <div className="all-five-rates">
                 {AvgRateConversion}
                 <span>{business.reviewIds.length} reviews</span>

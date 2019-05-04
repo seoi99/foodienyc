@@ -1,6 +1,7 @@
 import * as BusinessApiUtil from '../util/business_api_util';
 
 export const RECEIVE_ALL_BUSINESSES = 'RECEIVE_ALL_BUSINESSES';
+export const REMOVE_ALL_BUSINESSES = 'REMOVE_ALL_BUSINESSES';
 export const RECEIVE_BUSINESS = 'RECEIVE_BUSINESS';
 export const RECEIVE_REVIEW = 'RECEIVE_REVIEW';
 export const RECEIVE_SEARCH_RESULT = 'RECEIVE_SEARCH_RESULT';
@@ -17,6 +18,11 @@ export const NO_RESULT_FOUND = 'NO_RESULT_FOUND';
 export const loadBusinesses = () => {
   return {
     type: LOAD_BUSINESSES,
+  }
+}
+export const removeAllBusinesses = () => {
+  return {
+    type: REMOVE_ALL_BUSINESSES,
   }
 }
 

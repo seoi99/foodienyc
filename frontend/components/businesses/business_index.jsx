@@ -26,6 +26,8 @@ class BusinessIndex extends React.Component {
     this.setState({businesses: businesses})
   }
 
+
+
   queryResult() {
     if (this.state.receivetxt || this.state.location) {
         if (this.state.businesses.length === 0) {
@@ -42,7 +44,7 @@ class BusinessIndex extends React.Component {
     let businesses;
        if (this.state.businesses) {
          businesses = this.state.businesses.map((business, idx) => {
-                return <BusinessIndexItem business={business} key={idx} num={idx} fetchLocation={this.props.fetchLocation} />
+                return <BusinessIndexItem business={business} key={idx} num={idx} fetchLocation={this.props.fetchLocation} requestBusiness={this.props.requestBusiness}/>
             });
        }
       return(
@@ -59,7 +61,7 @@ class BusinessIndex extends React.Component {
             {businesses}
           </ul>
           <div className="all-map">
-            <GoogleMap singleBusiness={false} location={this.state.location} receiveUpdates={this.receiveUpdates}/>
+            <GoogleMap singleBusiness={false} location={this.state.location} receiveUpdates={this.receiveUpdates} />
           </div>
         </div>
         <Footer/>

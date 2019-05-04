@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 const BusinessMainIndexItem = ({business, num}) => {
-
-  const images = business.images.map((image, idx) => {
-    return (
-      <li key={image.id}> <img src={image.img_url} alt={business.business_name} /></li>
+  const images = (
+      <li key={business.images.id}> <img src={business.images.img_url} alt={business.business_name} /></li>
       );
-    });
 
     const AvgRateConversion = Array.from(Array(5).keys()).map((val, idx) => {
       if (idx + 1 <= business.average_rating) {
@@ -27,7 +24,7 @@ const BusinessMainIndexItem = ({business, num}) => {
   return(
     <li className="biz-main-content">
       <ul className="first-image">
-        <Link to={`/businesses/${business.id}`}>{images[0]}</Link>
+        <Link to={`/businesses/${business.id}`}>{images}</Link>
       </ul>
       <div className="business-index">
         <p><Link to={`/businesses/${business.id}`}>{business.business_name}</Link></p>

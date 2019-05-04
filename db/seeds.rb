@@ -37,6 +37,7 @@ def search(term, location)
   businesses = response.parse["businesses"]
     businesses.each do |biz|
       b = Business.new()
+      b.id = biz["id"]
       b.business_name = biz["name"]
       b.full_address = biz["location"]["display_address"].join(" ")
       b.phone_number = biz["display_phone"]

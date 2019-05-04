@@ -4,12 +4,9 @@ json.businesses do
       json.partial! 'business', business: business
 
       json.images do
-        json.array! business.images.each do |image|
-          json.extract! image, :id, :img_url
-        end
+        main = business.images[0]
+          json.extract! main, :id, :img_url
       end
-      json.hours business.hours, :id, :open, :close, :day
-      json.reviews business.reviews, :body
     end
   end
 end

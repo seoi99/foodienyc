@@ -14,18 +14,16 @@ class BusinessDetails extends React.Component {
     }
   }
 
+
   componentDidMount() {
     this.props.requestBusiness(this.props.businessId);
-
   }
 
   componentDidUpdate() {
-    if (this.props.business) {
       if (Object.values(this.props.business.reviews).length !== this.state.reviews) {
         this.setState({reviews: Object.values(this.props.business.reviews).length})
         this.props.requestBusiness(this.props.businessId);
       }
-    }
   }
   reviewClicked() {
     this.props.reviewClicked();
@@ -39,7 +37,8 @@ class BusinessDetails extends React.Component {
       const business = this.props.business;
 
 
-      if (business !== undefined ) {
+      if (business) {
+        debugger
         const reviews = business.reviews === undefined ? {} : business.reviews
         const userIds = Object.keys(reviews)
         const currentUserId = this.props.currentUserId || -1;
@@ -70,8 +69,8 @@ class BusinessDetails extends React.Component {
         )
       })
       }
-      const images = business.images.map(image => <img src={image.img_url} key={image.id} />);
 
+      const images = business.images.map(image => <img src={image.img_url} key={image.id} />);
 
 
       const getCurrentDay = business.hours.map(hour => {
@@ -79,15 +78,18 @@ class BusinessDetails extends React.Component {
         let open = hour.open
         let ot = "am"
         let ct = "am"
+        //
 
-        if (hour.close.slice(0,2) > 12) {
-          close = (hour.close.slice(0,2) - 12) + hour.close.slice(2)
+        if (hour.close.slice(0,2) === "00") {
+          close ="12" + hour.close.slice(2)
           ct = "pm"
+          console.log(close);
         }
-        if (hour.open.slice(0,2) > 12) {
-          open = (hour.open.slice(0,2) - 12) + hour.open.slice(2)
+        if (hour.open.slice(0,2) === "00") {
+          open = "00"+ hour.open.slice(2)
           ot = "pm"
         }
+
 
         if (currentDay === hour.day) {
           let copied = hour.close.replace(":","")
@@ -151,7 +153,7 @@ class BusinessDetails extends React.Component {
         }
       });
 
-      let avgRateConversion = Array.from(Array(5).keys()).map((val, idx) => {
+      const avgRateConversion = Array.from(Array(5).keys()).map((val, idx) => {
         if (idx + 1 <= business.average_rating) {
           return <li className="avg-rating" key={idx}></li>
         } else {
