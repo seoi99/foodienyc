@@ -9,6 +9,9 @@
   <script type="text/javascript">
     window.googleAPIKey = "<%= Rails.application.credentials.google_api %>"
   </script>
+
+
+
     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{Rails.application.credentials.google_api}" %>
     <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto|Concert+One" rel="stylesheet">
     <%= stylesheet_link_tag "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"%>

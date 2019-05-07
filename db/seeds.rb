@@ -16,17 +16,19 @@
 API_HOST = "https://api.yelp.com"
 SEARCH_PATH = "/v3/businesses/search"
 BUSINESS_PATH = "/v3/businesses/"
-SEARCH_LIMIT = 1
+SEARCH_LIMIT = 50
 API_KEY = Rails.application.credentials.yelp_api
 
 
-def business(id)
+def business_details(id)
   url = "#{API_HOST}#{BUSINESS_PATH}#{id}"
   result = HTTP.auth("Bearer #{API_KEY}").get(url)
   result.parse
 end
 
 def search(term, location)
+
+  # create url, and params, with token
   url = "#{API_HOST}#{SEARCH_PATH}"
   params = {
     term: term,
@@ -34,6 +36,8 @@ def search(term, location)
     limit: SEARCH_LIMIT
   }
   response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
+
+  # parse data to fit in to my object
   businesses = response.parse["businesses"]
     businesses.each do |biz|
       b = Business.new()
@@ -51,7 +55,9 @@ def search(term, location)
       end
 
       if b.save
-        result = business(biz["id"])
+        # once it can be saved, create dependenet data model for images and hours
+        result = business_details(biz["id"])
+        # another get http request for business details
         if (result["photos"])
           result["photos"].each do |url|
             Image.create!(
@@ -78,4 +84,8 @@ def search(term, location)
 
 
 
-search('cafe', 'virginia')
+search('korean', 'new york city')
+search('italian', 'new york city')
+search('delivery food', 'new york city')
+search('japanese', 'new york city')
+search('fast food', 'new york city')

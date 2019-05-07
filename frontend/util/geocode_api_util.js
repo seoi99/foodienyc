@@ -5,9 +5,10 @@ export const getCoordinate = (address) => {
   })
 }
 
-export const auto = (val, latlng) => {
-  return $.ajax({
-    method: "GET",
-    url:`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${val}&&types=establishment&location=${latlng.lat},${latlng.lng}&radius=500&key=${window.googleAPIKey}`
-  })
-}
+
+// export const auto = (val, latlng) => {
+//   return $.ajax({
+//     method: "GET",
+//     url:`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${val}&location=${latlng.lat},${latlng.lng}&radius=500&key=${window.googleAPIKey}`
+//   })
+// }

@@ -6,7 +6,6 @@ const Auth = ({ component: Component, path, loggedIn, exact, reviewURI }) => { /
   function toRender(props) {
 
     if (loggedIn) {
-      console.log(props.reviewURI);
       if (path === "/login" || path === "/signup") {
         if (reviewURI) {
           return <Redirect to={reviewURI}/>;

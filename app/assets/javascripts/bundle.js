@@ -1958,12 +1958,8 @@ function (_React$Component) {
       });
     }
   }, {
-    key: "autocomplete",
-    value: function autocomplete(val) {}
-  }, {
     key: "handleLocation",
     value: function handleLocation(e) {
-      this.props.getAutoComplete(e.currentTarget.value, this.props.latlng);
       this.setState({
         location: e.currentTarget.value
       });
@@ -3171,6 +3167,7 @@ function (_React$Component) {
       var formData = new FormData();
 
       if (this.state.photoFile) {
+        console.log(formData);
         formData.append('user_picture[photo]', this.state.photoFile);
       }
 
@@ -4909,25 +4906,23 @@ var fetchSearchResult = function fetchSearchResult(query) {
 /*!*******************************************!*\
   !*** ./frontend/util/geocode_api_util.js ***!
   \*******************************************/
-/*! exports provided: getCoordinate, auto */
+/*! exports provided: getCoordinate */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCoordinate", function() { return getCoordinate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "auto", function() { return auto; });
 var getCoordinate = function getCoordinate(address) {
   return $.ajax({
     method: "GET",
     url: "https://maps.googleapis.com/maps/api/geocode/json?address=".concat(address, "&components=country:US&key=").concat(window.googleAPIKey)
   });
-};
-var auto = function auto(val, latlng) {
-  return $.ajax({
-    method: "GET",
-    url: "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=".concat(val, "&&types=establishment&location=").concat(latlng.lat, ",").concat(latlng.lng, "&radius=500&key=").concat(window.googleAPIKey)
-  });
-};
+}; // export const auto = (val, latlng) => {
+//   return $.ajax({
+//     method: "GET",
+//     url:`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${val}&location=${latlng.lat},${latlng.lng}&radius=500&key=${window.googleAPIKey}`
+//   })
+// }
 
 /***/ }),
 
@@ -5087,8 +5082,6 @@ var Auth = function Auth(_ref) {
   //prevents logged in user from seeing log in / sign up
   function toRender(props) {
     if (loggedIn) {
-      console.log(props.reviewURI);
-
       if (path === "/login" || path === "/signup") {
         if (reviewURI) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
