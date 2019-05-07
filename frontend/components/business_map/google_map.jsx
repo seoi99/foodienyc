@@ -19,7 +19,9 @@ class GoogleMap extends React.Component {
    }
 
   getLocation() {
+    this.props.location
     if (this.props.location === "current location") {
+      debugger
     if (navigator.geolocation ) {
       navigator.geolocation.getCurrentPosition(this.showPosition);
     } else {
@@ -42,7 +44,7 @@ class GoogleMap extends React.Component {
     this.map.zoom = 11;
     if (this.props.singleBusiness) {
       this.props.fetchLocation(this.props.business.full_address);
-      this.MarkerManager.createMarkerFromBusiness(this.props.business);
+      this.MarkerManager.createMarkerFromBusiness(this.props.business, 0);
     }
     else {
       this.MarkerManager.updateMarkers(this.props.businesses);
@@ -69,7 +71,7 @@ class GoogleMap extends React.Component {
 
   singleUpdate() {
     this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
-    this.MarkerManager.createMarkerFromBusiness(this.props.business);
+    this.MarkerManager.createMarkerFromBusiness(this.props.business, 0);
     this.map.setCenter(this.props.latlng);
   }
 

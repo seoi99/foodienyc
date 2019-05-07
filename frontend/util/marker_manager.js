@@ -13,13 +13,14 @@ export default class MarkerManager {
     businesses.forEach((business) => {
          businessesObj[business.id] = business
      });
+     Object.keys(this.markers)
+     .forEach((businessId) => this.removeMarker(this.markers[businessId]));
     businesses.filter(business => (!this.markers[business.id]))
-    .forEach((newBusiness, i) => this.createMarkerFromBusiness(newBusiness));
-    Object.keys(this.markers).filter(businessId => !businessesObj[businessId])
-    .forEach((businessId) => this.removeMarker(this.markers[businessId]));
+    .forEach((newBusiness, i) => this.createMarkerFromBusiness(newBusiness, i));
+
   }
 
-  createMarkerFromBusiness(business) {
+  createMarkerFromBusiness(business, i) {
     if (this.single) {
       this.label = 1;
     }
@@ -28,6 +29,7 @@ export default class MarkerManager {
       position,
       map: this.map,
       businessId: business.id,
+      label: (i + 1).toString(),
     })
     marker.addListener('click', () => this.handleClick(business));
     this.markers[marker.businessId] = marker;

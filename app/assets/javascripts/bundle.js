@@ -90,7 +90,7 @@
 /*!**********************************************!*\
   !*** ./frontend/actions/business_actions.js ***!
   \**********************************************/
-/*! exports provided: RECEIVE_ALL_BUSINESSES, RECEIVE_BUSINESS, RECEIVE_REVIEW, RECEIVE_SEARCH_RESULT, RECEIVE_ALL_REVIEW, REMOVE_REVIEW, RECEIVE_REVIEW_ERROR, START_LOADING_REVIEW_INDEX, LOAD_BUSINESSES, LOAD_NO_BUSINSSES, DROP_DOWN_RESULT, GOTOREVIEW, NO_RESULT_FOUND, loadBusinesses, loadNoBusinesses, receiveAllBusinesses, receiveReviewErrors, receiveSearchResult, getSearchResult, dropdownResult, noResultFound, getDropdownResult, receiveBusiness, requestAllBusinesses, requestBusiness, receiveReview, receivewAllReviews, startLoadingReviewIndex, requestAllReviews, removeReview, createReview, updateReview, deleteReview */
+/*! exports provided: RECEIVE_ALL_BUSINESSES, RECEIVE_BUSINESS, RECEIVE_REVIEW, RECEIVE_SEARCH_RESULT, RECEIVE_NO_RESULT, RECEIVE_ALL_REVIEW, REMOVE_REVIEW, RECEIVE_REVIEW_ERROR, START_LOADING_REVIEW_INDEX, LOAD_BUSINESSES, LOAD_NO_BUSINSSES, DROP_DOWN_RESULT, GOTOREVIEW, NO_RESULT_FOUND, loadBusinesses, loadNoBusinesses, receiveAllBusinesses, receiveReviewErrors, receiveSearchResult, receiveNoResult, getSearchResult, dropdownResult, noResultFound, getDropdownResult, receiveBusiness, requestAllBusinesses, requestBusiness, receiveReview, receivewAllReviews, startLoadingReviewIndex, requestAllReviews, removeReview, createReview, updateReview, deleteReview */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -99,6 +99,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_BUSINESS", function() { return RECEIVE_BUSINESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_REVIEW", function() { return RECEIVE_REVIEW; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_SEARCH_RESULT", function() { return RECEIVE_SEARCH_RESULT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_NO_RESULT", function() { return RECEIVE_NO_RESULT; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_ALL_REVIEW", function() { return RECEIVE_ALL_REVIEW; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_REVIEW", function() { return REMOVE_REVIEW; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_REVIEW_ERROR", function() { return RECEIVE_REVIEW_ERROR; });
@@ -113,6 +114,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveAllBusinesses", function() { return receiveAllBusinesses; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveReviewErrors", function() { return receiveReviewErrors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveSearchResult", function() { return receiveSearchResult; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveNoResult", function() { return receiveNoResult; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSearchResult", function() { return getSearchResult; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dropdownResult", function() { return dropdownResult; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "noResultFound", function() { return noResultFound; });
@@ -134,6 +136,7 @@ var RECEIVE_ALL_BUSINESSES = 'RECEIVE_ALL_BUSINESSES';
 var RECEIVE_BUSINESS = 'RECEIVE_BUSINESS';
 var RECEIVE_REVIEW = 'RECEIVE_REVIEW';
 var RECEIVE_SEARCH_RESULT = 'RECEIVE_SEARCH_RESULT';
+var RECEIVE_NO_RESULT = 'RECEIVE_NO_RESULT';
 var RECEIVE_ALL_REVIEW = 'RECEIVE_ALL_REVIEW';
 var REMOVE_REVIEW = 'REMOVE_REVIEW';
 var RECEIVE_REVIEW_ERROR = 'RECEIVE_REVIEW_ERROR';
@@ -171,6 +174,11 @@ var receiveSearchResult = function receiveSearchResult(result) {
     result: result
   };
 };
+var receiveNoResult = function receiveNoResult() {
+  return {
+    type: RECEIVE_NO_RESULT
+  };
+};
 var getSearchResult = function getSearchResult(query) {
   return function (dispatch) {
     _util_business_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchSearchResult"](query).then(function (businesses) {
@@ -194,6 +202,8 @@ var getDropdownResult = function getDropdownResult(query) {
   return function (dispatch) {
     _util_business_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchSearchResult"](query).then(function (businesses) {
       dispatch(dropdownResult(businesses));
+    }, function (error) {
+      dispatch(receiveNoResult());
     });
   };
 };
@@ -898,7 +908,11 @@ function (_React$Component) {
   }, {
     key: "getLocation",
     value: function getLocation() {
+      this.props.location;
+
       if (this.props.location === "current location") {
+        debugger;
+
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(this.showPosition);
         } else {
@@ -922,7 +936,7 @@ function (_React$Component) {
 
       if (this.props.singleBusiness) {
         this.props.fetchLocation(this.props.business.full_address);
-        this.MarkerManager.createMarkerFromBusiness(this.props.business);
+        this.MarkerManager.createMarkerFromBusiness(this.props.business, 0);
       } else {
         this.MarkerManager.updateMarkers(this.props.businesses);
       }
@@ -951,7 +965,7 @@ function (_React$Component) {
     key: "singleUpdate",
     value: function singleUpdate() {
       this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_6__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
-      this.MarkerManager.createMarkerFromBusiness(this.props.business);
+      this.MarkerManager.createMarkerFromBusiness(this.props.business, 0);
       this.map.setCenter(this.props.latlng);
     }
   }, {
@@ -1097,7 +1111,7 @@ function (_React$Component) {
       var currentDay = Date().slice(0, 3).toUpperCase();
       var currentHours = currentDate.getHours();
       var currentMin = currentDate.getMinutes() < 10 ? "0" + currentDate.getMinutes() : currentDate.getMinutes();
-      var currentTime = currentHours.toString() + currentMin.toString();
+      var currentTime = currentHours.toString() + ":" + currentMin.toString();
       var business = this.props.business;
 
       if (business !== undefined) {
@@ -1154,29 +1168,16 @@ function (_React$Component) {
           });
         });
         var getCurrentDay = business.hours.map(function (hour) {
-          var close = hour.close;
-          var open = hour.open;
-          var ot = "am";
-          var ct = "am";
-
-          if (hour.close.slice(0, 2) > 12) {
-            close = hour.close.slice(0, 2) - 12 + hour.close.slice(2);
-            ct = "pm";
-          }
-
-          if (hour.open.slice(0, 2) > 12) {
-            open = hour.open.slice(0, 2) - 12 + hour.open.slice(2);
-            ot = "pm";
-          }
+          var noon = "12:00";
+          var ot = hour.open >= noon ? "pm" : "am";
+          var ct = hour.close >= noon ? "pm" : "am";
+          var open = hour.open > noon ? (parseInt(hour.open.slice(0, 2)) - 12).toString() + hour.open.slice(2) : hour.open;
+          var close = hour.close > noon ? (parseInt(hour.close.slice(0, 2)) - 12).toString() + hour.close.slice(2) : hour.close;
+          open = open.slice(0, 2) === "00" ? "12" + hour.open.slice(2) : open;
+          close = close.slice(0, 2) === "00" ? "12" + hour.close.slice(2) : close;
 
           if (currentDay === hour.day) {
-            var copied = hour.close.replace(":", "");
-
-            if (hour.close < hour.open) {
-              copied = hour.close + 2400;
-            }
-
-            if (parseInt(currentTime) > hour.open.replace(":", "") && parseInt(currentTime) < copied) {
+            if (currentTime > hour.open && currentTime < hour.close) {
               return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
                 className: "open-div",
                 key: hour.id
@@ -1194,21 +1195,13 @@ function (_React$Component) {
           }
         });
         var hours = business.hours.map(function (hour) {
-          var close = hour.close;
-          var open = hour.open;
-          var ot = "am";
-          var ct = "am";
-
-          if (hour.close.slice(0, 2) > 12) {
-            close = hour.close.slice(0, 2) - 12 + hour.close.slice(2);
-            ct = "pm";
-          }
-
-          if (hour.open.slice(0, 2) > 12) {
-            open = hour.open.slice(0, 2) - 12 + hour.open.slice(2);
-            ot = "pm";
-          }
-
+          var noon = "12:00";
+          var ot = hour.open >= noon ? "pm" : "am";
+          var ct = hour.close >= noon ? "pm" : "am";
+          var open = hour.open > noon ? (parseInt(hour.open.slice(0, 2)) - 12).toString() + hour.open.slice(2) : hour.open;
+          var close = hour.close > noon ? (parseInt(hour.close.slice(0, 2)) - 12).toString() + hour.close.slice(2) : hour.close;
+          open = open.slice(0, 2) === "00" ? "12" + hour.open.slice(2) : open;
+          close = close.slice(0, 2) === "00" ? "12" + hour.close.slice(2) : close;
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
             className: "day-hours",
             key: hour.id
@@ -1973,7 +1966,6 @@ function (_React$Component) {
     key: "handleButtonClick",
     value: function handleButtonClick(e) {
       e.preventDefault();
-      this.props.fetchLocation("new york city");
       this.props.getSearchResult(e.target.value);
 
       if (this.props.receiveSearch) {
@@ -4629,7 +4621,10 @@ var searchReducer = function searchReducer() {
 
   switch (action.type) {
     case _actions_business_actions__WEBPACK_IMPORTED_MODULE_1__["DROP_DOWN_RESULT"]:
-      return Object.assign([], Object.values(action.result.businesses));
+      return Object.assign([], Object.values(action.result.businesses ? action.result.businesses : []));
+
+    case _actions_business_actions__WEBPACK_IMPORTED_MODULE_1__["NO_RESULT_FOUND"]:
+      return state;
 
     default:
       return state;
@@ -4964,20 +4959,18 @@ function () {
       businesses.forEach(function (business) {
         businessesObj[business.id] = business;
       });
+      Object.keys(this.markers).forEach(function (businessId) {
+        return _this.removeMarker(_this.markers[businessId]);
+      });
       businesses.filter(function (business) {
         return !_this.markers[business.id];
       }).forEach(function (newBusiness, i) {
-        return _this.createMarkerFromBusiness(newBusiness);
-      });
-      Object.keys(this.markers).filter(function (businessId) {
-        return !businessesObj[businessId];
-      }).forEach(function (businessId) {
-        return _this.removeMarker(_this.markers[businessId]);
+        return _this.createMarkerFromBusiness(newBusiness, i);
       });
     }
   }, {
     key: "createMarkerFromBusiness",
-    value: function createMarkerFromBusiness(business) {
+    value: function createMarkerFromBusiness(business, i) {
       var _this2 = this;
 
       if (this.single) {
@@ -4988,7 +4981,8 @@ function () {
       var marker = new google.maps.Marker({
         position: position,
         map: this.map,
-        businessId: business.id
+        businessId: business.id,
+        label: (i + 1).toString()
       });
       marker.addListener('click', function () {
         return _this2.handleClick(business);

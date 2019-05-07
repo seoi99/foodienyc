@@ -84,8 +84,8 @@ def search(term, location)
 
 
 
-search('korean', 'new york city')
-search('italian', 'new york city')
-search('delivery food', 'new york city')
-search('japanese', 'new york city')
-search('fast food', 'new york city')
+search('korean', 'centreville, VA')
+search('italian', 'jersey city, NJ')
+search('buffet', 'los angeles, california')
+search('japanese', 'washington dc')
+search('pizza', 'chicago')

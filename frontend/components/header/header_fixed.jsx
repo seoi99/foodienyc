@@ -47,7 +47,6 @@ class Header extends React.Component {
 
   handleButtonClick(e) {
     e.preventDefault();
-    this.props.fetchLocation("new york city");
     this.props.getSearchResult(e.target.value);
     if (this.props.receiveSearch) {
       this.props.receiveSearch(e.target.value, "current location")

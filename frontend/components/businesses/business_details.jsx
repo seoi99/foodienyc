@@ -35,7 +35,7 @@ class BusinessDetails extends React.Component {
       const currentDay = Date().slice(0,3).toUpperCase();
       const currentHours = currentDate.getHours();
       const currentMin = currentDate.getMinutes() < 10 ? "0" + currentDate.getMinutes() : currentDate.getMinutes();
-      const currentTime = currentHours.toString() + currentMin.toString();
+      const currentTime = currentHours.toString() + ":"+  currentMin.toString();
       const business = this.props.business;
 
 
@@ -75,26 +75,16 @@ class BusinessDetails extends React.Component {
 
 
       const getCurrentDay = business.hours.map(hour => {
-        let close = hour.close
-        let open = hour.open
-        let ot = "am"
-        let ct = "am"
-
-        if (hour.close.slice(0,2) > 12) {
-          close = (hour.close.slice(0,2) - 12) + hour.close.slice(2)
-          ct = "pm"
-        }
-        if (hour.open.slice(0,2) > 12) {
-          open = (hour.open.slice(0,2) - 12) + hour.open.slice(2)
-          ot = "pm"
-        }
+        const noon = "12:00"
+        let ot = hour.open >= noon ? "pm" : "am"
+        let ct = hour.close >= noon ? "pm" : "am"
+        let open = hour.open > noon ? (parseInt(hour.open.slice(0,2)) - 12).toString() + hour.open.slice(2) : hour.open
+        let close = hour.close > noon ? (parseInt(hour.close.slice(0,2)) - 12).toString() + hour.close.slice(2) : hour.close
+        open = open.slice(0,2) === "00"? "12" + hour.open.slice(2) : open;
+        close = close.slice(0,2) === "00" ? "12" + hour.close.slice(2) : close;
 
         if (currentDay === hour.day) {
-          let copied = hour.close.replace(":","")
-          if (hour.close < hour.open) {
-            copied = hour.close + 2400
-          }
-          if (parseInt(currentTime) > hour.open.replace(":","") && parseInt(currentTime) < copied) {
+          if (currentTime > hour.open && currentTime < hour.close) {
             return (
               <div  className="open-div" key={hour.id}>Today <b>{open} {ot} - {close} {ct} </b>
                 <span className="open-status">Open Now</span>
@@ -111,19 +101,13 @@ class BusinessDetails extends React.Component {
       })
 
       const hours = business.hours.map(hour => {
-        let close = hour.close
-        let open = hour.open
-        let ot = "am"
-        let ct = "am"
-
-        if (hour.close.slice(0,2) > 12) {
-          close = (hour.close.slice(0,2) - 12) + hour.close.slice(2)
-          ct = "pm"
-        }
-        if (hour.open.slice(0,2) > 12) {
-          open = (hour.open.slice(0,2) - 12) + hour.open.slice(2)
-          ot = "pm"
-        }
+        const noon = "12:00"
+        let ot = hour.open >= noon ? "pm" : "am"
+        let ct = hour.close >= noon ? "pm" : "am"
+        let open = hour.open > noon ? (parseInt(hour.open.slice(0,2)) - 12).toString() + hour.open.slice(2) : hour.open
+        let close = hour.close > noon ?  (parseInt(hour.close.slice(0,2)) - 12).toString() + hour.close.slice(2) : hour.close
+        open = open.slice(0,2) === "00" ? "12" + hour.open.slice(2) : open;
+        close = close.slice(0,2) === "00" ? "12" + hour.close.slice(2) : close;
 
           return (<div className="day-hours" key={hour.id}>
           <li >{hour.day}: </li>

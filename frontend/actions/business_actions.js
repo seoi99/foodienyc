@@ -4,6 +4,7 @@ export const RECEIVE_ALL_BUSINESSES = 'RECEIVE_ALL_BUSINESSES';
 export const RECEIVE_BUSINESS = 'RECEIVE_BUSINESS';
 export const RECEIVE_REVIEW = 'RECEIVE_REVIEW';
 export const RECEIVE_SEARCH_RESULT = 'RECEIVE_SEARCH_RESULT';
+export const RECEIVE_NO_RESULT = 'RECEIVE_NO_RESULT';
 export const RECEIVE_ALL_REVIEW = 'RECEIVE_ALL_REVIEW';
 export const REMOVE_REVIEW = 'REMOVE_REVIEW';
 export const RECEIVE_REVIEW_ERROR = 'RECEIVE_REVIEW_ERROR';
@@ -41,10 +42,14 @@ export const receiveReviewErrors = (errors) => ({
 });
 
 export const receiveSearchResult = (result) => {
-
   return {
   type: RECEIVE_SEARCH_RESULT,
   result
+  }
+}
+export const receiveNoResult = () => {
+  return {
+  type: RECEIVE_NO_RESULT,
   }
 }
 export const getSearchResult = (query) => {
@@ -74,6 +79,8 @@ export const getDropdownResult = (query) => {
   return (dispatch) => {
     BusinessApiUtil.fetchSearchResult(query).then((businesses) => {
       dispatch(dropdownResult(businesses))
+    },(error) => {
+      dispatch(receiveNoResult())
     })
   }
 }
