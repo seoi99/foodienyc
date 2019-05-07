@@ -28,7 +28,6 @@ end
 
 def search(term, location)
 
-  # create url, and params, with token
   url = "#{API_HOST}#{SEARCH_PATH}"
   params = {
     term: term,
@@ -37,7 +36,6 @@ def search(term, location)
   }
   response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
 
-  # parse data to fit in to my object
   businesses = response.parse["businesses"]
     businesses.each do |biz|
       b = Business.new()
@@ -55,9 +53,7 @@ def search(term, location)
       end
 
       if b.save
-        # once it can be saved, create dependenet data model for images and hours
         result = business_details(biz["id"])
-        # another get http request for business details
         if (result["photos"])
           result["photos"].each do |url|
             Image.create!(

@@ -53,13 +53,13 @@ export const receiveNoResult = () => {
   }
 }
 export const getSearchResult = (query) => {
-
   return (dispatch) => {
     BusinessApiUtil.fetchSearchResult(query).then((businesses) => {
       dispatch(receiveSearchResult(businesses))
     })
   }
 }
+
 
 export const dropdownResult = (result) => {
   return {

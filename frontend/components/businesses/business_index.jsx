@@ -37,14 +37,12 @@ class BusinessIndex extends React.Component {
         }
     }
   }
-
+  componentWillReceiveProps() {
+  }
   render() {
-    let businesses;
-       if (this.state.businesses) {
-         businesses = this.state.businesses.map((business, idx) => {
+    let businesses = this.state.businesses.map((business, idx) => {
                 return <BusinessIndexItem business={business} key={idx} num={idx} fetchLocation={this.props.fetchLocation} />
             });
-       }
       return(
       <div>
         <HeaderContainer receiveSearch={this.receiveSearch}/>

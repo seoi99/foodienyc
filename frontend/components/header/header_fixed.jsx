@@ -45,9 +45,16 @@ class Header extends React.Component {
     this.props.history.push(`/businesses`)
   }
 
+
+  showPosition(position) {
+    position.coords.latitude
+    position.coords.longitude
+  }
+
   handleButtonClick(e) {
     e.preventDefault();
-    this.props.getSearchResult(e.target.value);
+    this.props.fetchLocation("current location")
+      this.props.getSearchResult(e.target.value);
     if (this.props.receiveSearch) {
       this.props.receiveSearch(e.target.value, "current location")
     }
@@ -58,8 +65,8 @@ class Header extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.setState({dropdown: "hidden", submitted: true});
-    this.props.fetchLocation(this.state.location);
     this.props.getSearchResult(this.state.searchtxt);
+    this.props.fetchLocation(this.state.location);
     if (this.props.receiveSearch) {
       this.props.receiveSearch(this.state.searchtxt, this.state.location);
     }

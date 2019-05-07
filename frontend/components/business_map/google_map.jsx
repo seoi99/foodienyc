@@ -14,22 +14,30 @@ class GoogleMap extends React.Component {
     this.showPosition = this.showPosition.bind(this);
   }
 
-  showPosition(position) {
-    this.map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
+
+   getLocation() {
+     if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition(this.showPosition);
+     } else {
+       console.log("geolocation is not supported");
+     }
    }
-
-  getLocation() {
-    this.props.location
-    if (this.props.location === "current location") {
-      debugger
-    if (navigator.geolocation ) {
-      navigator.geolocation.getCurrentPosition(this.showPosition);
+   showPosition(position) {
+     this.map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
+    }
+  componentWillReceiveProps() {
+    if (this.props.singleBusiness) {
+      this.singleUpdate();
     } else {
-      console.log("Geolocation is not supported by this browser.")
+      if (this.props.location === "current location") {
+        this.getLocation();
+      } else {
+        this.map.setCenter(this.props.latlng);
+      }
+      this.batchUpdate();
     }
-    }
-  }
 
+  }
   componentDidMount() {
     this.getLocation();
     const latlng = new google.maps.LatLng(this.props.latlng.lat,this.props.latlng.lng);
@@ -61,7 +69,6 @@ class GoogleMap extends React.Component {
   }
 
   batchUpdate() {
-      this.map.setCenter(this.props.latlng);
       if (this.map.getBounds()) {
         this.inMapBounds(this.props.businesses);
       }
@@ -84,13 +91,6 @@ class GoogleMap extends React.Component {
 
 
   render() {
-    if (this.map) {
-    if (this.props.singleBusiness) {
-      this.singleUpdate();
-    } else {
-      this.batchUpdate();
-    }
-    }
 
     return (
       <div id="map" ref={ map => this.mapNode = map }>

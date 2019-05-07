@@ -898,6 +898,15 @@ function (_React$Component) {
   }
 
   _createClass(GoogleMap, [{
+    key: "getLocation",
+    value: function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.showPosition);
+      } else {
+        console.log("geolocation is not supported");
+      }
+    }
+  }, {
     key: "showPosition",
     value: function showPosition(position) {
       this.map.setCenter({
@@ -906,18 +915,18 @@ function (_React$Component) {
       });
     }
   }, {
-    key: "getLocation",
-    value: function getLocation() {
-      this.props.location;
-
-      if (this.props.location === "current location") {
-        debugger;
-
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(this.showPosition);
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps() {
+      if (this.props.singleBusiness) {
+        this.singleUpdate();
+      } else {
+        if (this.props.location === "current location") {
+          this.getLocation();
         } else {
-          console.log("Geolocation is not supported by this browser.");
+          this.map.setCenter(this.props.latlng);
         }
+
+        this.batchUpdate();
       }
     }
   }, {
@@ -955,8 +964,6 @@ function (_React$Component) {
   }, {
     key: "batchUpdate",
     value: function batchUpdate() {
-      this.map.setCenter(this.props.latlng);
-
       if (this.map.getBounds()) {
         this.inMapBounds(this.props.businesses);
       }
@@ -978,14 +985,6 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var _this3 = this;
-
-      if (this.map) {
-        if (this.props.singleBusiness) {
-          this.singleUpdate();
-        } else {
-          this.batchUpdate();
-        }
-      }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "map",
@@ -1459,23 +1458,21 @@ function (_React$Component) {
       }
     }
   }, {
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps() {}
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      var businesses;
-
-      if (this.state.businesses) {
-        businesses = this.state.businesses.map(function (business, idx) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_business_index_item__WEBPACK_IMPORTED_MODULE_1__["default"], {
-            business: business,
-            key: idx,
-            num: idx,
-            fetchLocation: _this2.props.fetchLocation
-          });
+      var businesses = this.state.businesses.map(function (business, idx) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_business_index_item__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          business: business,
+          key: idx,
+          num: idx,
+          fetchLocation: _this2.props.fetchLocation
         });
-      }
-
+      });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_header_header_fixed_container__WEBPACK_IMPORTED_MODULE_2__["default"], {
         receiveSearch: this.receiveSearch
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -1963,9 +1960,16 @@ function (_React$Component) {
       this.props.history.push("/businesses");
     }
   }, {
+    key: "showPosition",
+    value: function showPosition(position) {
+      position.coords.latitude;
+      position.coords.longitude;
+    }
+  }, {
     key: "handleButtonClick",
     value: function handleButtonClick(e) {
       e.preventDefault();
+      this.props.fetchLocation("current location");
       this.props.getSearchResult(e.target.value);
 
       if (this.props.receiveSearch) {
@@ -1982,8 +1986,8 @@ function (_React$Component) {
         dropdown: "hidden",
         submitted: true
       });
-      this.props.fetchLocation(this.state.location);
       this.props.getSearchResult(this.state.searchtxt);
+      this.props.fetchLocation(this.state.location);
 
       if (this.props.receiveSearch) {
         this.props.receiveSearch(this.state.searchtxt, this.state.location);
