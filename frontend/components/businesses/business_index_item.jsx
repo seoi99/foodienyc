@@ -7,12 +7,12 @@ class BusinessIndexItem extends React.Component {
       name: ""
     }
   }
-  componentDidUpdate() {
-    if (this.props.num === 0 && this.state.name !== this.props.business.full_address) {
-      this.props.fetchLocation(this.props.business.full_address)
-      this.setState({name: this.props.business.full_address})
-    }
-  }
+  // componentDidUpdate() {
+  //   if (this.props.num === 0 && this.state.name !== this.props.business.full_address) {
+  //     this.props.fetchLocation(this.props.business.full_address)
+  //     this.setState({name: this.props.business.full_address})
+  //   }
+  // }
 
   render () {
     let business = this.props.business

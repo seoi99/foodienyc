@@ -1,5 +1,4 @@
 import React from 'react';
-import BusinessIndexItem from './business_index_item';
 import HeaderContainer from '../header/header_fixed_container';
 import GoogleMap from '../business_map/google_map';
 import { Link } from 'react-router-dom';
@@ -37,12 +36,9 @@ class BusinessIndex extends React.Component {
         }
     }
   }
-  componentWillReceiveProps() {
-  }
+
   render() {
-    let businesses = this.state.businesses.map((business, idx) => {
-                return <BusinessIndexItem business={business} key={idx} num={idx} fetchLocation={this.props.fetchLocation} />
-            });
+
       return(
       <div>
         <HeaderContainer receiveSearch={this.receiveSearch}/>
@@ -52,14 +48,7 @@ class BusinessIndex extends React.Component {
             {this.queryResult()}
           </div>
         </div>
-        <div className="biz-idx-main">
-          <ul>
-            {businesses}
-          </ul>
-          <div className="all-map">
             <GoogleMap singleBusiness={false} location={this.state.location} receiveUpdates={this.receiveUpdates}/>
-          </div>
-        </div>
         <Footer/>
       </div>
     );

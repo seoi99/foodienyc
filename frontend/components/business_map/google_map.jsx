@@ -3,13 +3,17 @@ import ReactDom from 'react-dom';
 import {withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchLocation } from '../../actions/geolocation_actions';
-import { requestAllBusinesses , loadBusinesses, loadNoBusinesses} from '../../actions/business_actions';
+import { requestAllBusinesses , loadBusinesses, loadNoBusinesses, getSearchResult} from '../../actions/business_actions';
+import BusinessIndexItem from '../businesses/business_index_item';
 
 import MarkerManager from '../../util/marker_manager';
 
 class GoogleMap extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      businesses: []
+    }
     this.getLocation = this.getLocation.bind(this);
     this.showPosition = this.showPosition.bind(this);
   }
@@ -25,6 +29,7 @@ class GoogleMap extends React.Component {
    showPosition(position) {
      this.map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
     }
+
   componentWillReceiveProps() {
     if (this.props.singleBusiness) {
       this.singleUpdate();
@@ -64,6 +69,8 @@ class GoogleMap extends React.Component {
         return (this.map.getBounds().na.j < b.latitude && this.map.getBounds().na.l >  b.latitude)
         && (this.map.getBounds().ia.j < b.longitude && this.map.getBounds().ia.l >  b.longitude)
       })
+      this.setState({businesses: businesses})
+
     this.props.receiveUpdates(businesses);
     this.MarkerManager.updateMarkers(businesses);
   }
@@ -91,9 +98,17 @@ class GoogleMap extends React.Component {
 
 
   render() {
-
+    let businesses = this.state.businesses.map((business, idx) => {
+                return <BusinessIndexItem business={business} key={idx} num={idx}/>
+        });
     return (
-      <div id="map" ref={ map => this.mapNode = map }>
+        <div className="biz-idx-main">
+          <ul>
+            {businesses}
+          </ul>
+          <div className="all-map">
+            <div id="map" ref={ map => this.mapNode = map }></div>
+        </div>
       </div>
     );
   }
@@ -111,6 +126,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchLocation: (address) => dispatch(fetchLocation(address)),
+    getSearchResult: (query) => dispatch(getSearchResult(query)),
     loadNoBusinesses: () => dispatch(loadNoBusinesses()),
   }
 }
