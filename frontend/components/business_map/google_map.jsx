@@ -86,7 +86,11 @@ class GoogleMap extends React.Component {
   singleUpdate() {
     this.MarkerManager = new MarkerManager(this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
     this.MarkerManager.createMarkerFromBusiness(this.props.business, 0);
-    this.map.setCenter(this.props.latlng);
+    const newLatlng = {
+      lat:this.props.business.latitude,
+      lng: this.props.business.longitude
+    }
+    this.map.setCenter(newLatlng);
   }
 
 

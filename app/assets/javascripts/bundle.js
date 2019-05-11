@@ -981,7 +981,11 @@ function (_React$Component) {
     value: function singleUpdate() {
       this.MarkerManager = new _util_marker_manager__WEBPACK_IMPORTED_MODULE_7__["default"](this.map, this.handleMarkerClick.bind(this), this.props.singleBusiness, this.props.latlng);
       this.MarkerManager.createMarkerFromBusiness(this.props.business, 0);
-      this.map.setCenter(this.props.latlng);
+      var newLatlng = {
+        lat: this.props.business.latitude,
+        lng: this.props.business.longitude
+      };
+      this.map.setCenter(newLatlng);
     }
   }, {
     key: "handleMarkerClick",
