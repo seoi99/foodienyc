@@ -58,7 +58,7 @@ export const getSearchResult = (query, location) => {
     BusinessApiUtil.fetchSearchResult(query).then((businesses) => {
       dispatch(receiveSearchResult(businesses))
     }).then(() => dispatch(fetchLocation(location)))
-    .then(() => dispatch(loadBusinesses()))
+    .then(() => dispatch(loadBusinesses(location)))
   }
 }
 

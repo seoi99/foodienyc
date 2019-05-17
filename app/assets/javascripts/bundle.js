@@ -189,7 +189,7 @@ var getSearchResult = function getSearchResult(query, location) {
     }).then(function () {
       return dispatch(Object(_geolocation_actions__WEBPACK_IMPORTED_MODULE_1__["fetchLocation"])(location));
     }).then(function () {
-      return dispatch(loadBusinesses());
+      return dispatch(loadBusinesses(location));
     });
   };
 };
@@ -932,12 +932,10 @@ function (_React$Component) {
       if (this.props.singleBusiness) {
         this.singleUpdate();
       } else {
-        if (this.props.location === "current location") {
-          this.getLocation();
-        } else {
-          if (this.props.loading) {
-            this.map.setCenter(this.props.latlng);
+        if (this.props.loading) {
+          if (this.map.center.lat() !== this.props.latlng.lat && this.map.center.lng() !== this.props.latlng.lng || this.checkLength(this.props.businesses) !== this.state.businesses.length) {
             this.batchUpdate();
+            this.map.setCenter(this.props.latlng);
           }
         }
       }
@@ -964,12 +962,23 @@ function (_React$Component) {
       }
     }
   }, {
-    key: "inMapBounds",
-    value: function inMapBounds(biz) {
+    key: "checkLength",
+    value: function checkLength(biz) {
       var _this2 = this;
 
       var businesses = biz.filter(function (b) {
         return _this2.map.getBounds().na.j < b.latitude && _this2.map.getBounds().na.l > b.latitude && _this2.map.getBounds().ia.j < b.longitude && _this2.map.getBounds().ia.l > b.longitude;
+      });
+      console.log(_actions_business_actions__WEBPACK_IMPORTED_MODULE_5__["requestAllBusinesses"].length, this.state.businesses.length);
+      return businesses.length;
+    }
+  }, {
+    key: "inMapBounds",
+    value: function inMapBounds(biz) {
+      var _this3 = this;
+
+      var businesses = biz.filter(function (b) {
+        return _this3.map.getBounds().na.j < b.latitude && _this3.map.getBounds().na.l > b.latitude && _this3.map.getBounds().ia.j < b.longitude && _this3.map.getBounds().ia.l > b.longitude;
       });
       this.setState({
         businesses: businesses
@@ -1004,14 +1013,14 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "all-map"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "map",
         ref: function ref(map) {
-          return _this3.mapNode = map;
+          return _this4.mapNode = map;
         }
       }));
     }
@@ -4147,11 +4156,6 @@ var businessUiReducer = function businessUiReducer() {
       });
 
     case _actions_business_actions__WEBPACK_IMPORTED_MODULE_1__["LOAD_NO_BUSINSSES"]:
-      return lodash_merge__WEBPACK_IMPORTED_MODULE_0___default()({}, state, {
-        loading: false
-      });
-
-    case _actions_business_actions__WEBPACK_IMPORTED_MODULE_1__["RECEIVE_SEARCH_RESULT"]:
       return lodash_merge__WEBPACK_IMPORTED_MODULE_0___default()({}, state, {
         loading: false
       });

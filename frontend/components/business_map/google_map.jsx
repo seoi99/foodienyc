@@ -34,12 +34,11 @@ class GoogleMap extends React.Component {
     if (this.props.singleBusiness) {
       this.singleUpdate();
     } else {
-      if (this.props.location === "current location") {
-        this.getLocation();
-      } else {
-        if (this.props.loading) {
-          this.map.setCenter(this.props.latlng);
+      if (this.props.loading) {
+        if ((this.map.center.lat() !== this.props.latlng.lat && this.map.center.lng() !== this.props.latlng.lng) ||
+      this.checkLength(this.props.businesses) !== this.state.businesses.length) {
           this.batchUpdate();
+          this.map.setCenter(this.props.latlng);
         }
       }
     }
@@ -64,6 +63,14 @@ class GoogleMap extends React.Component {
     else {
       this.MarkerManager.updateMarkers(this.props.businesses);
     }
+  }
+  checkLength(biz) {
+    let businesses = biz.filter(b => {
+      return (this.map.getBounds().na.j < b.latitude && this.map.getBounds().na.l >  b.latitude)
+      && (this.map.getBounds().ia.j < b.longitude && this.map.getBounds().ia.l >  b.longitude)
+    })
+    console.log(requestAllBusinesses.length, this.state.businesses.length);
+    return businesses.length
   }
 
   inMapBounds(biz) {
