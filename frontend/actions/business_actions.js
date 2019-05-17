@@ -14,6 +14,7 @@ export const LOAD_NO_BUSINSSES = 'LOAD_NO_BUSINSSES';
 export const DROP_DOWN_RESULT = 'DROP_DOWN_RESULT';
 export const GOTOREVIEW = 'GOTOREVIEW';
 export const NO_RESULT_FOUND = 'NO_RESULT_FOUND';
+
 export const loadBusinesses = () => {
   return {
     type: LOAD_BUSINESSES,
@@ -51,11 +52,12 @@ export const receiveNoResult = () => {
   type: RECEIVE_NO_RESULT,
   }
 }
-export const getSearchResult = (query, location) => {
+export const getSearchResult = (query) => {
+  dispatch(loadNoBusinesses())
   return (dispatch) => {
     BusinessApiUtil.fetchSearchResult(query).then((businesses) => {
       dispatch(receiveSearchResult(businesses))
-    })
+    }).then(() => dispatch(loadBusinesses()))
   }
 }
 

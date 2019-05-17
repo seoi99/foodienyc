@@ -131,6 +131,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateReview", function() { return updateReview; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteReview", function() { return deleteReview; });
 /* harmony import */ var _util_business_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/business_api_util */ "./frontend/util/business_api_util.js");
+/* harmony import */ var _geolocation_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./geolocation_actions */ "./frontend/actions/geolocation_actions.js");
+
 
 var RECEIVE_ALL_BUSINESSES = 'RECEIVE_ALL_BUSINESSES';
 var RECEIVE_BUSINESS = 'RECEIVE_BUSINESS';
@@ -180,9 +182,12 @@ var receiveNoResult = function receiveNoResult() {
   };
 };
 var getSearchResult = function getSearchResult(query) {
+  dispatch(loadNoBusinesses());
   return function (dispatch) {
     _util_business_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchSearchResult"](query).then(function (businesses) {
       dispatch(receiveSearchResult(businesses));
+    }).then(function () {
+      return dispatch(loadBusinesses());
     });
   };
 };
@@ -349,16 +354,15 @@ var receiveLocation = function receiveLocation(result) {
     result: result.results[0].geometry.location
   };
 };
-var noLocation = function noLocation(result) {
+var noLocation = function noLocation() {
   return {
-    type: NO_LOCATION,
-    result: result
+    type: NO_LOCATION
   };
 };
 var fetchLocation = function fetchLocation(address) {
   return function (dispatch) {
     if (address === "") {
-      return dispatch(noLocation(address));
+      return dispatch(noLocation());
     } else {
       Object(_util_geocode_api_util__WEBPACK_IMPORTED_MODULE_0__["getCoordinate"])(address).then(function (result) {
         return dispatch(receiveLocation(result));
@@ -998,23 +1002,14 @@ function (_React$Component) {
     value: function render() {
       var _this3 = this;
 
-      var businesses = this.state.businesses.map(function (business, idx) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_businesses_business_index_item__WEBPACK_IMPORTED_MODULE_6__["default"], {
-          business: business,
-          key: idx,
-          num: idx
-        });
-      });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "biz-idx-main"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, businesses), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "all-map"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "map",
         ref: function ref(map) {
           return _this3.mapNode = map;
         }
-      })));
+      }));
     }
   }]);
 
@@ -1405,8 +1400,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _header_header_fixed_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../header/header_fixed_container */ "./frontend/components/header/header_fixed_container.js");
 /* harmony import */ var _business_map_google_map__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../business_map/google_map */ "./frontend/components/business_map/google_map.jsx");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-/* harmony import */ var _footer_footer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../footer/footer */ "./frontend/components/footer/footer.jsx");
+/* harmony import */ var _business_index_item__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./business_index_item */ "./frontend/components/businesses/business_index_item.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var _footer_footer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../footer/footer */ "./frontend/components/footer/footer.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1424,6 +1420,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 
 
 
@@ -1450,6 +1447,7 @@ function (_React$Component) {
     };
     _this.receiveSearch = _this.receiveSearch.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.receiveUpdates = _this.receiveUpdates.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    console.log(props);
     return _this;
   }
 
@@ -1484,17 +1482,26 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var businesses = this.state.businesses.map(function (business, idx) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_business_index_item__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          business: business,
+          key: idx,
+          num: idx
+        });
+      });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_header_header_fixed_container__WEBPACK_IMPORTED_MODULE_1__["default"], {
         receiveSearch: this.receiveSearch
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "bg-two"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "biz-shelf"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Welcome to Foodie"), this.queryResult())), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_business_map_google_map__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Welcome to Foodie"), this.queryResult())), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "biz-idx-main"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, businesses), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_business_map_google_map__WEBPACK_IMPORTED_MODULE_2__["default"], {
         singleBusiness: false,
         location: this.state.location,
         receiveUpdates: this.receiveUpdates
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_footer_footer__WEBPACK_IMPORTED_MODULE_4__["default"], null));
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_footer_footer__WEBPACK_IMPORTED_MODULE_5__["default"], null));
     }
   }]);
 
@@ -1972,8 +1979,11 @@ function (_React$Component) {
     key: "handleButtonClick",
     value: function handleButtonClick(e) {
       e.preventDefault();
-      this.props.fetchLocation("current location");
       this.props.getSearchResult(e.target.value);
+
+      if (this.props.loading) {
+        this.props.fetchLocation("current location");
+      }
 
       if (this.props.receiveSearch) {
         this.props.receiveSearch(e.target.value, "current location");
@@ -1990,7 +2000,10 @@ function (_React$Component) {
         submitted: true
       });
       this.props.getSearchResult(this.state.searchtxt);
-      this.props.fetchLocation(this.state.location);
+
+      if (this.props.loading) {
+        this.props.fetchLocation(this.state.location);
+      }
 
       if (this.props.receiveSearch) {
         this.props.receiveSearch(this.state.searchtxt, this.state.location);
@@ -2189,7 +2202,7 @@ var mapStateToProps = function mapStateToProps(state) {
     businesses: state.entities.businesses,
     latlng: state.entities.coordinate,
     photo: state.entities.photos[state.session.currentUserId],
-    loading: state.ui.businesses
+    loading: state.ui.businesses.loading
   };
 };
 
@@ -2361,7 +2374,6 @@ function (_React$Component) {
   _createClass(MainPage, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.props.getSearchResult();
       this.props.requestAllReviews();
     }
   }, {

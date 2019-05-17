@@ -18,7 +18,6 @@ class MainPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getSearchResult();
     this.props.requestAllReviews();
   }
   handleClick(e) {

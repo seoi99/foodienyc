@@ -13,7 +13,7 @@ const mapStateToProps = state => {
     businesses: state.entities.businesses,
     latlng: state.entities.coordinate,
     photo: state.entities.photos[state.session.currentUserId],
-    loading: state.ui.businesses,
+    loading: state.ui.businesses.loading,
     };
 };
 

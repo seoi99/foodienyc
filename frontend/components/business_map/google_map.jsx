@@ -102,18 +102,11 @@ class GoogleMap extends React.Component {
 
 
   render() {
-    let businesses = this.state.businesses.map((business, idx) => {
-                return <BusinessIndexItem business={business} key={idx} num={idx}/>
-        });
+
     return (
-        <div className="biz-idx-main">
-          <ul>
-            {businesses}
-          </ul>
           <div className="all-map">
             <div id="map" ref={ map => this.mapNode = map }></div>
         </div>
-      </div>
     );
   }
 }
