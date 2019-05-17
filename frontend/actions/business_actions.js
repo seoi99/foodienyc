@@ -1,5 +1,5 @@
 import * as BusinessApiUtil from '../util/business_api_util';
-
+import { getCoordinate } from './geolocation_actions';
 export const RECEIVE_ALL_BUSINESSES = 'RECEIVE_ALL_BUSINESSES';
 export const RECEIVE_BUSINESS = 'RECEIVE_BUSINESS';
 export const RECEIVE_REVIEW = 'RECEIVE_REVIEW';
@@ -14,7 +14,6 @@ export const LOAD_NO_BUSINSSES = 'LOAD_NO_BUSINSSES';
 export const DROP_DOWN_RESULT = 'DROP_DOWN_RESULT';
 export const GOTOREVIEW = 'GOTOREVIEW';
 export const NO_RESULT_FOUND = 'NO_RESULT_FOUND';
-
 export const loadBusinesses = () => {
   return {
     type: LOAD_BUSINESSES,
@@ -52,7 +51,7 @@ export const receiveNoResult = () => {
   type: RECEIVE_NO_RESULT,
   }
 }
-export const getSearchResult = (query) => {
+export const getSearchResult = (query, location) => {
   return (dispatch) => {
     BusinessApiUtil.fetchSearchResult(query).then((businesses) => {
       dispatch(receiveSearchResult(businesses))

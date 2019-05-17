@@ -11,17 +11,16 @@ export const receiveLocation = (result) => {
   }
 }
 
-export const noLocation = (result) => {
+export const noLocation = () => {
   return {
     type: NO_LOCATION,
-    result,
   }
 }
 
 export const fetchLocation = (address) => {
   return (dispatch) => {
     if (address === "") {
-      return dispatch(noLocation(address))
+      return dispatch(noLocation())
     } else {
       getCoordinate(address).then((result) => {
       return dispatch(receiveLocation(result))

@@ -38,7 +38,6 @@ class BusinessIndex extends React.Component {
   }
 
   render() {
-
       return(
       <div>
         <HeaderContainer receiveSearch={this.receiveSearch}/>
