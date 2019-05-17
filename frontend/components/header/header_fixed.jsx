@@ -53,10 +53,7 @@ class Header extends React.Component {
 
   handleButtonClick(e) {
     e.preventDefault();
-      this.props.getSearchResult(e.target.value);
-      if (this.props.loading) {
-        this.props.fetchLocation("current location")
-      }
+      this.props.getSearchResult(e.target.value, "new york city");
     if (this.props.receiveSearch) {
       this.props.receiveSearch(e.target.value, "current location")
     }
@@ -67,10 +64,7 @@ class Header extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.setState({dropdown: "hidden", submitted: true});
-    this.props.getSearchResult(this.state.searchtxt);
-    if (this.props.loading) {
-      this.props.fetchLocation(this.state.location);
-    }
+    this.props.getSearchResult(this.state.searchtxt, this.state.location);
     if (this.props.receiveSearch) {
       this.props.receiveSearch(this.state.searchtxt, this.state.location);
     }

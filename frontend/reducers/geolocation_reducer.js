@@ -16,9 +16,9 @@ const geolocationReducer = (state = initialState, action) => {
   Object.freeze(state);
   switch (action.type) {
     case RECEIVE_LOCATION:
-      return Object.assign({}, action.result); break;
+      return action.result;
     case NO_LOCATION:
-      return initialState; break;
+      return initialState;
     default:
       return state;
   }

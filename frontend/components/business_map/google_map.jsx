@@ -30,16 +30,18 @@ class GoogleMap extends React.Component {
      this.map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
     }
 
-  componentWillReceiveProps() {
+  componentDidUpdate() {
     if (this.props.singleBusiness) {
       this.singleUpdate();
     } else {
       if (this.props.location === "current location") {
         this.getLocation();
       } else {
-        this.map.setCenter(this.props.latlng);
+        if (this.props.loading) {
+          this.map.setCenter(this.props.latlng);
+          this.batchUpdate();
+        }
       }
-      this.batchUpdate();
     }
 
   }

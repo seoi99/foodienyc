@@ -2,6 +2,7 @@ import { getCoordinate, auto } from '../util/geocode_api_util'
 
 export const RECEIVE_LOCATION = 'RECEIVE_LOCATION';
 export const NO_LOCATION = 'NO_LOCATION';
+export const UPLOADING_LOCATION = 'UPLOADING_LOCATION';
 export const AUTO_COMPLETE = 'AUTO_COMPLETE';
 
 export const receiveLocation = (result) => {
@@ -16,6 +17,7 @@ export const noLocation = () => {
     type: NO_LOCATION,
   }
 }
+
 
 export const fetchLocation = (address) => {
   return (dispatch) => {
@@ -35,7 +37,6 @@ export const getAutoComplete = (address, latlng) => {
 }
 
 export const receiveAutoComplete = (result) => {
-  debugger
   return {
     type: AUTO_COMPLETE,
     result,

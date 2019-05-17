@@ -16,7 +16,6 @@ class BusinessIndex extends React.Component {
     }
     this.receiveSearch = this.receiveSearch.bind(this);
     this.receiveUpdates = this.receiveUpdates.bind(this);
-    console.log(props)
   }
   receiveSearch(txt, loc) {
     this.setState({receivetxt: txt, location: loc})

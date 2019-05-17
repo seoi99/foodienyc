@@ -181,11 +181,13 @@ var receiveNoResult = function receiveNoResult() {
     type: RECEIVE_NO_RESULT
   };
 };
-var getSearchResult = function getSearchResult(query) {
+var getSearchResult = function getSearchResult(query, location) {
   dispatch(loadNoBusinesses());
   return function (dispatch) {
     _util_business_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchSearchResult"](query).then(function (businesses) {
       dispatch(receiveSearchResult(businesses));
+    }).then(function () {
+      return dispatch(Object(_geolocation_actions__WEBPACK_IMPORTED_MODULE_1__["fetchLocation"])(location));
     }).then(function () {
       return dispatch(loadBusinesses());
     });
@@ -329,13 +331,14 @@ var updateFilter = function updateFilter(dispatch, getState) {
 /*!*************************************************!*\
   !*** ./frontend/actions/geolocation_actions.js ***!
   \*************************************************/
-/*! exports provided: RECEIVE_LOCATION, NO_LOCATION, AUTO_COMPLETE, receiveLocation, noLocation, fetchLocation, getAutoComplete, receiveAutoComplete, getDropdownResult */
+/*! exports provided: RECEIVE_LOCATION, NO_LOCATION, UPLOADING_LOCATION, AUTO_COMPLETE, receiveLocation, noLocation, fetchLocation, getAutoComplete, receiveAutoComplete, getDropdownResult */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_LOCATION", function() { return RECEIVE_LOCATION; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NO_LOCATION", function() { return NO_LOCATION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOADING_LOCATION", function() { return UPLOADING_LOCATION; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTO_COMPLETE", function() { return AUTO_COMPLETE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveLocation", function() { return receiveLocation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "noLocation", function() { return noLocation; });
@@ -347,6 +350,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var RECEIVE_LOCATION = 'RECEIVE_LOCATION';
 var NO_LOCATION = 'NO_LOCATION';
+var UPLOADING_LOCATION = 'UPLOADING_LOCATION';
 var AUTO_COMPLETE = 'AUTO_COMPLETE';
 var receiveLocation = function receiveLocation(result) {
   return {
@@ -378,7 +382,6 @@ var getAutoComplete = function getAutoComplete(address, latlng) {
   };
 };
 var receiveAutoComplete = function receiveAutoComplete(result) {
-  debugger;
   return {
     type: AUTO_COMPLETE,
     result: result
@@ -924,18 +927,19 @@ function (_React$Component) {
       });
     }
   }, {
-    key: "componentWillReceiveProps",
-    value: function componentWillReceiveProps() {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
       if (this.props.singleBusiness) {
         this.singleUpdate();
       } else {
         if (this.props.location === "current location") {
           this.getLocation();
         } else {
-          this.map.setCenter(this.props.latlng);
+          if (this.props.loading) {
+            this.map.setCenter(this.props.latlng);
+            this.batchUpdate();
+          }
         }
-
-        this.batchUpdate();
       }
     }
   }, {
@@ -1447,7 +1451,6 @@ function (_React$Component) {
     };
     _this.receiveSearch = _this.receiveSearch.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.receiveUpdates = _this.receiveUpdates.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    console.log(props);
     return _this;
   }
 
@@ -1979,11 +1982,7 @@ function (_React$Component) {
     key: "handleButtonClick",
     value: function handleButtonClick(e) {
       e.preventDefault();
-      this.props.getSearchResult(e.target.value);
-
-      if (this.props.loading) {
-        this.props.fetchLocation("current location");
-      }
+      this.props.getSearchResult(e.target.value, "new york city");
 
       if (this.props.receiveSearch) {
         this.props.receiveSearch(e.target.value, "current location");
@@ -1999,11 +1998,7 @@ function (_React$Component) {
         dropdown: "hidden",
         submitted: true
       });
-      this.props.getSearchResult(this.state.searchtxt);
-
-      if (this.props.loading) {
-        this.props.fetchLocation(this.state.location);
-      }
+      this.props.getSearchResult(this.state.searchtxt, this.state.location);
 
       if (this.props.receiveSearch) {
         this.props.receiveSearch(this.state.searchtxt, this.state.location);
@@ -2211,8 +2206,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     logout: function logout() {
       return dispatch(Object(_actions_session_actions__WEBPACK_IMPORTED_MODULE_2__["logout"])());
     },
-    getSearchResult: function getSearchResult(query) {
-      return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_4__["getSearchResult"])(query));
+    getSearchResult: function getSearchResult(query, address) {
+      return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_4__["getSearchResult"])(query, address));
     },
     requestAllBusinesses: function requestAllBusinesses() {
       return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_4__["requestAllBusinesses"])());
@@ -4315,12 +4310,10 @@ var geolocationReducer = function geolocationReducer() {
 
   switch (action.type) {
     case _actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_1__["RECEIVE_LOCATION"]:
-      return Object.assign({}, action.result);
-      break;
+      return action.result;
 
     case _actions_geolocation_actions__WEBPACK_IMPORTED_MODULE_1__["NO_LOCATION"]:
       return initialState;
-      break;
 
     default:
       return state;

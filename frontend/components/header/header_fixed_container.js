@@ -20,7 +20,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     logout: () => dispatch(logout()),
-    getSearchResult: (query) => dispatch(getSearchResult(query)),
+    getSearchResult: (query, address) => dispatch(getSearchResult(query, address)),
     requestAllBusinesses: () => dispatch(requestAllBusinesses()),
     requestPhoto: (id) => dispatch(requestPhoto(id)),
     loadBusinesses: () => dispatch(loadBusinesses()),
