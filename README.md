@@ -16,12 +16,12 @@ Please feel free to take a look at my website!!
 
 ## Feature
 
-### User Image (AWS S3)
-* User can update photo in cloud
+
 
 
 ### Search
 * User can search restaurant by name / category
+* User can search restaurant by location
 
 ![alt text](https://github.com/seoi99/foodie/blob/master/app/assets/images/name.png)
 
@@ -67,7 +67,6 @@ handleMarkerClick(business) {
 * user will only be able to delete only if he/she is current user.
 
 
-
 ![alt text](https://github.com/seoi99/foodie/blob/master/app/assets/images/review.png)
 
 
@@ -78,8 +77,11 @@ def destroy
   render :show
 end
 ```
+### User Image (AWS S3)
+* User can add profile picture on About Me Section
+* photo's will be stored in AWS S3
 
-
+![alt text](https://github.com/seoi99/foodie/blob/master/app/assets/images/Add_Profile.png)
 
 
 ###
