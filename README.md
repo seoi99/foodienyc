@@ -16,9 +16,12 @@ Please feel free to take a look at my website!!
 
 ## Feature
 
+### User Image (AWS S3)
+* User can update photo in cloud
+
+
 ### Search
 * User can search restaurant by name / category
-
 
 ![alt text](https://github.com/seoi99/foodie/blob/master/app/assets/images/name.png)
 
