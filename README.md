@@ -81,7 +81,7 @@ end
 * User can add profile picture on About Me Section
 * photo's will be stored in AWS S3
 
-![alt text](https://github.com/seoi99/foodie/blob/master/app/assets/images/Add_Profile.png)
+![alt text](https://github.com/seoi99/foodienyc/blob/master/app/assets/images/Add_Profile.png)
 
 
 ###
