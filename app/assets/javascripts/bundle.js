@@ -967,7 +967,7 @@ function (_React$Component) {
       var _this2 = this;
 
       var businesses = biz.filter(function (b) {
-        return _this2.map.getBounds().na.j < b.latitude && _this2.map.getBounds().na.l > b.latitude && _this2.map.getBounds().ia.j < b.longitude && _this2.map.getBounds().ia.l > b.longitude;
+        return _this2.map.getBounds().na.j < b.latitude && _this2.map.getBounds().na.l > b.latitude && _this2.map.getBounds().ga.j < b.longitude && _this2.map.getBounds().ga.l > b.longitude;
       });
       console.log(_actions_business_actions__WEBPACK_IMPORTED_MODULE_5__["requestAllBusinesses"].length, this.state.businesses.length);
       return businesses.length;
@@ -978,7 +978,7 @@ function (_React$Component) {
       var _this3 = this;
 
       var businesses = biz.filter(function (b) {
-        return _this3.map.getBounds().na.j < b.latitude && _this3.map.getBounds().na.l > b.latitude && _this3.map.getBounds().ia.j < b.longitude && _this3.map.getBounds().ia.l > b.longitude;
+        return _this3.map.getBounds().na.j < b.latitude && _this3.map.getBounds().na.l > b.latitude && _this3.map.getBounds().ga.j < b.longitude && _this3.map.getBounds().ga.l > b.longitude;
       });
       this.setState({
         businesses: businesses

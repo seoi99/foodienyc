@@ -67,7 +67,7 @@ class GoogleMap extends React.Component {
   checkLength(biz) {
     let businesses = biz.filter(b => {
       return (this.map.getBounds().na.j < b.latitude && this.map.getBounds().na.l >  b.latitude)
-      && (this.map.getBounds().ia.j < b.longitude && this.map.getBounds().ia.l >  b.longitude)
+      && (this.map.getBounds().ga.j < b.longitude && this.map.getBounds().ga.l >  b.longitude)
     })
     console.log(requestAllBusinesses.length, this.state.businesses.length);
     return businesses.length
@@ -76,7 +76,7 @@ class GoogleMap extends React.Component {
   inMapBounds(biz) {
       let businesses = biz.filter(b => {
         return (this.map.getBounds().na.j < b.latitude && this.map.getBounds().na.l >  b.latitude)
-        && (this.map.getBounds().ia.j < b.longitude && this.map.getBounds().ia.l >  b.longitude)
+        && (this.map.getBounds().ga.j < b.longitude && this.map.getBounds().ga.l >  b.longitude)
       })
       this.setState({businesses: businesses})
 
@@ -111,7 +111,6 @@ class GoogleMap extends React.Component {
 
 
   render() {
-
     return (
           <div className="all-map">
             <div id="map" ref={ map => this.mapNode = map }></div>
