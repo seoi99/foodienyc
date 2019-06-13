@@ -6,6 +6,7 @@ export const UPLOADING_LOCATION = 'UPLOADING_LOCATION';
 export const AUTO_COMPLETE = 'AUTO_COMPLETE';
 
 export const receiveLocation = (result) => {
+  console.log(result);
   return {
     type: RECEIVE_LOCATION,
     result: result.results[0].geometry.location,

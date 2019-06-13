@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Header from './header_fixed';
 import { logout } from '../../actions/session_actions';
 import { updateFilter } from '../../actions/filter_actions';
-import {requestAllBusinesses, getSearchResult, loadBusinesses} from '../../actions/business_actions'
+import {requestAllBusinesses, getSearchResult, loadBusinesses, receiveSearchText} from '../../actions/business_actions'
 import { requestPhoto} from '../../actions/user_pic_action';
 import { fetchLocation, getAutoComplete } from '../../actions/geolocation_actions';
 
@@ -24,6 +24,7 @@ const mapDispatchToProps = dispatch => {
     requestAllBusinesses: () => dispatch(requestAllBusinesses()),
     requestPhoto: (id) => dispatch(requestPhoto(id)),
     loadBusinesses: () => dispatch(loadBusinesses()),
+    receiveSearchText: (text) => dispatch(receiveSearchText(text)),
     fetchLocation: (address) => dispatch(fetchLocation(address)),
     getAutoComplete: (address, latlng) => dispatch(getAutoComplete(address, latlng)),
 

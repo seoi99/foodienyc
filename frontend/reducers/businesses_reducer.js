@@ -7,6 +7,7 @@ const businessReducer = (state={}, action) => {
       const business = action.payload
       return Object.assign({}, {[business.id]: business})
     case RECEIVE_ALL_BUSINESSES:
+      console.log(action);
       return Object.assign({}, action.payload.businesses);
     case RECEIVE_SEARCH_RESULT:
       return Object.assign({}, action.result.businesses);

@@ -10,6 +10,7 @@ export const REMOVE_REVIEW = 'REMOVE_REVIEW';
 export const RECEIVE_REVIEW_ERROR = 'RECEIVE_REVIEW_ERROR';
 export const START_LOADING_REVIEW_INDEX = 'START_LOADING_REVIEW_INDEX';
 export const LOAD_BUSINESSES = 'LOAD_BUSINESSES';
+export const RECEIVE_SEARCH_TEXT = 'RECEIVE_SEARCH_TEXT';
 export const LOAD_NO_BUSINSSES = 'LOAD_NO_BUSINSSES';
 export const DROP_DOWN_RESULT = 'DROP_DOWN_RESULT';
 export const GOTOREVIEW = 'GOTOREVIEW';
@@ -30,10 +31,10 @@ export const loadNoBusinesses = () => {
 }
 
 export const receiveAllBusinesses = (payload) => {
-  return {
-  type: RECEIVE_ALL_BUSINESSES,
-  payload
-  }
+    return {
+    type: RECEIVE_ALL_BUSINESSES,
+    payload
+    }
 };
 
 export const receiveReviewErrors = (errors) => ({
@@ -62,6 +63,12 @@ export const getSearchResult = (query, location) => {
   }
 }
 
+export const receiveSearchText = (text) => {
+  return {
+    type: RECEIVE_SEARCH_TEXT,
+    text
+  }
+}
 
 export const dropdownResult = (result) => {
   return {
@@ -94,11 +101,12 @@ export const receiveBusiness = (payload) => ({
   payload,
 });
 
-export const requestAllBusinesses = () => (dispatch) => {
-    dispatch(startLoadingReviewIndex());
-    return BusinessApiUtil.fetchAllBusinesses().then((payload) => {
+export const requestAllBusinesses = () => {
+  return (dispatch) => {
+    BusinessApiUtil.fetchAllBusinesses().then((payload) => {
       dispatch(receiveAllBusinesses(payload));
     });
+    }
 };
 
 export const requestBusiness = (id) => {

@@ -14,6 +14,7 @@ class Header extends React.Component {
     this.handleLocation = this.handleLocation.bind(this);
     this.navigateToIndex = this.navigateToIndex.bind(this);
     this.clicked = this.clicked.bind(this);
+
   }
 
   handleClick(e) {
@@ -21,6 +22,7 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+    this.props.requestAllBusinesses();
     if (this.props.currentUser) {
       this.props.requestPhoto(this.props.currentUser.id)
       }
@@ -34,6 +36,7 @@ class Header extends React.Component {
   handleChange(e) {
     this.setState({searchtxt: e.currentTarget.value});
     this.setState({dropdown:"show"});
+
   }
 
 
@@ -77,6 +80,7 @@ class Header extends React.Component {
 
 
   render() {
+    this.props.receiveSearchText(this.state.searchtxt)
     let h7 = this.props.h1 || "signup-links"
     let h8 = this.props.h1 || "linktopage"
 
@@ -143,7 +147,7 @@ class Header extends React.Component {
                   onClick={this.clicked}
                    />
                  <div className={this.state.dropdown}>
-                  <Dropdown searchtxt={this.state.searchtxt} businesses={this.props.businesses} />
+                  <Dropdown businesses={this.props.businesses} />
                 </div>
               </label>
               <label>
