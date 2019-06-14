@@ -377,7 +377,6 @@ var fetchLocation = function fetchLocation(address, businesses) {
     if (address === "") {
       return dispatch(noLocation());
     } else {
-      console.log(businesses);
       Object(_util_geocode_api_util__WEBPACK_IMPORTED_MODULE_0__["getCoordinate"])(address).then(function (result) {
         return dispatch(receiveLocation(result, businesses));
       });
@@ -3113,7 +3112,6 @@ function (_React$Component) {
       var formData = new FormData();
 
       if (this.state.photoFile) {
-        console.log(formData);
         formData.append('user_picture[photo]', this.state.photoFile);
       }
 
@@ -4136,8 +4134,6 @@ var businessReducer = function businessReducer() {
       var review = action.review,
           average_rating = action.average_rating;
       var newState = lodash_merge__WEBPACK_IMPORTED_MODULE_0___default()({}, state);
-      console.log(newState);
-      console.log(reivew);
       newState[review.business_id].average_rating = average_rating;
       newState[review.business_id].reviewIds.push(review.id);
       return newState;
@@ -4629,7 +4625,6 @@ __webpack_require__.r(__webpack_exports__);
 var selectBusiness = function selectBusiness(businesses, txt) {
   var bizCat = ["Japanese", "Korean", "Italian", "Burger", "Salad"];
   var bizArr = [];
-  console.log(businesses, txt);
   bizArr = businesses.filter(function (biz, idx) {
     return biz.business_name.toLowerCase().includes(txt.toLowerCase());
   });
@@ -4649,7 +4644,6 @@ var selectByLocation = function selectByLocation(businesses, bounds) {
     var filtered = businesses.filter(function (business) {
       return business.latitude <= north && business.latitude >= south && business.longitude <= east && business.longitude >= west;
     });
-    console.log('filtered', filtered);
     return filtered;
   }
 
@@ -4821,7 +4815,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var configureStore = function configureStore() {
   var preloadedState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_reducers_root_reducer__WEBPACK_IMPORTED_MODULE_3__["default"], preloadedState, Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__["default"], redux_logger__WEBPACK_IMPORTED_MODULE_2___default.a));
+  return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_reducers_root_reducer__WEBPACK_IMPORTED_MODULE_3__["default"], preloadedState, Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__["default"]));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (configureStore);

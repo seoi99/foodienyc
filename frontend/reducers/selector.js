@@ -1,7 +1,6 @@
 export const selectBusiness = (businesses, txt) => {
     const bizCat = ["Japanese", "Korean", "Italian" ,"Burger", "Salad"]
       let bizArr = [];
-      console.log(businesses, txt);
         bizArr = businesses.filter((biz, idx) => biz.business_name.toLowerCase().includes(txt.toLowerCase()));
       if (bizArr.length > 6) {
         bizArr = bizArr.slice(0,6)
@@ -20,7 +19,6 @@ export const selectByLocation = (businesses, bounds) => {
         && business.longitude <= east && business.longitude >= west)
     }))
 
-    console.log('filtered',filtered);
     return filtered;
   }
   return businesses

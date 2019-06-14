@@ -29,7 +29,6 @@ class PicForm extends React.Component {
     e.preventDefault();
     const formData = new FormData();
     if (this.state.photoFile) {
-      console.log(formData);
       formData.append('user_picture[photo]', this.state.photoFile);
 
     }

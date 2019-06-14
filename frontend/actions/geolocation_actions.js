@@ -25,7 +25,6 @@ export const fetchLocation = (address, businesses) => {
     if (address === "") {
       return dispatch(noLocation())
     } else {
-      console.log(businesses);
       getCoordinate(address).then((result) => {
       return dispatch(receiveLocation(result, businesses))
     })}
