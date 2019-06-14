@@ -15,14 +15,13 @@ export const LOAD_NO_BUSINSSES = 'LOAD_NO_BUSINSSES';
 export const DROP_DOWN_RESULT = 'DROP_DOWN_RESULT';
 export const GOTOREVIEW = 'GOTOREVIEW';
 export const NO_RESULT_FOUND = 'NO_RESULT_FOUND';
+export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 export const loadBusinesses = () => {
   return {
     type: LOAD_BUSINESSES,
   }
 }
-
-
 
 export const loadNoBusinesses = () => {
   return {
@@ -53,12 +52,25 @@ export const receiveNoResult = () => {
   type: RECEIVE_NO_RESULT,
   }
 }
+
+export const clearError = () => {
+  return {
+  type: CLEAR_ERROR,
+  }
+}
+
 export const getSearchResult = (query, location) => {
+  dispatch(clearError())
   dispatch(loadNoBusinesses())
   return (dispatch) => {
-    BusinessApiUtil.fetchSearchResult(query).then((businesses) => {
+    BusinessApiUtil.fetchSearchResult(query)
+    .then((businesses) => {
       dispatch(receiveSearchResult(businesses))
-    }).then(() => dispatch(fetchLocation(location)))
+      dispatch(fetchLocation(location, businesses))
+    },
+    (error => {
+      dispatch(noResultFound(error.responseText))
+  }))
     .then(() => dispatch(loadBusinesses(location)))
   }
 }
@@ -77,28 +89,16 @@ export const dropdownResult = (result) => {
   }
 }
 
-export const noResultFound = (result) => {
+export const noResultFound = (error) => {
   return {
   type: NO_RESULT_FOUND,
-  result: `No query result found by ${result}`
+  error
   }
 }
 
-export const getDropdownResult = (query) => {
-  return (dispatch) => {
-    BusinessApiUtil.fetchSearchResult(query).then((businesses) => {
-      dispatch(dropdownResult(businesses))
-    },(error) => {
-      dispatch(receiveNoResult())
-    })
-  }
-}
-
-
-
-export const receiveBusiness = (payload) => ({
+export const receiveBusiness = (business) => ({
   type: RECEIVE_BUSINESS,
-  payload,
+  business,
 });
 
 export const requestAllBusinesses = () => {

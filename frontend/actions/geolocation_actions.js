@@ -5,11 +5,11 @@ export const NO_LOCATION = 'NO_LOCATION';
 export const UPLOADING_LOCATION = 'UPLOADING_LOCATION';
 export const AUTO_COMPLETE = 'AUTO_COMPLETE';
 
-export const receiveLocation = (result) => {
-  console.log(result);
+export const receiveLocation = (result, businesses) => {
   return {
     type: RECEIVE_LOCATION,
     result: result.results[0].geometry.location,
+    bounds: result.results[0].geometry.bounds,
   }
 }
 
@@ -20,13 +20,14 @@ export const noLocation = () => {
 }
 
 
-export const fetchLocation = (address) => {
+export const fetchLocation = (address, businesses) => {
   return (dispatch) => {
     if (address === "") {
       return dispatch(noLocation())
     } else {
+      console.log(businesses);
       getCoordinate(address).then((result) => {
-      return dispatch(receiveLocation(result))
+      return dispatch(receiveLocation(result, businesses))
     })}
   }
 }

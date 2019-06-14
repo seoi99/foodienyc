@@ -28,12 +28,14 @@ class Header extends React.Component {
       }
   }
 
+
   toggleClass() {
     const currentState = this.state.active;
     this.setState({active: !currentState});
   }
 
   handleChange(e) {
+    this.props.receiveSearchText(e.currentTarget.value);
     this.setState({searchtxt: e.currentTarget.value});
     this.setState({dropdown:"show"});
 
@@ -67,9 +69,9 @@ class Header extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.setState({dropdown: "hidden", submitted: true});
-    this.props.getSearchResult(this.state.searchtxt, this.state.location);
+    this.props.getSearchResult(this.props.text, this.state.location);
     if (this.props.receiveSearch) {
-      this.props.receiveSearch(this.state.searchtxt, this.state.location);
+      this.props.receiveSearch(this.props.text, this.state.location);
     }
     this.navigateToIndex();
   }
@@ -78,9 +80,9 @@ class Header extends React.Component {
       this.setState({dropdown:"show"})
   }
 
-
   render() {
-    this.props.receiveSearchText(this.state.searchtxt)
+
+
     let h7 = this.props.h1 || "signup-links"
     let h8 = this.props.h1 || "linktopage"
 
@@ -147,7 +149,7 @@ class Header extends React.Component {
                   onClick={this.clicked}
                    />
                  <div className={this.state.dropdown}>
-                  <Dropdown businesses={this.props.businesses} />
+                  <Dropdown selectBusinesses={this.selectBusinesses} businesses={this.props.businesses} text={this.props.text}/>
                 </div>
               </label>
               <label>

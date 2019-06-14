@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 import {withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchLocation } from '../../actions/geolocation_actions';
-import { requestAllBusinesses , loadBusinesses, loadNoBusinesses, getSearchResult} from '../../actions/business_actions';
+import { requestAllBusinesses , loadBusinesses, loadNoBusinesses} from '../../actions/business_actions';
 import BusinessIndexItem from '../businesses/business_index_item';
 
 import MarkerManager from '../../util/marker_manager';
@@ -11,9 +11,6 @@ import MarkerManager from '../../util/marker_manager';
 class GoogleMap extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      businesses: []
-    }
     this.getLocation = this.getLocation.bind(this);
     this.showPosition = this.showPosition.bind(this);
   }
@@ -34,22 +31,15 @@ class GoogleMap extends React.Component {
     if (this.props.singleBusiness) {
       this.singleUpdate();
     } else {
-      if (this.props.loading) {
-        if ((this.map.center.lat() !== this.props.latlng.lat && this.map.center.lng() !== this.props.latlng.lng) ||
-      this.checkLength(this.props.businesses) !== this.state.businesses.length) {
-          this.batchUpdate();
-          this.map.setCenter(this.props.latlng);
-        }
-      }
+        this.batchUpdate();
     }
-
   }
   componentDidMount() {
     this.getLocation();
     const latlng = new google.maps.LatLng(this.props.latlng.lat,this.props.latlng.lng);
     const mapOptions = {
       center: latlng,
-      zoom: 15
+      zoom: 11
     };
 
     const map = this.refs.map;
@@ -64,31 +54,12 @@ class GoogleMap extends React.Component {
       this.MarkerManager.updateMarkers(this.props.businesses);
     }
   }
-  checkLength(biz) {
-    let businesses = biz.filter(b => {
-      return (this.map.getBounds().na.j < b.latitude && this.map.getBounds().na.l >  b.latitude)
-      && (this.map.getBounds().ga.j < b.longitude && this.map.getBounds().ga.l >  b.longitude)
-    })
-    console.log(requestAllBusinesses.length, this.state.businesses.length);
-    return businesses.length
-  }
-
-  inMapBounds(biz) {
-      let businesses = biz.filter(b => {
-        return (this.map.getBounds().na.j < b.latitude && this.map.getBounds().na.l >  b.latitude)
-        && (this.map.getBounds().ga.j < b.longitude && this.map.getBounds().ga.l >  b.longitude)
-      })
-      this.setState({businesses: businesses})
-
-    this.props.receiveUpdates(businesses);
-    this.MarkerManager.updateMarkers(businesses);
-  }
 
   batchUpdate() {
-      if (this.map.getBounds()) {
-        this.inMapBounds(this.props.businesses);
-      }
+    this.map.setCenter(this.props.latlng);
+    this.MarkerManager.updateMarkers(this.props.businesses);
   }
+
 
 
 
@@ -122,7 +93,6 @@ class GoogleMap extends React.Component {
 const mapStateToProps = (state) => {
 
   return {
-    businesses: Object.values(state.entities.businesses),
     latlng: state.entities.coordinate,
     loading: state.ui.businesses.loading,
   }
@@ -131,7 +101,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchLocation: (address) => dispatch(fetchLocation(address)),
-    getSearchResult: (query) => dispatch(getSearchResult(query)),
     loadNoBusinesses: () => dispatch(loadNoBusinesses()),
   }
 }

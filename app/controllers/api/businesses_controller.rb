@@ -15,7 +15,12 @@ class Api::BusinessesController < ApplicationController
     else
       @businesses = Business.all.limit(100)
     end
-    render :index
+
+    if @businesses.length === 0
+      render json: 'no result found', status: 404
+    else
+      render :index
+    end
   end
 
   private

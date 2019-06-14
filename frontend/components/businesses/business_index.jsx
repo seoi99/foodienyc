@@ -12,33 +12,29 @@ class BusinessIndex extends React.Component {
       receivetxt: null,
       location: null,
       count: 0,
-      businesses: [],
     }
     this.receiveSearch = this.receiveSearch.bind(this);
-    this.receiveUpdates = this.receiveUpdates.bind(this);
   }
   receiveSearch(txt, loc) {
     this.setState({receivetxt: txt, location: loc})
   }
-  receiveUpdates(businesses) {
-    this.setState({businesses: businesses})
-  }
+
 
 
   queryResult() {
     if (this.state.receivetxt || this.state.location) {
-        if (this.state.businesses.length === 0) {
+        if (this.props.businesses.length === 0) {
             return <h1> No Resturant Found based on your search. Try different Keyword or Location </h1>
         } else {
           let s = this.state.receivetxt ? `by ${this.state.receivetxt}` : ""
           let l = this.state.location ? `Near ${this.state.location}` : ""
-            return <h1> {this.state.businesses.length} resturants found {s} {l} </h1>
+            return <h1> {this.props.businesses.length} resturants found {s} {l} </h1>
         }
     }
   }
 
   render() {
-    let businesses = this.state.businesses.map((business, idx) => {
+    let businesses = this.props.businesses.map((business, idx) => {
                 return <BusinessIndexItem business={business} key={idx} num={idx}/>
         });
       return(
@@ -55,7 +51,7 @@ class BusinessIndex extends React.Component {
           <ul>
             {businesses}
           </ul>
-            <GoogleMap singleBusiness={false} location={this.state.location} receiveUpdates={this.receiveUpdates}/>
+            <GoogleMap singleBusiness={false} businesses={this.props.businesses}/>
         </div>
 
         <Footer/>

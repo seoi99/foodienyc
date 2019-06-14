@@ -23,7 +23,9 @@ class MainPage extends React.Component {
   handleClick(e) {
   return this.props.logout();
 }
-
+receiveSearch(txt, loc) {
+  this.setState({receivetxt: txt, location: loc})
+}
 toggleClass() {
     const currentState = this.state.active;
     this.setState({ active: !currentState });
@@ -94,7 +96,7 @@ toggleClass() {
           <Link to="/"><h1>Foodie</h1></Link>
         </div>
 
-        <HeaderContainer c1="input-main" c2="nav-links" c3="input-box" c4="goto-cat" b1="main-image" h1="hide-el" h2="none"/>
+        <HeaderContainer c1="input-main" c2="nav-links" c3="input-box" c4="goto-cat" b1="main-image" h1="hide-el" h2="none" receiveSearch={this.props.receiveSearch}/>
 
       </div>
       <div className="main-business">

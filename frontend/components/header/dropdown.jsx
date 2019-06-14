@@ -1,21 +1,29 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link, withRouter} from 'react-router-dom';
-import { selectBusiness } from '../../reducers/selector';
-import {receiveSearchText, getSearchResult, getDropdownResult ,loadBusinesses} from '../../actions/business_actions'
-
+import { Link } from 'react-router-dom';
 class Dropdown extends React.Component {
   constructor(props) {
     super(props)
+    this.selectBusinesses = this.selectBusinesses.bind(this);
   }
-  componentDidUpdate() {
-    console.log(this.props.dropDown);
-  }
+
+  selectBusinesses (businesses, txt) {
+      const bizCat = ["Japanese", "Korean", "Italian" ,"Burger", "Salad"]
+        let bizArr = [];
+        if (Object.values(businesses)) {
+        bizArr = Object.values(businesses).filter((biz, idx) => biz.business_name.toLowerCase().includes(txt.toLowerCase()));
+        if (bizArr.length > 6) {
+          bizArr = bizArr.slice(0,6)
+        }
+        }
+    return bizArr
+  };
+
   render() {
-    const list = this.props.businesses ? this.props.dropDown.map((el, idx) => {
+    const bizArr = this.selectBusinesses(this.props.businesses, this.props.text)
+    const list = bizArr ? bizArr.map((el, idx) => {
       return (
        <div key={idx} className="biz-dropdown">
-         <li><Link to={`/businesses/${biz.id}`}>{biz.business_name}</Link></li>
+         <li><Link to={`/businesses/${el.id}`}>{el.business_name}</Link></li>
        </div>
      )
    }) : []
@@ -27,17 +35,5 @@ class Dropdown extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    dropDown: selectBusiness(Object.values(state.entities.businesses), state.entities.search.text)
-  }
-}
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getDropdownResult: (searchtxt) => dispatch(getDropdownResult(searchtxt)),
-    loadBusinesses: () => dispatch(loadBusinesses()),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dropdown);
+export default Dropdown;

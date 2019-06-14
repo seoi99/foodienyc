@@ -1,22 +1,24 @@
 import merge from 'lodash/merge';
-import {RECEIVE_BUSINESS, RECEIVE_ALL_BUSINESSES, RECEIVE_REVIEW, REMOVE_REVIEW, RECEIVE_SELECTED_BUSINESSES, RECEIVE_SEARCH_RESULT} from '../actions/business_actions';
-
+import {RECEIVE_BUSINESS, RECEIVE_ALL_BUSINESSES, RECEIVE_REVIEW, REMOVE_REVIEW, RECEIVE_SELECTED_BUSINESSES} from '../actions/business_actions';
+const initialState = {
+  businesses: {}
+}
 const businessReducer = (state={}, action) => {
   switch (action.type) {
     case RECEIVE_BUSINESS:
-      const business = action.payload
-      return Object.assign({}, {[business.id]: business})
+      const business = action.business
+      return merge({}, state, {[business.id] : action.business})
     case RECEIVE_ALL_BUSINESSES:
-      console.log(action);
-      return Object.assign({}, action.payload.businesses);
-    case RECEIVE_SEARCH_RESULT:
-      return Object.assign({}, action.result.businesses);
+      return merge({}, state, action.payload.businesses);
+
     case RECEIVE_REVIEW:
      const { review, average_rating } = action;
      const newState = merge({}, state);
+     console.log(newState);
+     console.log(reivew);
      newState[review.business_id].average_rating = average_rating;
      newState[review.business_id].reviewIds.push(review.id);
-       return newState;
+     return newState;
     case REMOVE_REVIEW:
       const { deletereview } = action;
       const deleteState = merge({}, state);
