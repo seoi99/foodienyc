@@ -1857,8 +1857,6 @@ function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.props.requestAllBusinesses();
-
       if (this.props.currentUser) {
         this.props.requestPhoto(this.props.currentUser.id);
       }
@@ -2298,6 +2296,7 @@ function (_React$Component) {
   _createClass(MainPage, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      this.props.requestAllBusinesses();
       this.props.requestAllReviews();
     }
   }, {
@@ -2482,6 +2481,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     requestAllReviews: function requestAllReviews() {
       return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_3__["requestAllReviews"])());
+    },
+    requestAllBusinesses: function requestAllBusinesses() {
+      return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_3__["requestAllBusinesses"])());
     },
     getSearchResult: function getSearchResult(query) {
       return dispatch(Object(_actions_business_actions__WEBPACK_IMPORTED_MODULE_3__["getSearchResult"])(query));

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { logout } from '../../actions/session_actions';
 import MainPage from './main';
-import {getSearchResult, requestAllReviews} from '../../actions/business_actions'
+import {getSearchResult, requestAllReviews, requestAllBusinesses} from '../../actions/business_actions'
 import { requestPhoto} from '../../actions/user_pic_action';
 
 const mapStateToProps = state => {
@@ -22,6 +22,7 @@ const mapDispatchToProps = dispatch => {
       return dispatch(logout());
     },
     requestAllReviews: () => dispatch(requestAllReviews()),
+    requestAllBusinesses: () => dispatch(requestAllBusinesses()),
     getSearchResult: (query) => dispatch(getSearchResult(query)),
   };
 };

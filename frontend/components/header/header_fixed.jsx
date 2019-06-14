@@ -22,7 +22,6 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    this.props.requestAllBusinesses();
     if (this.props.currentUser) {
       this.props.requestPhoto(this.props.currentUser.id)
       }
