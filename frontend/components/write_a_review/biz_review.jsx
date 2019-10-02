@@ -9,18 +9,28 @@ class BusinessReivew extends React.Component {
     super(props)
     this.props.requestAllBusinesses();
   }
-  componentDidMount() {
+
+
+  convertRate(rate=0) {
+    const RateConversion = Array.from(Array(5).keys()).map((val, idx) => {
+      if (idx + 1 <= rate) {
+        return <li className="avg-rating" key={idx}></li>
+      } else {
+        return <li className="avg-rating-bad" key={idx}></li>
+      }
+    });
+    return RateConversion
   }
+
   render() {
       let businesses;
       if (this.props.loading) {
         businesses = <div className='loading-img'></div>
       } else {
+
         businesses = (
           this.props.businesses.map((business,idx) => {
-            const AvgRateConversion = Array.from(Array(5).keys()).map((val, idx) => {
-                return <div className="avg-rating-bad" key={idx}></div>
-            });
+            let rate = business.average_rating || 0;
 
             return(
             <ul key={idx} className="w-1-row">
@@ -31,7 +41,7 @@ class BusinessReivew extends React.Component {
                 <li><Link to={`businesses/${business.id}`}>{business.business_name}</Link></li>
                 <li>{business.full_address}</li>
                 <div className="review-rrr">
-                  {AvgRateConversion}
+                  {this.convertRate(rate)}
                 </div>
               </div>
 

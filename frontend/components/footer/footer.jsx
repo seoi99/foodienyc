@@ -12,7 +12,7 @@ const Footer = () => {
           <h1>About Me</h1>
           <a href="https://www.linkedin.com/in/bumju-seo-960598bb/">Linkedin</a>
           <a href="http://jake-seo.com">Personal Website</a>
-          <a href="https://angel.co/jake-seo?public_profile=1">Angelist</a>
+          <a href="https://angel.co/jake-seo?public_profile=1">AngeList</a>
         </div>
     </div>
   )

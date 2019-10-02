@@ -1090,18 +1090,6 @@ function (_React$Component) {
       this.props.requestBusiness(this.props.businessId);
     }
   }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      if (this.props.business) {
-        if (Object.values(this.props.business.reviews).length !== this.state.reviews) {
-          this.setState({
-            reviews: Object.values(this.props.business.reviews).length
-          });
-          this.props.requestBusiness(this.props.businessId);
-        }
-      }
-    }
-  }, {
     key: "reviewClicked",
     value: function reviewClicked() {
       this.props.reviewClicked();
@@ -1146,7 +1134,7 @@ function (_React$Component) {
             className: "rev-list-item"
           }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
             className: "no-review"
-          }, "Write a First Review for", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+          }, "Write the first review for", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
             to: "/businesses/".concat(business.id, "/reviews")
           }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
             className: "first-review",
@@ -1687,7 +1675,7 @@ var Footer = function Footer() {
     href: "http://jake-seo.com"
   }, "Personal Website"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     href: "https://angel.co/jake-seo?public_profile=1"
-  }, "Angelist")));
+  }, "AngeList")));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Footer);
@@ -3834,11 +3822,29 @@ function (_React$Component) {
   }
 
   _createClass(BusinessReivew, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
+    key: "convertRate",
+    value: function convertRate() {
+      var rate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var RateConversion = Array.from(Array(5).keys()).map(function (val, idx) {
+        if (idx + 1 <= rate) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+            className: "avg-rating",
+            key: idx
+          });
+        } else {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+            className: "avg-rating-bad",
+            key: idx
+          });
+        }
+      });
+      return RateConversion;
+    }
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var businesses;
 
       if (this.props.loading) {
@@ -3847,12 +3853,7 @@ function (_React$Component) {
         });
       } else {
         businesses = this.props.businesses.map(function (business, idx) {
-          var AvgRateConversion = Array.from(Array(5).keys()).map(function (val, idx) {
-            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-              className: "avg-rating-bad",
-              key: idx
-            });
-          });
+          var rate = business.average_rating || 0;
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
             key: idx,
             className: "w-1-row"
@@ -3866,7 +3867,7 @@ function (_React$Component) {
             to: "businesses/".concat(business.id)
           }, business.business_name)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, business.full_address), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
             className: "review-rrr"
-          }, AvgRateConversion)));
+          }, _this2.convertRate(rate))));
         });
       }
 

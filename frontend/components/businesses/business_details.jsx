@@ -16,17 +16,9 @@ class BusinessDetails extends React.Component {
 
   componentDidMount() {
     this.props.requestBusiness(this.props.businessId);
-
   }
 
-  componentDidUpdate() {
-    if (this.props.business) {
-      if (Object.values(this.props.business.reviews).length !== this.state.reviews) {
-        this.setState({reviews: Object.values(this.props.business.reviews).length})
-        this.props.requestBusiness(this.props.businessId);
-      }
-    }
-  }
+
   reviewClicked() {
     this.props.reviewClicked();
   }
@@ -58,7 +50,7 @@ class BusinessDetails extends React.Component {
         reviewsmap = (
           <div className="rev-list-item">
             <p className="no-review">
-              Write a First Review for
+              Write the first review for
                <Link to={`/businesses/${business.id}/reviews` } ><button className="first-review" onClick={this.reviewClicked.bind(this)}>{this.props.business.business_name}</button></Link>
             </p>
         </div>)
