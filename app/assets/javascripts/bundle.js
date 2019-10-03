@@ -1087,7 +1087,13 @@ function (_React$Component) {
   _createClass(BusinessDetails, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      console.log('hit mount');
       this.props.requestBusiness(this.props.businessId);
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      console.log('hit update');
     }
   }, {
     key: "reviewClicked",
@@ -4111,8 +4117,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/merge */ "./node_modules/lodash/merge.js");
 /* harmony import */ var lodash_merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_merge__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_business_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../actions/business_actions */ "./frontend/actions/business_actions.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 var initialState = {
@@ -4126,7 +4130,8 @@ var businessReducer = function businessReducer() {
   switch (action.type) {
     case _actions_business_actions__WEBPACK_IMPORTED_MODULE_1__["RECEIVE_BUSINESS"]:
       var business = action.business;
-      return lodash_merge__WEBPACK_IMPORTED_MODULE_0___default()({}, state, _defineProperty({}, business.id, action.business));
+      state[business.id] = business;
+      return state;
 
     case _actions_business_actions__WEBPACK_IMPORTED_MODULE_1__["RECEIVE_ALL_BUSINESSES"]:
       return lodash_merge__WEBPACK_IMPORTED_MODULE_0___default()({}, state, action.payload.businesses);

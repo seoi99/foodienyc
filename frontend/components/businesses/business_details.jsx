@@ -15,9 +15,13 @@ class BusinessDetails extends React.Component {
   }
 
   componentDidMount() {
+    console.log('hit mount')
     this.props.requestBusiness(this.props.businessId);
   }
 
+  componentDidUpdate() {
+    console.log('hit update')
+  }
 
   reviewClicked() {
     this.props.reviewClicked();
