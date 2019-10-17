@@ -9,7 +9,7 @@ export const selectBusiness = (businesses, txt) => {
 };
 
 export const selectByLocation = (businesses, bounds) => {
-  if (bounds.northeast && bounds.southwest) {
+  if (bounds && bounds.northeast && bounds.southwest) {
     const north = bounds.northeast.lat;
     const south = bounds.southwest.lat;
     const east = bounds.northeast.lng;

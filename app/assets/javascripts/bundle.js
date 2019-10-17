@@ -4642,7 +4642,7 @@ var selectBusiness = function selectBusiness(businesses, txt) {
   return bizArr;
 };
 var selectByLocation = function selectByLocation(businesses, bounds) {
-  if (bounds.northeast && bounds.southwest) {
+  if (bounds && bounds.northeast && bounds.southwest) {
     var north = bounds.northeast.lat;
     var south = bounds.southwest.lat;
     var east = bounds.northeast.lng;
